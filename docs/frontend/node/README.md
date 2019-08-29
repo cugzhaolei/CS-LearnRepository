@@ -538,7 +538,7 @@ console.log(hmac.digest('hex')); // 80f7e22570...
 
 AES
 AES是一种常用的对称加密算法，加解密都用同一个密钥。crypto模块提供了AES支持，但是需要自己封装好函数，便于使用：
-
+``` js
 const crypto = require('crypto');
 
 function aesEncrypt(data, key) {
@@ -568,6 +568,7 @@ console.log('Decrypted text: ' + decrypted);
 Plain text: Hello, this is a secret message!
 Encrypted text: 8a944d97bdabc157a5b7a40cb180e7...
 Decrypted text: Hello, this is a secret message!
+``` 
 可以看出，加密后的字符串通过解密又得到了原始内容。
 
 注意到AES有很多不同的算法，如aes192，aes-128-ecb，aes-256-cbc等，AES除了密钥外还可以指定IV（Initial Vector），不同的系统只要IV不同，用相同的密钥加密相同的数据得到的加密结果也是不同的。加密结果通常有两种表示方法：hex和base64，这些功能Nodejs全部都支持，但是在应用中要注意，如果加解密双方一方用Nodejs，另一方用Java、PHP等其它语言，需要仔细测试。如果无法正确解密，要确认双方是否遵循同样的AES算法，字符串密钥和IV是否相同，加密后的数据是否统一为hex或base64格式。
@@ -584,7 +585,7 @@ DH算法是一种密钥交换协议，它可以让双方在不泄漏密钥的情
 在这个过程中，密钥2并不是小明告诉小红的，也不是小红告诉小明的，而是双方协商计算出来的。第三方只能知道p=23，g=5，A=8，B=19，由于不知道双方选的秘密整数a=6和b=15，因此无法计算出密钥2。
 
 用crypto模块实现DH算法如下：
-
+``` js
 const crypto = require('crypto');
 
 // xiaoming's keys:
@@ -616,7 +617,7 @@ Generator: 02
 Secret of Xiao Ming: 695308...d519be
 Secret of Xiao Hong: 695308...d519be
 注意每次输出都不一样，因为素数的选择是随机的。
-
+```
 RSA
 RSA算法是一种非对称加密算法，即由一个私钥和一个公钥构成的密钥对，通过私钥加密，公钥解密，或者通过公钥加密，私钥解密。其中，公钥可以公开，私钥必须保密。
 
@@ -644,7 +645,7 @@ openssl rsa -in rsa-key.pem -outform PEM -pubout -out rsa-pub.pem
 下面，使用crypto模块提供的方法，即可实现非对称加解密。
 
 首先，我们用私钥加密，公钥解密：
-
+``` js
 const
     fs = require('fs'),
     crypto = require('crypto');
@@ -668,9 +669,9 @@ console.log('encrypted by private key: ' + enc_by_prv.toString('hex'));
 let dec_by_pub = crypto.publicDecrypt(pubKey, enc_by_prv);
 console.log('decrypted by public key: ' + dec_by_pub.toString('utf8'));
 执行后，可以得到解密后的消息，与原始消息相同。
-
+```
 接下来我们使用公钥加密，私钥解密：
-
+``` js
 // 使用公钥加密:
 let enc_by_pub = crypto.publicEncrypt(pubKey, Buffer.from(message, 'utf8'));
 console.log('encrypted by public key: ' + enc_by_pub.toString('hex'));
@@ -678,6 +679,7 @@ console.log('encrypted by public key: ' + enc_by_pub.toString('hex'));
 // 使用私钥解密:
 let dec_by_prv = crypto.privateDecrypt(prvKey, enc_by_pub);
 console.log('decrypted by private key: ' + dec_by_prv.toString('utf8'));
+```
 执行得到的解密后的消息仍与原始消息相同。
 
 如果我们把message字符串的长度增加到很长，例如1M，这时，执行RSA加密会得到一个类似这样的错误：data too large for key size，这是因为RSA加密的原始信息必须小于Key的长度。那如何用RSA加密一个很长的消息呢？实际上，RSA并不适合加密大数据，而是先生成一个随机的AES密码，用AES加密原始信息，然后用RSA加密AES口令，这样，实际使用RSA时，给对方传的密文分两部分，一部分是AES加密的密文，另一部分是RSA加密的AES口令。对方用RSA先解密出AES口令，再用AES解密密文，即可获得明文。

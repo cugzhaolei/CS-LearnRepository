@@ -3,9 +3,12 @@
 ### 前端入门
 ::: tip 
 - html
-- css
-- javascript
+- [css](./css/)
+-  #### [JavaScript](./javascript/)
 :::
+
+ #### [HTTP](./http/)
+
 
 ### 前端绘图
 ::: tip 
@@ -18,9 +21,10 @@
 
 ### 前端进阶
 ::: tip 
-- MVVM框架（主要接触Vue）
-- Webpack工具
-- node.js
+-  #### [Vue](./vue/)
+-  #### [React](./react/)
+-  #### [webpack](./webpack/)
+-  #### [node](./node/)
 :::
 
 ### 项目实践
@@ -39,9 +43,3 @@
 - 根据生产实际需求，开发用于手机&平板的数据展示应用
  ![](/images/droidapp.jpg)
  ::: 
-
- ### [node](/node/)
-
- ### [vue](/vue/)
-
- ### [react](/react/)
