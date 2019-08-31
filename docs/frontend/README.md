@@ -2,12 +2,12 @@
 
 ### 前端入门
 ::: tip 
-- html
-- [css](./css/)
--  #### [JavaScript](./javascript/)
+- #### [html](./html/)
+- #### [CSS](./css/)
+- #### [JavaScript](./javascript/)
 :::
 
- #### [HTTP](./http/)
+### [HTTP](./http/)
 
 
 ### 前端绘图

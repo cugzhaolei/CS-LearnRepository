@@ -53,6 +53,7 @@ module.exports = {
     //     ]
     // },
     sidebar: 'auto', // 侧边栏配置
-    sidebarDepth: 2
+    sidebarDepth: 3,
+    lastUpdated: 'Last Updated', // string | boolean
   }
 };
