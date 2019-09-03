@@ -1,13 +1,11 @@
-
-
-## [30 道 Vue 面试题](https://juejin.im/post/5d59f2a451882549be53b170)
+# [30 道 Vue 面试题](https://juejin.im/post/5d59f2a451882549be53b170)
 
 ## [中高级前端大厂面试秘籍，为你保驾护航金三银四，直通大厂(上)](https://juejin.im/post/5c64d15d6fb9a049d37f9c20)
 
 ### 生命周期
 
 ::: tip
-![vue生命周期](./images/)
+<!-- ![vue生命周期](./images/) -->
 ``` js
 new Vue({})
 
@@ -89,8 +87,10 @@ Vue.prototype.$destory = function(){
 }
 
 ```
+:::
 
-#### 数据响应
+### 数据响应
+::: tip
 看完生命周期后，里面的watcher等内容其实是数据响应中的一部分。数据响应的实现由两部分构成: 观察者( watcher ) 和 依赖收集器( Dep )，其核心是 defineProperty这个方法，它可以 重写属性的 get 与 set 方法，从而完成监听数据的改变。
 
 * Observe (观察者)观察 props 与 state
@@ -202,8 +202,10 @@ class Watcher {
 }
 
 ```
+:::
 
-#### virtual dom 原理实现
+### virtual dom 原理实现
+::: tip
 * 创建dom树
 
 * 树的diff,同层对比，输出patches(listDiff/diffChilder/diffProps)
@@ -345,9 +347,11 @@ function diffList(oldList,newList,index,patches){
     return {change,list}
 }
 ```
+:::
 
-#### [Proxy对比defineProperty的优势](https://www.jianshu.com/p/2df6dcddb0d7)
-https://www.jianshu.com/p/d16565c6b6ee
+### [Proxy对比defineProperty的优势](https://www.jianshu.com/p/2df6dcddb0d7)
+::: tip
+[Proxy&defineProperty](https://www.jianshu.com/p/d16565c6b6ee)
 
 * 数组变化也能监听到
 * 不需要深度遍历监听
@@ -368,7 +372,10 @@ let reactiveData = new Proxy(data,{
     //
 })
 ```
-#### Vue 怎么用 vm.$set() 解决对象新增属性不能响应的问题 ？
+:::
+
+### Vue 怎么用 vm.$set() 解决对象新增属性不能响应的问题 ？
+::: tip
 受现代 JavaScript 的限制 ，Vue 无法检测到对象属性的添加或删除。由于 Vue 会在初始化实例时对属性执行 getter/setter 转化，所以属性必须在 data 对象上存在才能让 Vue 将它转换为响应式的。但是 Vue 提供了 Vue.set (object, propertyName, value) / vm.$set (object, propertyName, value)  来实现为对象添加响应式属性，那框架本身是如何实现的呢？
 我们查看对应的 Vue 源码：vue/src/core/instance/index.js
 ``` js
@@ -403,9 +410,10 @@ export function set(target:Array<any>|Object,key:any,val:any):any{
 如果目标是数组，直接使用数组的 splice 方法触发响应式；
 
 如果目标是对象，会先判读属性是否存在、对象是否是响应式，最终如果要对属性进行响应式处理，则是通过调用   defineReactive 方法进行响应式处理（ defineReactive 方法就是  Vue 在初始化对象时，给对象属性采用 Object.defineProperty 动态添加 getter 和 setter 的功能所调用的方法）
+:::
 
-
-#### 虚拟DOM的优缺点[https://juejin.im/post/5d36cc575188257aea108a74#heading-14]
+### ]虚拟DOM的优缺点](https://juejin.im/post/5d36cc575188257aea108a74#heading-14)
+::: tip
 
 * 优点：
    * <b>保证性能下限</b> 框架的虚拟 DOM 需要适配任何上层 API 可能产生的操作，它的一些 DOM 操作的实现必须是普适的，所以它的性能并不是最优的；但是比起粗暴的 DOM 操作性能要好很多，因此框架的虚拟 DOM 至少可以保证在你不需要手动优化的情况下，依然可以提供还不错的性能，即保证性能的下限；
@@ -413,8 +421,10 @@ export function set(target:Array<any>|Object,key:any,val:any):any{
    * 虚拟 DOM 本质上是 JavaScript 对象,而 DOM 与平台强相关，相比之下虚拟 DOM 可以进行更方便地跨平台操作，例如服务器渲染、weex 开发等等。
 * 缺点：
    * <b>无法进行极致优化</b>： 虽然虚拟 DOM + 合理的优化，足以应对绝大部分应用的性能需求，但在一些性能要求极高的应用中虚拟 DOM 无法进行针对性的极致优化。
+:::
 
-#### vue中的key有什么作用[https://www.cnblogs.com/zhumingzhenhao/p/7688336.html]
+### [vue中的key有什么作用](https://www.cnblogs.com/zhumingzhenhao/p/7688336.html)
+::: tip
 https://calendar.perfplanet.com/2013/diff/
 
 其实不只是vue，react中在执行列表渲染时也会要求给每个组件添加上key这个属性。
@@ -429,32 +439,32 @@ vue和react的虚拟DOM的Diff算法大致相同，其核心是基于两个简�
 基于以上这两点假设，使得虚拟DOM的Diff算法的复杂度从O(n^3)降到了O(n)。
 这里我们借用React’s diff algorithm中的一张图来简单说明一下：
 
-![vue-diff](./images/vue-diff.jpg)
+![](/images/vue-diff.png)
+
+:::
 
 
 
+### Vue-Router
 
-
-#### Vue-Router
-
-#### Vuex
+### Vuex
 * state: 状态中心
 * mutations: 更改状态
 * actions: 异步更改状态
 * getters: 获取状态
 * modules: 将state分成多个modules，便于管理
 
-### 算法
+## 算法
 
-#### 五大算法
+### 五大算法
 * 贪心算法: 局部最优解法
 * 分治算法: 分成多个小模块，与原问题性质相同
 * 动态规划: 每个状态都是过去历史的一个总结
 * 回溯法: 发现原先选择不优时，退回重新选择
 * 分支限界法
 
-#### 基础排序算法
-![常用排序](./images/algorithm-sort.jpg)
+### 基础排序算法
+![](/images/algorithm-sort.jpg)
 * 冒泡排序
 - 两两比较
 ``` js
@@ -503,7 +513,7 @@ function insertSort(arr){
     return arr;
 }
 ```
-##### 高级排序
+### 高级排序
 * 快速排序
     - 选择基准值(base)，原数组长度减一(基准值)，使用 splice
     - 循环原数组，小的放左边(left数组)，大的放右边(right数组);

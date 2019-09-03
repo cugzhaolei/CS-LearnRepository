@@ -21,3 +21,18 @@
 <a style="float:left;" herf="./README.md"><link>1</link>
 </a> <a  style="float:right;">2</a>
 </div> -->
+
+## 美团测试开发凉面
+
+* 电梯的验收测试流程
+* [数据库左连接](https://www.cnblogs.com/yyjie/p/7788413.html)
+* [Linux中查看所有Java进程](https://www.cnblogs.com/yjd_hycf_space/p/7730690.html)
+* 数据采集中有用到大数据吗？这么少的数据 没有必要使用
+* 输入一个字符串 怎么去判断数组重复
+   - 暴力解法
+   - 不用库函数如何实现
+   - 哈希表 时间复杂度能不能为1 空间负责度能不能为1
+   - 哈希表实现原理
+* Facebook的swift了解过吗？
+* 对职业有什么规划
+* 面试官会问得很详细 追根问底

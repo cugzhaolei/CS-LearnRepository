@@ -1,10 +1,10 @@
-### JavaScript 原型相关
+## JavaScript 原型相关
 
 https://juejin.im/post/5d622f14f265da03a1486408
 
 JS的原型、原型链一直是比较难理解的内容，不少初学者甚至有一定经验的老鸟都不一定能完全说清楚，更多的"很可能"是一知半解，而这部分内容又是JS的核心内容，想要技术进阶的话肯定不能对这个概念一知半解，碰到问题靠“猜”，却不理解它的规则！
 
-#### prototype
+## prototype
 
 <strong>只有函数有prototype属性</strong>
 
@@ -51,7 +51,7 @@ console.log(People1.age, People2.age) // 24 24
 
 原因是：People1和People2的原型是People.prototype，答案在下方的：构造函数是什么以及它做了什么。
 
-#### 原型链
+## 原型链
 
 __proto__和Object.getPrototypeOf(target)： 对象的原型
 __proto__是对象实例和它的构造函数之间建立的链接，它的值是：构造函数的`prototype。
@@ -65,16 +65,13 @@ Object.getPrototypeOf(target)全等于__proto__。
 
 1. __proto__属性没有写入 ES6 的正文，而是写入了附录。
 
-
 2. 原因是它本质上是一个内部属性，而不是一个正式的对外的 API，只是由于浏览器广泛支持，才被加入了 ES6。
-
 
 3. 标准明确规定，只有浏览器必须部署这个属性，其他运行环境不一定需要部署，而且新的代码最好认为这个属性是不存在的。
 
-
 4. 所以无论从语义的角度，还是从兼容性的角度，都不要使用这个属性，应该使用：Object.getPrototypeOf(target)（读操作）、Object.setPrototypeOf(target)（写操作）、Object.create(target)（生成操作）代替
 
-#### 构造函数是什么、它做了什么
+## 构造函数是什么、它做了什么
 `
 出自《你不知道的js》：在js中, 实际上并不存在所谓的'构造函数'，只有对于函数的'构造调用'。
 `
@@ -92,7 +89,6 @@ let newObj = new someFn() // 构造调用函数
 4. 如果函数没有返回其他对象，那么new表达式中的函数调用会自动返回这个新对象。
 5. 我们称这个新对象为构造函数的实例。
 
-
 <b>原型继承就是利用构造调用函数的特性：</b>
 ``` js
 
@@ -109,7 +105,7 @@ SubType.prototype.constructor = SubType // 重新指定constructor指向 方便�
 ----
 因为每次实例化引用类型的数据都指向同一个地址，所以它们读/写的是同一个数据，当一个实例对其进行操作，其他实例的数据就会一起更改。
 
-#### 原型链是什么
+## 原型链是什么
 
 来看个例子：
 ``` js
@@ -154,7 +150,7 @@ test.prototype.isPrototypeOf(testObject) // true test.prototype在testObject的�
 Object.prototype.isPrototypeOf(testObject) // true Object.prototype在testObject的原型链上
 
 ```
-#### 原型链的终点: Object.prototype
+## 原型链的终点: Object.prototype
 
 Object.prototype是原型链的终点，所有对象都是从它继承了方法和属性。
 
@@ -181,7 +177,7 @@ fnPrototype === Function.prototype // true test的原型是Function.prototype
 Object.getPrototypeOf(Function.prototype) === Object.prototype // true
 ```
 
-#### 原型链用来做什么？
+## 原型链用来做什么？
 
 <b>属性查找：</b>
 如果试图访问对象(实例instance)的某个属性,会首先在对象内部寻找该属性,直至找不到,然后才在该对象的原型(instance.prototype)里去找这个属性，以此类推
@@ -224,7 +220,7 @@ test.hasOwnProperty('toString'); // false test本身没查找到toString
 
 这个API是挂载在object.prototype上，所有对象都可以使用，API会忽略掉那些从原型链上继承到的属性。
 
-#### 扩展
+## 扩展
 <b>实例的属性</b>
 你知道构造函数的实例对象上有哪些属性吗？这些属性分别挂载在哪个地方？原因是什么？
 ``` js
@@ -277,14 +273,11 @@ foo.prototype.test = 'test2' // 重新赋值
 foo1.test的值是test2，原因是：foo1的原型对象是Object.getPrototypeOf(foo1)存的指针，指向foo.prototype的内存地址，不是拷贝，每次读取的值都是当前foo.prototype的最新值。
 
 
-#### 原型/构造函数/实例
-
+## 原型/构造函数/实例
 
 - 原型(prototype): 一个简单的对象，用于实现对象的 属性继承。可以简单的理解成对象的爹。在 Firefox 和 Chrome 中，每个JavaScript对象中都包含一个__proto__ (非标准)的属性指向它爹(该对象的原型)，可obj.__proto__进行访问。
 
-
 - 构造函数: 可以通过new来 新建一个对象 的函数。
-
 
 - 实例: 通过构造函数和new创建出来的对象，便是实例。 实例通过__proto__指向原型，通过constructor指向构造函数。
 
@@ -292,12 +285,10 @@ foo1.test的值是test2，原因是：foo1的原型对象是Object.getPrototypeO
 //实例
 const instance = new Object();
 
-
 //原型
 const prototype = Object.prototype;
 
 ```
-
 
 ``` js
 
@@ -316,7 +307,7 @@ const prototype = Object.prototype;
 实例.constructor === 构造函数
 ```
 
-#### 对象的拷贝
+## 对象的拷贝
 
 * 浅拷贝: 以赋值的形式拷贝引用对象，仍指向同一个地址，修改时原对象也会受到影响
 ![微软开发者社区](https://msdn.microsoft.com/zh-cn/library/dn858229(v=vs.94).aspx)
@@ -468,10 +459,9 @@ function deepClone(obj){
 ```
 
 
-
 ::: tip
 https://www.cnblogs.com/goloving/p/9297019.html
-##### js new一个对象的过程
+### js new一个对象的过程
 - 创建一个新对象 
 let obj = {};
 - 设置新对象的constructor属性为构造函数的名称，设置新对象的_proto_属性指向构造函数的prototype对象；
@@ -491,7 +481,7 @@ new test();            　　　　　//test中的this指新对象，并未改�
 console.log(this.foo);             // "bar"
 console.log(new test().foo);  // "foo";
 ```
-##### JS原生实现new
+### JS原生实现new
 ``` js
 
 // 通过分析原生的new方法可以看出，在new一个函数的时候，
@@ -507,7 +497,7 @@ function New(f) {
 }
 ```
 
-#### 优先级
+## 优先级
 
 ``` js
 function getName(){
@@ -535,7 +525,7 @@ new Date.getTime();//Uncaught TypeError: Date(...).getTime is not a function；=
 ```
 :::
 
-##### JavaScript mixin
+### JavaScript mixin
 
 链接：https://www.jianshu.com/p/7c1471ec4c50
 
@@ -596,7 +586,7 @@ Serialization construtor ~~~~~~
 <Point3D x="7, y=8, z=9">
 */
 ```
-##### 高阶对象实现
+### 高阶对象实现
 - 将类的构造函数建成箭头函数
 
 
@@ -641,7 +631,7 @@ Point sonctructor
 ```
 :::
 
-##### 原型链继承
+### 原型链继承
 
 ``` js
 var inherit = (function(c,p){
@@ -656,7 +646,7 @@ var inherit = (function(c,p){
 
 ```
 
-#### 类型判断
+## 类型判断
 判断 Target 的类型，单单用 typeof 并无法完全满足，这其实并不是 bug，本质原因是 JS 的万物皆对象的理论。因此要真正完美判断时，我们需要区分对待:
 
 基本类型(null): 使用 String(null)
@@ -668,3 +658,96 @@ let class2type = {}
 
 ```
 
+## [Call Apply Bind](https://blog.csdn.net/wangzl1163/article/details/81121742)
+
+一、call、apply的作用与应用
+每个函数都包含两个非继承而来的方法：apply()和call()。
+* 改变调用他们的函数体内部this的指向：指向第一个参数（为null指向宿主对象：浏览器中就是window对象！）
+* 实现bind的功能
+* 借用其他对象的方法。也就是说可以实现继承（构造函数继承或者构造函数和原型链继承组合式继承或者寄生组合式继承）
+
+这两个方法的用途都是在特定的作用域中调用函数，实际上等于设置函数体内this对象的值。
+首先，apply()方法接收两个参数：
+一个是在其中运行函数的作用域，另一个是参数数组。
+其中，第二个参数可以是Array的实例，也可以是arguments对象。例如：
+``` js
+function sum(num1, num2){
+    return num1 + num2;
+}
+ 
+function callSum1(num1, num2){
+    return sum.apply(this, arguments);        // 传入arguments对象
+}
+ 
+function callSum2(num1, num2){
+    return sum.apply(this, [num1, num2]);    // 传入数组
+}
+ 
+alert(callSum1(10,10));   //20
+alert(callSum2(10,10));   //20
+```
+在上面这个例子中，callSum1()在执行sum()函数时传入了this作为this值（因为是在全局作用域中调用的，所以传入的就是window对象）和arguments对象。而callSum2同样也调用了sum()函数，但它传入的则是this和一个参数数组。这两个函数都会正常执行并返回正确的结果。
+::: danger
+注意：在严格模式下，未指定环境对象而调用函数，则this值不会转型为window。除非明确把函数添加到某个对象或者调用apply()或call()，否则this值将是undefined。
+:::
+
+call()方法与apply()方法的作用相同，它们的区别仅在于接收参数的方式不同。对于call()方法而言，第一个参数是this值没有变化，变化的是其余参数都直接传递给函数。换句话说，在使用call()方法时，传递给函数的参数必须逐个列举出来，如下面的例子所示。
+``` js
+function sum(num1, num2){
+    return num1 + num2;
+}
+ 
+function callSum(num1, num2){
+    return sum.call(this, num1, num2);
+}
+ 
+alert(callSum(10,10));   //20
+```
+在使用call()方法的情况下，callSum()必须明确地传入每一个参数。结果与使用apply()没有什么不同。至于是使用apply()还是call()，完全取决于你采取哪种给函数传递参数的方式最方便。如果你打算直接传入arguments对象，或者包含函数中先接收到的也是一个数组，那么使用apply()肯定更方便；否则，选择call()可能更合适。（在不给函数传递参数的情况下，使用哪个方法都无所谓。）
+
+事实上，传递参数并非apply()和call()真正的用武之地；它们真正强大的地方是能够扩充函数赖以运行的作用域。下面来看一个例子。
+``` js
+window.color = "red";
+var o = { color: "blue" };
+ 
+function sayColor(){
+    alert(this.color);
+}
+ 
+sayColor();                //red
+ 
+sayColor.call(this);       //red
+sayColor.call(window);     //red
+sayColor.call(o);          //blue
+```
+sayColor()是作为全局函数定义的，而且当在全局作用域中调用它时，它确实会显示"red"——因为对this.color的求值会转换成对window.color的求值。而sayColor.call(this)和sayColor.call(window)，则是两种显式地在全局作用域中调用函数的方式，结果当然都会显示"red"。但是，当运行sayColor.call(o)时，函数的执行环境就不一样了，因为此时函数体内的this对象指向了o，于是结果显示的是"blue"。
+
+使用call()（或apply()）来扩充作用域的最大好处，就是对象不需要与方法有任何耦合关系。再看如下代码。
+``` js
+window.color = "red";
+var o = { color: "blue" };
+ 
+function sayColor(){
+    alert(this.color);
+}
+ 
+sayColor();                //red
+ 
+o.sayColor = sayColor;
+o.sayColor();          //blue
+```
+我们是先将sayColor()函数放到了对象o中，然后再通过o来调用它的；而在上面的的例子中，就不需要现在这个多余的步骤了。
+
+### bind与call和apply的区别
+ECMAScript 5还定义了一个方法：bind()。这个方法会创建一个函数的实例，其this值会被绑定到传给bind()函数的值。例如：
+``` js
+window.color = "red";
+var o = { color: "blue" };
+ 
+function sayColor(){
+    alert(this.color);
+} 
+var objectSayColor = sayColor.bind(o);
+objectSayColor();    //blue
+```
+在这里，sayColor()调用bind()并传入对象o，创建了objectSayColor()函数。objectSayColor()函数的this值等于o，因此即使是在全局作用域中调用这个函数，也会看到"blue"。只要是将某个函数指针（即函数名）以值的形式进行传递，同时该函数必须在特定环境中执行，被绑定函数的效用就突显出来了。它们主要用于事件处理程序以及setTimeout()和setInterval()。然而，被绑定函数与普通函数相比有更多的开销，它们需要更多内存，同时也因为多重函数调用稍微慢一点，所以最好只在必要时使用。

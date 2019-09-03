@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: moto.jpg
+heroImage: /moto.jpg
 actionText: 个人介绍 →
 actionLink: /profile/
 features:

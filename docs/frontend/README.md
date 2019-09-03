@@ -1,16 +1,16 @@
-## 前端项目积累
+# 前端项目积累
 
-### 前端入门
+## 前端入门
 ::: tip 
-- #### [html](./html/)
-- #### [CSS](./css/)
-- #### [JavaScript](./javascript/)
+- ### [html](./html/)
+- ### [CSS](./css/)
+- ### [JavaScript](./javascript/)
 :::
 
-### [HTTP](./http/)
+## [HTTP](./http/)
 
 
-### 前端绘图
+## [前端绘图](./visiual/)
 ::: tip 
 - WebGL
 - canvas svg 
@@ -19,15 +19,17 @@
 - echart.js
 :::
 
-### 前端进阶
+## 前端进阶
 ::: tip 
--  #### [Vue](./vue/)
--  #### [React](./react/)
--  #### [webpack](./webpack/)
--  #### [node](./node/)
+-  ### [Vue](./vue/)
+-  ### [Vuex](./vuex/)
+-  ### [Vue-router](./vue-router/)
+-  ### [React](./react/)
+-  ### [webpack](./webpack/)
+-  ### [node](./node/)
 :::
 
-### 项目实践
+## 项目实践
 ::: tip 
 - 2018年1月至2018年4月，在浙江大学昆山创新中心，担任研发助理实习生，参与了3D打印云平台后台管理与3D打印数据可视化系统的开发，完成了打印机的状态监测与后台管理系统的部分功能开发。
 

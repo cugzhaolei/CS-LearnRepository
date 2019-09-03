@@ -1,11 +1,11 @@
-### JavaScript函数
+## JavaScript函数
 
-####  高阶函数
+###  高阶函数
 
 高阶函数是对其他函数进行操作的函数，可以将它们作为参数或返回它们。 简单来说，高阶函数是一个函数，它接收函数作为参数或将函数作为输出返回。
 例如，Array.prototype.map，Array.prototype.filter和Array.prototype.reduce是语言中内置的一些高阶函数。
 
-#### 高阶函数实战
+### 高阶函数实战
 
 - 1. Array.prototype.map
 map（）方法通过将输入数组中的每个元素作为参数来调用提供的回调函数来创建一个新数组。 map（）方法将从回调函数中获取每个返回的值，并使用这些值创建一个新数组。
@@ -130,7 +130,7 @@ const sum = arr.reduce(function(accumulator,currentValue){
 console.log(sum); //35
 ```
 
-#### 创造高阶函数
+### 创造高阶函数
 
 到目前为止，我们看到了语言中内置的各种高阶函数。 现在让我们来创造自己的高阶函数。
 我们假设JavaScript没有原生map方法。 我们可以自己创造它，从而创建我们自己的高阶函数。
@@ -206,7 +206,7 @@ const curringPartCost = (function() {
  }
  }
 })()
-````
+```
 
 curringPartCost(1000,1)
 curringPartCost(100,2)
@@ -240,13 +240,14 @@ let costCurring = (function() {
  return totalCost
  }
 })()
-```
+
 // 执行curring化
 - costCurring = curring(costCurring)
 - costCurring(2000, 1)
 - costCurring(2000, 2)
 - costCurring(9000, 12)
 - costCurring()
+```
 函数节流
 JavaScript中的大多数函数都是用户主动触发的，一般情况下是没有性能问题，但是在一些特殊的情况下不是由用户直接控制。容易大量的调用引起性能问题。毕竟DOM操作的代价是非常昂贵的。下面将列举一些这样的场景：
 window.resise事件。
@@ -289,7 +290,7 @@ window.onresize = throttle(function() {
 },600)
 ```
 
-##### 分时函数
+#### 分时函数
 节流函数为我们提供了一种限制函数被频繁调用的解决方案。下面我们将遇到另外一个问题，某些函数是用户主动调用的，但是由于一些客观的原因，这些操作会严重的影响页面性能，此时我们需要采用另外的方式去解决。
 如果我们需要在短时间内才页面中插入大量的DOM节点，那显然会让浏览器吃不消。可能会引起浏览器的假死，所以我们需要进行分时函数，分批插入。
 ``` js
@@ -331,7 +332,7 @@ const renderList = timeChunk(arr, function(data){
 renderList()
 
 ```
-##### 惰性加载函数
+#### 惰性加载函数
 在Web开发中，因为一些浏览器中的差异，一些嗅探工作总是不可避免的。
 因为浏览器的差异性，我们要常常做各种各样的兼容，举一个非常简单常用的例子：在各个浏览器中都能够通用的事件绑定函数。
 常见的写法是这样的：
@@ -346,7 +347,9 @@ const addEvent = function(el, type, handler) {
  return el.attachEvent(`on${type}`, handler)
  }
 }
+```
 复制代码这个函数存在一个缺点，它每次执行的时候都会去执行if条件分支。虽然开销不大，但是这明显是多余的，下面我们优化一下， 提前一下嗅探的过程：
+``` js
 const addEventOptimization = (function() {
  if (window.addEventListener) {
  return (el, type, handler) => {
