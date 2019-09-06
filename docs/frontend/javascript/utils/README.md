@@ -1,9 +1,7 @@
-#### javascript实现一些原生api
-
-https://juejin.im/post/5cf4c8ce6fb9a07efc4973a6#heading-0
+# [JS实现原生api](https://juejin.im/post/5cf4c8ce6fb9a07efc4973a6#heading-0)
 
 ::: tip
-- ES5实现map()方法
+##  ES5实现map()方法
 ``` js
 Array.prototype.MyMap = function(fn,context){
     var arr = Array.prototype.slice.call(this); //es5 不需要用...展开
@@ -15,7 +13,7 @@ Array.prototype.MyMap = function(fn,context){
     return mappedArr;
 }
 ```
-- ES5实现数组的reduce()方法
+##  ES5实现数组的reduce()方法
 ``` js
 Array.prototype.myReduce = function(fn,initialValue){
     var arr = Array.prototype.slice.call(this);
@@ -28,7 +26,7 @@ Array.prototype.myReduce = function(fn,initialValue){
     return res;
 }
 ```
-- ES6实现call/apply
+##  ES6实现call/apply
 ``` js
 Function.prototype.myCall = function(context = window,..args){
     let func = this;
@@ -41,7 +39,7 @@ Function.prototype.myCall = function(context = window,..args){
 }
 ```
 
-- 实现Object.create方法
+##  实现Object.create方法
 ``` js
 function create(proto){
     function F(){};
@@ -51,7 +49,7 @@ function create(proto){
 
 ```
 
-- 实现Bind方法
+##  实现Bind方法
 核心要点：
 1、对于普通函数，绑定this指向
 2、对于构造函数，要保证原函数的原型对象上的属性不能丢失
@@ -67,7 +65,7 @@ Function.prototype.bind = function(context,...args){
     return fBound;
 }
 ```
-- 实现new关键字
+##  实现new关键字
 核心要点:
 
 1.创建一个全新的对象，这个对象的__proto__要指向构造函数的原型对象
@@ -81,7 +79,7 @@ function myNew(fn,...args){
 }
 ```
 
-- 实现instanceof的作用
+##  实现instanceof的作用
 核心要点：原型链的向上查找
 ``` js
 function myInstanceOf(left,rigth){
@@ -94,7 +92,7 @@ function myInstanceOf(left,rigth){
 }
 ```
 
-- 实现单例模式
+##  实现单例模式
 核心要点：使用闭包和proxy拦截
 ``` js
 function proxy(fun){
@@ -111,7 +109,7 @@ function proxy(fun){
 }
 ```
 
-- 实现防抖效果
+##  实现防抖效果
 核心要点：如果在定时器的时间范围内再次触发，则重新计时
 
 ``` js
@@ -127,7 +125,7 @@ const debounce = (fn,delay)=>{
 
 ```
 
-- 实现节流功能
+##  实现节流功能
 核心要点：如果在定时器时间的范围内再次触发，则不予理睬，等当前定时器完成，才能启动下一个定时器
 ``` js
 const throttle = (fn,delay=500)=>{
@@ -143,7 +141,7 @@ const throttle = (fn,delay=500)=>{
 };
 ```
 
-- JS数组扁平化(flat)方法总结
+##  JS数组扁平化(flat)方法总结
 需求:多维数组=>一维数组
 ``` js
 let ary = [1, [2, [3, [4, 5]]], 6];
@@ -186,7 +184,7 @@ while(ary.some(Array.isArray)){
 }
 
 ```
-- reduce模拟map
+##  reduce模拟map
 ``` js
 // 别忘了map的第二个参数
 Array.prototype._map = function(fn, context = window) {
@@ -199,15 +197,13 @@ Array.prototype._map = function(fn, context = window) {
 };
 ```
 :::
-
-https://github.com/wb421768544/dream/blob/master/fe/模拟实现各种东东/数组相关.md
+## [github](https://github.com/wb421768544/dream/blob/master/fe/模拟实现各种东东/数组相关.md)
 
 ``` js
 var arr1 = [1,2.[3,4]];
 arr1.flat();
 
 arr1.reduce((acc,val)=>acc.contact(val),[]);  //[1,2,3,4]
-
 
 //or 
 const flatSingle = arr=>[].concat(...arr);
@@ -242,4 +238,10 @@ flattenDeep(arr1);
 // [1, 2, 3, 1, 2, 3, 4, 2, 3, 4]
 
 ```
-https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
+[MDN实现](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/flat)
+
+## [Immutable.js](https://www.jianshu.com/p/0fa8c7456c15)
+
+Immutable Data 就是一旦创建，就不能再被更改的数据。对 Immutable 对象的任何修改或添加删除操作都会返回一个新的 Immutable 对象。Immutable 实现的原理是 Persistent Data Structure（持久化数据结构），也就是使用旧数据创建新数据时，要保证旧数据同时可用且不变。
+
+## [结构共享](https://zhuanlan.zhihu.com/p/27133830?group_id=851585269567213568)

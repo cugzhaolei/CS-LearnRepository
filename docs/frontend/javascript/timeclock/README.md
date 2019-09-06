@@ -1,7 +1,6 @@
-### 定时器
-https://blog.csdn.net/qingyafan/article/details/52335753
+## [定时器](https://blog.csdn.net/qingyafan/article/details/52335753)
 
-#### 基本用法与区别
+## 基本用法与区别
 
 - setTimeout(code, millseconds) 用于延时执行参数指定的代码，如果在指定的延迟时间之前，你想取消这个执行，那么直接用clearTimeout(timeoutId)来清除任务，timeoutID 是 setTimeout 时返回的；
 - setInterval(code, millseconds)用于每隔一段时间执行指定的代码，永无停歇，除非你反悔了，想清除它，可以使用 clearInterval(intervalId)，这样从调用 clearInterval 开始，就不会在有重复执行的任务，- intervalId 是 setInterval 时返回的；
@@ -12,7 +11,7 @@ https://blog.csdn.net/qingyafan/article/details/52335753
 这个坑其实并不能算作坑，它并不能让你陷入错误的沼泽，但是会稍稍拖慢你的应用性能，原因和 eval 方法一致，把第一个参数指定为字符串，函数首先得把它翻译成可执行的代码，SO，尽量不要这么做！
 
 
-#### setTimeout()
+## setTimeout()
 https://www.cnblogs.com/xiaohuochai/p/5773183.html
 
 　setTimeout()方法用来指定某个函数或字符串在指定的毫秒数之后执行。它返回一个整数，表示定时器的编号，这个值可以传递给clearTimeout()用于取消这个函数的执行
@@ -39,7 +38,7 @@ var Timer = setTimeout(function(){
 });
 console.log(0);
 ```
-#### setInterval()
+## setInterval()
 　setInterval的用法与setTimeout完全一致，区别仅仅在于setInterval指定某个任务每隔一段时间就执行一次，也就是无限次的定时执行
 ``` js
 <button id="btn">0</button>
@@ -61,7 +60,7 @@ btn.onclick = function(){
 
 
 
-#### requestAnimation()
+## requestAnimation()
 与setTimeout相比，requestAnimationFrame最大的优势是由系统来决定回调函数的执行时机。具体一点讲，如果屏幕刷新率是60Hz,那么回调函数就每16.7ms被执行一次，如果刷新率是75Hz，那么这个时间间隔就变成了1000/75=13.3ms，换句话说就是，requestAnimationFrame的步伐跟着系统的刷新步伐走。它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次，这样就不会引起丢帧现象，也不会导致动画出现卡顿的问题。
 
 这个API的调用很简单，如下所示：
@@ -81,6 +80,40 @@ function render() {
 //第一帧渲染
 window.requestAnimationFrame(render);
 ````
+
+## setTimeout & setImmediate
+
+setImmediate和setTimeout()是相似的，但根据它们被调用的时间以不同的方式表现。
+
+setImmediate()设计用于在当前poll阶段完成后check阶段执行脚本 。
+setTimeout() 安排在经过最小（ms）后运行的脚本，在timers阶段执行。
+
+<b>举个例子</b>
+``` js
+setTimeout(() => {
+  console.log('timeout');
+}, 0);
+setImmediate(() => {
+  console.log('immediate');
+});
+```
+执行定时器的顺序将根据调用它们的上下文而有所不同。 如果从主模块中调用两者，那么时间将受到进程性能的限制。
+其结果也不一致
+如果在I / O周期内移动两个调用，则始终首先执行立即回调：
+``` js
+const fs = require('fs');
+fs.readFile(__filename, () => {
+  setTimeout(() => {
+    console.log('timeout');
+  }, 0);
+  setImmediate(() => {
+    console.log('immediate');
+  });
+});
+
+```
+
+
 
 - 除此之外，requestAnimationFrame还有以下两个优势：
 

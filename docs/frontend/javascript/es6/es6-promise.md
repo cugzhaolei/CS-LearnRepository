@@ -1,9 +1,10 @@
-### [Promise实现原理](https://juejin.im/post/5b83cb5ae51d4538cc3ec354)
+# [Promise实现原理](https://juejin.im/post/5b83cb5ae51d4538cc3ec354)
 
-#### [ECMAScript6入门](http://es6.ruanyifeng.com/#docs/promise)
+## [ECMAScript6入门](http://es6.ruanyifeng.com/#docs/promise)
 
+## [Promise all() race() allSettled()](https://juejin.im/post/5d534ff16fb9a06b1027209c)
 
-#### 1.基本结构
+## 1.基本结构
 ::: tip
 
 ``` js
@@ -32,7 +33,7 @@ class MyPromise{
 ```
 :::
 
-#### 2.Promise状态和值
+## 2.Promise状态和值
 ::: tip 
 <b>Promise</b>存在以下三种状态
 - Pending(进行中)
@@ -102,7 +103,7 @@ Class MyPromise{
 ```
 :::
 
-#### 3.Promise的then方法
+## 3.Promise的then方法
 ::: tip
 Promise 对象的 then 方法接受两个参数：
 ``` js
@@ -113,20 +114,20 @@ onFulfilled和onRejected都是可选参数
 - 如果 onFulfilled 或 onRejected 不是函数，其必须被忽略
 * onFulfilled 特性
 如果 onFulfilled 是函数：
-- 当 promise 状态变为成功时必须被调用，其第一个参数为 promise 成功状态传入的值（ resolve 执行时传入的值）
-- 在 promise 状态改变前其不可被调用
-- 其调用次数不可超过一次
+   - 当 promise 状态变为成功时必须被调用，其第一个参数为 promise 成功状态传入的值（resolve 执行时传入的值）
+   - 在 promise 状态改变前其不可被调用
+   - 其调用次数不可超过一次
 
 * onRejected 特性 
 如果 onRejected 是函数：
-- 当 promise 状态变为失败时必须被调用，其第一个参数为 promise 失败状态传入的值（ reject 执行时传入的值）
-- 在 promise 状态改变前其不可被调用
-- 其调用次数不可超过一次
+   - 当 promise 状态变为失败时必须被调用，其第一个参数为 promise 失败状态传入的值（reject 执行时传入的值）
+   - 在 promise 状态改变前其不可被调用
+   - 其调用次数不可超过一次
 
 * 多次调用
 then 方法可以被同一个 promise 对象调用多次
-- 当 promise 成功状态时，所有 onFulfilled 需按照其注册顺序依次回调
-- 当 promise 失败状态时，所有 onRejected 需按照其注册顺序依次回调
+   - 当 promise 成功状态时，所有 onFulfilled 需按照其注册顺序依次回调
+   - 当 promise 失败状态时，所有 onRejected 需按照其注册顺序依次回调
 * 返回
 then 方法必须返回一个新的 promise 对象
 
@@ -140,10 +141,10 @@ promise1.then(onFulfilled1,onRejected1).then(onFulfilled2,onRejected2);
 ```
 这里涉及到 Promise 的执行规则，包括“值的传递”和“错误捕获”机制：
 
-1、如果 onFulfilled 或者 onRejected 返回一个值 x ，则运行下面的 Promise 解决过程：[[Resolve]](promise2, x)
+1. 如果 onFulfilled 或者 onRejected 返回一个值 x ，则运行下面的 Promise 解决过程：[[Resolve]](promise2, x)
 
-- 若 x 不为 Promise ，则使 x 直接作为新返回的 Promise 对象的值， 即新的onFulfilled 或者 onRejected 函数的参数.
-- 若 x 为 Promise ，这时后一个回调函数，就会等待该 Promise 对象(即 x )的状态发生变化，才会被调用，并且新的 Promise 状态和 x 的状态相同。
+   - 若 x 不为 Promise ，则使 x 直接作为新返回的 Promise 对象的值， 即新的onFulfilled 或者 onRejected 函数的参数.
+   - 若 x 为 Promise ，这时后一个回调函数，就会等待该 Promise 对象(即 x )的状态发生变化，才会被调用，并且新的 Promise 状态和 x 的状态相同。
 
 ``` js
 let promise1 = new Promise((resolve,reject)=>{
@@ -182,7 +183,7 @@ promise2.then(res=>{
 })
 
 ```
-2、如果 onFulfilled 或者onRejected 抛出一个异常 e ，则 promise2 必须变为失败（Rejected），并返回失败的值 e，例如：
+2. 如果 onFulfilled 或者onRejected 抛出一个异常 e ，则 promise2 必须变为失败（Rejected），并返回失败的值 e，例如：
 ``` js
 let promise1 = new Promise((resolve,reject)=>{
     setTimeout(()=>{
@@ -201,7 +202,7 @@ promise2.then(res=>{
     console.log(err)  //1秒后打印出: 这里抛出一个异常e
 })
 ```
-3、如果onFulfilled 不是函数且 promise1 状态为成功（Fulfilled）， promise2 必须变为成功（Fulfilled）并返回 promise1 成功的值，例如：
+3. 如果onFulfilled 不是函数且 promise1 状态为成功（Fulfilled）， promise2 必须变为成功（Fulfilled）并返回 promise1 成功的值，例如：
 
 ``` js
 let promise1 = new Promise((resolve,reject)=>{
@@ -216,7 +217,7 @@ promise2.then(res=>{
     console.log(err)
 })
 ```
-4、如果 onRejected 不是函数且 promise1 状态为失败（Rejected），promise2必须变为失败（Rejected） 并返回 promise1 失败的值，例如：
+4. 如果 onRejected 不是函数且 promise1 状态为失败（Rejected），promise2必须变为失败（Rejected） 并返回 promise1 失败的值，例如：
 ``` js
 let promise1 = new Promise((resolve,reject)=>{
     setTimeout(()=>{
@@ -258,9 +259,9 @@ constructor(handle){
 
 }
 ```
-添加then方法
+* 添加then方法
 
-首先，then 返回一个新的 Promise 对象，并且需要将回调函数加入到执行队列中
+   - 首先，then 返回一个新的 Promise 对象，并且需要将回调函数加入到执行队列中
 
 ``` js
 //添加then方法
@@ -291,7 +292,7 @@ then(onFulfilled,onRejected){
 
 根据上文中 then 方法的规则，我们知道返回的新的 Promise 对象的状态依赖于当前 then 方法回调函数执行的情况以及返回值，例如 then 的参数是否为一个函数、回调函数执行是否出错、返回值是否为 Promise 对象。
 
-进一步完善then方法
+   - 进一步完善then方法
 ``` js
 //添加then方法
 then(onFulfilled,onRejected){
@@ -357,7 +358,7 @@ then(onFulfilled,onRejected){
 }
 
 ```
-接着修改 _resolve 和 _reject ：依次执行队列中的函数
+* 接着修改 _resolve 和 _reject ：依次执行队列中的函数
 
 当 resolve 或 reject 方法执行时，我们依次提取成功或失败任务队列当中的函数开始执行，并清空队列，从而实现 then 方法的多次调用，实现的代码如下：
 
@@ -453,14 +454,11 @@ _resolve(val){
     setTimeout(run,0)
 }
 
-
-
-
 ```
 
 这样一个Promise就基本实现了，现在我们来加一些其它的方法
 
-catch方法
+* catch方法
 相当于调用then方法，但只传入Rejected状态的回调函数
 
 ``` js
@@ -469,7 +467,7 @@ catch(onRejected){
 }
 ```
 
-静态resolve方法
+* 静态resolve方法
 ``` js
 static resolve(value){
     //如果参数是MyPromise实例，直接返回这个实例
@@ -477,14 +475,15 @@ static resolve(value){
     return new MyPromise(resolve=>resolve(value));
 }
 ```
+
+* 静态 reject 方法
 ``` js
-静态 reject 方法
 //添加静态reject方法
 static reject(value){
     return new MyPromise((resolve,reject)=>reject(value))
 }
 ```
-//静态all方法
+* 静态all方法
 
 ``` js
 static all(list){
@@ -508,7 +507,7 @@ static all(list){
 }
 
 ```
-静态race方法
+* 静态race方法
 ``` js
 static race(list){
     return new MyPromise((resovle,reject)=>{
@@ -523,7 +522,7 @@ static race(list){
     })
 }
 ```
-finally方法
+* finally方法
 - finally 方法用于指定不管 Promise 对象最后状态如何，都会执行的操作
 ``` js
 finally(cb){
@@ -535,9 +534,8 @@ finally(cb){
 
 :::
 
-#### 4.完整Promise代码
+## 4.完整Promise代码
 ::: tip
-
 ``` js
 const isFunction=variable=>typeof variable==='function';
 //定义Promise的三种状态
@@ -739,8 +737,7 @@ class MyPromise{
 ```
 :::
 
-
-#### Promose 实现Ajax请求
+## Promose 实现Ajax请求
 ::: tip
 ``` js
 const getJson = function(url){
@@ -772,5 +769,81 @@ getJson("you-url/method").then(dunction(json){
     console.log("error:"+erros)
 })
 ```
+## [异常捕获](https://www.cnblogs.com/fundebug/p/7655106.html)
+浏览器中未处理的Promise错误
+
+一些浏览器(例如Chrome)能够捕获未处理的Promise错误。
+
+unhandledrejection
+
+监听unhandledrejection事件，即可捕获到未处理的Promise错误：
+``` js
+window.addEventListener('unhandledrejection', event => ···);
+```
+promise: reject的Promise这个事件是PromiseRejectionEvent实例，它有2个最重要的属性：
+* reason: Promise的reject值
+``` js
+window.addEventListener('unhandledrejection', event =>
+{
+    console.log(event.reason); // 打印"Hello, Fundebug!"
+});
+ 
+function foo()
+{
+    Promise.reject('Hello, Fundebug!');
+}
+ 
+foo();
+```
+当一个Promise错误最初未被处理，但是稍后又得到了处理，则会触发rejectionhandled事件：
+``` js
+window.addEventListener('rejectionhandled', event => ···);
+```
+示例代码：这个事件是PromiseRejectionEvent实例。
+``` js
+window.addEventListener('unhandledrejection', event =>
+{
+    console.log(event.reason); // 打印"Hello, Fundebug!"
+});
+ 
+window.addEventListener('rejectionhandled', event =>
+{
+    console.log('rejection handled'); // 1秒后打印"rejection handled"
+});
+ 
+function foo()
+{
+    return Promise.reject('Hello, Fundebug!');
+}
+ 
+var r = foo();
+ 
+setTimeout(() =>
+{
+    r.catch(e =>{});
+}, 1000);
+```
+
+
+
+
+### Node.js中未处理的Promise错误
+
+监听unhandledRejection事件，即可捕获到未处理的Promise错误：
+``` js
+process.on('unhandledRejection', reason =>
+{
+    console.log(reason); // 打印"Hello, Fundebug!"
+});
+ 
+function foo()
+{
+    Promise.reject('Hello, Fundebug!');
+}
+ 
+foo();
+```
+
+
 :::
 

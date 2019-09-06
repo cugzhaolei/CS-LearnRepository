@@ -1,13 +1,32 @@
-## JavaScript函数
+# JavaScript函数
 
-###  高阶函数
+
+## 立即执行函数(IEF)
+``` js
+常见两种方式
+1.(function(){...})()
+  (function(x){
+      console.log(x);
+  })(12345)
+2.(function(){...}())
+  (function(x){
+      console.log(x);
+  }(12345))
+
+ //作用 不破坏污染全局的命名空间，若需要使用，将其用变量传入如
+（function(window){...}(window)）
+
+```
+
+
+##  高阶函数
 
 高阶函数是对其他函数进行操作的函数，可以将它们作为参数或返回它们。 简单来说，高阶函数是一个函数，它接收函数作为参数或将函数作为输出返回。
 例如，Array.prototype.map，Array.prototype.filter和Array.prototype.reduce是语言中内置的一些高阶函数。
 
-### 高阶函数实战
+## 高阶函数实战
 
-- 1. Array.prototype.map
+### 1. Array.prototype.map
 map（）方法通过将输入数组中的每个元素作为参数来调用提供的回调函数来创建一个新数组。 map（）方法将从回调函数中获取每个返回的值，并使用这些值创建一个新数组。
 传递给map（）方法的回调函数接受3个参数：element，index和array。
 
@@ -62,7 +81,7 @@ console.log(ages);
 
 ```
 
-- 2. Array.prototype.filter
+### 2. Array.prototype.filter
 filter（）方法创建一个新数组，包含着所有通过了回调函数校验的元素。 传递给filter（）方法的回调函数接受3个参数：element，index和array。
 让我们来下例子：
 例1#
@@ -102,7 +121,7 @@ const persons = [
 const fullAge = persons.filter(person=>person.age>18);
 console.log(fullAge);
 ```
-- 3. Array.prototype.reduce
+### 3. Array.prototype.reduce
 reduce方法对数组的每个成员执行回调函数，然后产生单个输出值。 reduce方法接受两个参数：回调函数和可选的initialValue（初始值）。
 reducer的回调函数接受四个参数：accumulator，currentValue，currentIndex，sourceArray。
 如果提供了初始值，则accumulator将等于initialValue，currentValue将等于数组中的第一个元素。
@@ -130,7 +149,7 @@ const sum = arr.reduce(function(accumulator,currentValue){
 console.log(sum); //35
 ```
 
-### 创造高阶函数
+## 创造高阶函数
 
 到目前为止，我们看到了语言中内置的各种高阶函数。 现在让我们来创造自己的高阶函数。
 我们假设JavaScript没有原生map方法。 我们可以自己创造它，从而创建我们自己的高阶函数。
@@ -153,10 +172,7 @@ const lenArray = mapForEach(strArray,item=>item.length);
 console.log(lenArray);//[10, 6, 3, 4, 1]
 ```
 
-
 https://blog.bitsrc.io/understanding-higher-order-functions-in-javascript-75461803bad
-
-
 
 currying（柯里化）
 关于curring我们首先要聊的是什么是函数柯里化。
@@ -290,7 +306,7 @@ window.onresize = throttle(function() {
 },600)
 ```
 
-#### 分时函数
+### 分时函数
 节流函数为我们提供了一种限制函数被频繁调用的解决方案。下面我们将遇到另外一个问题，某些函数是用户主动调用的，但是由于一些客观的原因，这些操作会严重的影响页面性能，此时我们需要采用另外的方式去解决。
 如果我们需要在短时间内才页面中插入大量的DOM节点，那显然会让浏览器吃不消。可能会引起浏览器的假死，所以我们需要进行分时函数，分批插入。
 ``` js
@@ -332,7 +348,7 @@ const renderList = timeChunk(arr, function(data){
 renderList()
 
 ```
-#### 惰性加载函数
+### 惰性加载函数
 在Web开发中，因为一些浏览器中的差异，一些嗅探工作总是不可避免的。
 因为浏览器的差异性，我们要常常做各种各样的兼容，举一个非常简单常用的例子：在各个浏览器中都能够通用的事件绑定函数。
 常见的写法是这样的：
@@ -385,3 +401,150 @@ addEventLazy(document.getElementById('eventLazy'), 'click', function() {
 })
 ``` 
 一旦进入分支，便在函数内部修改函数的实现，重写之后函数就是我们期望的函数，在下一次进入函数的时候就不再存在条件分支语句。
+
+## [数字转中文](https://www.cnblogs.com/liquanjiang/p/8655075.html)
+
+//js实现将数字1234转化为汉字字符串（一千二百三十四）（或大写汉字壹仟贰佰叁拾肆）；
+
+/*阿拉伯数字转中文数字 中文数字的特点： 每个计数数字都跟着一个权位，权位有：十、百、千、万、亿。 以“万”为小节，对应一个节权位，万以下没有节权位。 每个小节内部以“十百千”为权位独立计数。 “十百千”不能连续出现，而“万”和“亿”作为节权位时可以和其他权位连用，如：“二十亿”。 中文数字对“零”的使用要满足以下三条规则： 以10000为小节，小节的结尾即使是0，也不使用零。 小节内两个非0数字之间要使用“零”。 当小节的“千”位是0时（即：1~999），只要不是首小节，都要补“零”。 算法设计的一些说明： 对“零”的第三个规则，把检测放在循环的最前面并默认为false，可以自然的丢弃最高小节的加零判断。 单个数字转换用数组实现，var chnNumChar = ["零","一","二","三","四","五","六","七","八","九"]; 节权位同样用数组实现，var chnUnitSection = ["","万","亿","万亿","亿亿"]； 节内权位同样用数组实现，var chnUnitChar = ["","十","百","千"];*/
+
+ 注意： 下面的方法只针对1亿亿以下数字有效，因为在日常项目中，一亿亿已经是非常大的数字，基本上达不到这个量
+``` js
+//如果数字含有小数部分，那么可以将小数部分单独取出
+//将小数部分的数字转换为字符串的方法：
+
+var chnNumChar = ["零","一","二","三","四","五","六","七","八","九"];
+    var chnUnitSection = ["","万","亿","万亿","亿亿"];
+    var chnUnitChar = ["","十","百","千"];
+
+var numToChn = function(num){
+      var index =  num.toString().indexOf(".");
+      if(index != -1){
+          var str = num.toString().slice(index);
+          var a = "点";
+              for(var i=1;i<str.length;i++){
+                     a += chnNumChar[parseInt(str[i])];
+               }
+          return a ;
+      }else{
+          return ;
+      }
+}
+
+//定义在每个小节的内部进行转化的方法，其他部分则与小节内部转化方法相同
+function sectionToChinese(section){
+    var str = '', chnstr = '',zero= false,count=0;   //zero为是否进行补零， 第一次进行取余由于为个位数，默认不补零
+    while(section>0){
+         var v = section % 10;  //对数字取余10，得到的数即为个位数
+         if(v ==0){                    //如果数字为零，则对字符串进行补零
+             if(zero){
+                 zero = false;        //如果遇到连续多次取余都是0，那么只需补一个零即可
+                 chnstr = chnNumChar[v] + chnstr; 
+             }      
+         }else{
+             zero = true;           //第一次取余之后，如果再次取余为零，则需要补零
+             str = chnNumChar[v];
+             str += chnUnitChar[count];
+             chnstr = str + chnstr;
+         }
+         count++;
+         section = Math.floor(section/10);
+    }
+    return chnstr;
+}
+
+
+
+//定义整个数字全部转换的方法，需要依次对数字进行10000为单位的取余，然后分成小节，按小节计算，当每个小节的数不足1000时，则需要进行补零
+
+function TransformToChinese(num){
+         var a = numToChn(num);
+         num = Math.floor(num);
+          var unitPos = 0;
+          var strIns = '', chnStr = '';
+          var needZero = false;
+         
+          if(num === 0){
+                return chnNumChar[0];
+          } 
+          while(num > 0){
+                var section = num % 10000;
+                if(needZero){
+                  chnStr = chnNumChar[0] + chnStr;
+                }
+                strIns = sectionToChinese(section);
+                strIns += (section !== 0) ? chnUnitSection[unitPos] : chnUnitSection[0];
+                chnStr = strIns + chnStr;
+                needZero = (section < 1000) && (section > 0);
+                num = Math.floor(num / 10000);
+                unitPos++;
+          }
+         
+         return chnStr+a;
+}
+
+
+
+TransformToChinese(12339492835.99302);
+//输出    "一百二十三亿三千九百四十九万二千八百三十五点九九三零二"
+```
+
+### [JS-this绑定](https://www.cnblogs.com/penghuwan/p/7356210.html#3870818)
+
+call的基本使用方式： fn.call(object)
+fn是你调用的函数，object参数是你希望函数的this所绑定的对象。
+fn.call(object)的作用：
+1.即刻调用这个函数（fn）
+2.调用这个函数的时候函数的this指向object对象
+
+``` js
+var obj = {
+      a: 1,    // a是定义在对象obj中的属性
+      fire: function () {
+         console.log(this.a)
+      }
+}
+ 
+var a = 2;  // a是定义在全局环境中的变量  
+var fireInGrobal = obj.fire;
+fireInGrobal();   // 输出2
+fireInGrobal.call(obj); // 输出1
+
+```
+原本丢失了与obj绑定的this参数的fireInGrobal再次重新把this绑回到了obj
+ 
+但是，我们其实不太喜欢这种每次调用都要依赖call的方式，我们更希望：能够一次性 返回一个this被永久绑定到obj的fireInGrobal函数，这样我们就不必每次调用fireInGrobal都要在尾巴上加上call那么麻烦了。
+ 
+怎么办呢？ 聪明的你一定能想到，在fireInGrobal.call(obj)外面包装一个函数不就可以了嘛！
+``` js
+var obj = {
+      a: 1,    // a是定义在对象obj中的属性
+      fire: function () {
+        console.log(this.a)
+      }
+}
+ 
+var a = 2;  // a是定义在全局环境中的变量  
+var fn = obj.fire;
+var fireInGrobal = function () {
+    fn.call(obj)   //硬绑定
+}
+       
+fireInGrobal(); // 输出1
+```
+
+如果使用bind的话会更加简单
+``` js
+var fireInGrobal = function () {
+    fn.call(obj)   //硬绑定
+}
+```
+可以简化为：
+``` js
+var fireInGrobal = fn.bind(obj);
+
+```
+call和bind的区别是：在绑定this到对象参数的同时：
+ 
+1.call将立即执行该函数
+2.bind不执行函数，只返回一个可供执行的函数

@@ -1,18 +1,27 @@
 ## javascipt 
 
-## [javascript 面试相关](./quiz/)
+## [JS-基础](./basic/)
 
-## [JavaScript定时器](./timeclock/)
+## [JS-String](./string/)
 
-## [JavaScript高阶函数](./function/)
-
-## [JS-函数、对象、原型、原型链](./prototype/)
+## [JS-原型](./prototype/)
 
 ## [JS-模拟api](./utils/)
 
 ## [JS-模块化](./modules/)
 
+## [JS-小知识](./quiz/)
+
+## [JS-定时器](./timeclock/)
+
+## [JS-高阶函数](./function/)
+
 ## [JS-ES6](./es6/)
 
+## [JS-EventLoop](./eventloop/)
 
-## [性能优化](./optimization/)
+## [JS-Immutable](./immutable/)
+
+## [JS-内存管理](./memory/)
+
+## [JS-性能优化](./optimization/)

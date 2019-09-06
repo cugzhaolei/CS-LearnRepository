@@ -224,7 +224,6 @@ test.hasOwnProperty('toString'); // false test本身没查找到toString
 <b>实例的属性</b>
 你知道构造函数的实例对象上有哪些属性吗？这些属性分别挂载在哪个地方？原因是什么？
 ``` js
-
 function foo() {
     this.some = '222'
     let ccc = 'ccc'
@@ -252,7 +251,6 @@ foo1.some直接读取foo1的属性。
 * foo1本身没有找到,继续查找
 * foo1的原型Object.getPrototypeOf(foo1)上找到了a和test，返回它们，停止查找。
 
-
 3. foo1.obkoro1和foo1.koro：返回undefined
 
 <b>静态属性: foo.obkoro1、foo.koro</b>
@@ -272,7 +270,6 @@ foo.prototype.test = 'test2' // 重新赋值
 ```
 foo1.test的值是test2，原因是：foo1的原型对象是Object.getPrototypeOf(foo1)存的指针，指向foo.prototype的内存地址，不是拷贝，每次读取的值都是当前foo.prototype的最新值。
 
-
 ## 原型/构造函数/实例
 
 - 原型(prototype): 一个简单的对象，用于实现对象的 属性继承。可以简单的理解成对象的爹。在 Firefox 和 Chrome 中，每个JavaScript对象中都包含一个__proto__ (非标准)的属性指向它爹(该对象的原型)，可obj.__proto__进行访问。
@@ -287,17 +284,12 @@ const instance = new Object();
 
 //原型
 const prototype = Object.prototype;
-
 ```
 
 ``` js
-
 实例.__proto__ === 原型
-
 原型.constructor === 构造函数
-
 构造函数.prototype === 原型
-
 // 这条线其实是是基于原型进行获取的，可以理解成一条基于原型的映射线
 // 例如: 
 // const o = new Object()
@@ -307,167 +299,22 @@ const prototype = Object.prototype;
 实例.constructor === 构造函数
 ```
 
-## 对象的拷贝
-
-* 浅拷贝: 以赋值的形式拷贝引用对象，仍指向同一个地址，修改时原对象也会受到影响
-![微软开发者社区](https://msdn.microsoft.com/zh-cn/library/dn858229(v=vs.94).aspx)
-``` js
-- Object.assing(target,…sources)
-
-- 展开运算符
-```
-
-* 深拷贝: 完全拷贝一个新对象，修改时原对象不再受到任何影响
-
-``` js
-Array :
-
-// 1. for循环
-
-let arr1 = [1,2,3];
-let arr2 = copyArr(arr1);
-function copyArr(arr){
-    let res=[];
-    for(let i=0,length=arr.length;i<length;i++){
-        res.push(arr[i]);
-    }
-    return res;
-}
-
-//2. slice //返回新数组
-let arr1 = [1,2,3];
-let arr2 = arr1.slice(0);
-
-//3. contact
-let arr1 = [1,2,3];
-let arr2 = arr1.contact();
-
-//4. 扩展运算符
-let arr1 = [1,2,3];
-let [...arr2] = arr1;
-
-//5. Array.from
-//如果参数是一个真正的数组，Array.from会返回一个一模一样的新数组
-let arr1 = [1,2.3];
-let arr2 = Array.from(arr1);
-
-
-//Object
-
-//1. for循环
-
-let obj1 = {count:12,price:200,name:'apple'};
-let onj2 = copyObj(obj){
-    let ans = {};
-    for(let key in obj){
-        res[key] = obj[key];
-    }
-    return ans;
-}
-
-
-//2.JSON方法
-//具有循环引用的对象时，报错
-//当值为函数、undefined、或symbol时，无法拷贝
-let obj1 = {count:12,price:200,name:'apple'};
-let obj2 = JSON.parse(JSON.stringify(obj1));
-
-
-//3 扩展运算符
-let obj1 = {count:12,price:200,name:'apple'};
-let {...obj2} = obj1;
-
-//组合版
-//
-function deepClone(obj){
-    let ans = Array.isArray(obj)?[],{};
-    if(obj&&typeof obj === 'object'){
-        for(let key in obj){
-            if(obj.hasOwnProperty(key)){
-                if(obj[key]&&typeof obj[key]==='object'){
-                    ans[key]=deepClone(obj[key]);
-                }else{
-                    ans[key] = obj[key];
-                }
-            }
-        }
-    }
-    return ans;
-}
-
-
-//避免相互引用导致死循环，在遍历过程中判断是否是相互引用对象，是则退出循环
-// https://blog.csdn.net/weixin_37719279/article/details/81240658
-function deepClone(obj){
-    let ans = Array.isArray(obj)?[]:{};
-    for(let i in obj){
-        let prop = obj[i];
-        if(prop===ans){
-            continue;
-        }
-        if(typeof prop === 'object'){
-            ans[i] = (prop.constructor===Array)?[]:{};
-            arguments.callee(prop,obj[i]);
-        }else{
-            ans[i] = prop;
-        }
-    }
-    return ans;
-}
-
-function deepClone(initalObj, finalObj) {    
-  var obj = finalObj || {};    
-  for (var i in initalObj) {        
-    var prop = initalObj[i];        // 避免相互引用对象导致死循环，如initalObj.a = initalObj的情况
-    if(prop === obj) {            
-      continue;
-    }        
-    if (typeof prop === 'object') {
-      obj[i] = (prop.constructor === Array) ? [] : {};            
-      arguments.callee(prop, obj[i]);
-    } else {
-      obj[i] = prop;
-    }
-  }    
-  return obj;
-}
-var str = {};
-var obj = { a: {a: "hello", b: 21} };
-deepClone(obj, str);
-console.log(str.a);
-
-//Obeject.create()方法
-//直接使用var newObj = Object.create(oldObj)，可以达到深拷贝的效果。
-
-function deepClone(obj){
-    let ans = Array.isArray(obj)?[],{};
-    for(var i in obj){
-        var prop = obj[i];
-        if(prop === ans)
-        {
-            continue;
-        }
-        if(typeof prop === 'object'){
-            ans[i] = (prop,constructor === Array)?[]:Object.create(prop);
-        }else{
-            ans[i] = prop;
-        }
-    }
-    return ans;
-}
-
-```
-
 
 ::: tip
 https://www.cnblogs.com/goloving/p/9297019.html
 ### js new一个对象的过程
 - 创建一个新对象 
+``` js
 let obj = {};
+```
 - 设置新对象的constructor属性为构造函数的名称，设置新对象的_proto_属性指向构造函数的prototype对象；
+``` js
 obj._proto_= Object.prototype;
+```
 - 使用新对象调用函数，函数中的this被指向新实例对象
+``` js
 Object.call(obj);  //{}.构造函数();
+```
 - 将初始化完毕的新对象地址保存到等号左边的变量中
 
 <b>注意：若构造函数中返回this或返回值是基本类型（number、string、boolean、null、undefined）的值，则返回新实例对象；若返回值是引用类型的值，则实际返回值为这个引用类型</b>
@@ -477,13 +324,12 @@ var foo = "bar";
 function test () {
 　　this.foo = "foo";
 }
-new test();            　　　　　//test中的this指新对象，并未改变全局的foo属性
-console.log(this.foo);             // "bar"
+new test();     //test中的this指新对象，并未改变全局的foo属性
+console.log(this.foo);        // "bar"
 console.log(new test().foo);  // "foo";
 ```
 ### JS原生实现new
 ``` js
-
 // 通过分析原生的new方法可以看出，在new一个函数的时候，
 // 会返回一个func同时在这个func里面会返回一个对象Object，
 // 这个对象包含父类func的属性以及隐藏的__proto__
@@ -528,7 +374,6 @@ new Date.getTime();//Uncaught TypeError: Date(...).getTime is not a function；=
 ### JavaScript mixin
 
 链接：https://www.jianshu.com/p/7c1471ec4c50
-
 ::: tip
 
 Mixin模式，混合模式。这是一种不用继承就可以复用的技术。主要还是为了解决多重继承的问题。多继承的继承路径是个问题。
@@ -588,8 +433,6 @@ Serialization construtor ~~~~~~
 ```
 ### 高阶对象实现
 - 将类的构造函数建成箭头函数
-
-
 ``` js
 const Serialization = Sup => class extends Sup{
     constructor(...args){
