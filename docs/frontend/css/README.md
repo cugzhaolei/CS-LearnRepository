@@ -173,7 +173,6 @@ box-sizing:border-box;
 ## 画三角形
 
 ``` css
-
     <style>
         #item {
             height: 0px;
@@ -307,21 +306,16 @@ const planetStyle = (index, l) => {
 };
 ```
 ## [css可继承和不可继承的元素](https://www.cnblogs.com/songchunmin/p/7789599.html)
-一、无继承性的属性
+### 一、无继承性的属性
 
 1、display：规定元素应该生成的框的类型
 
 2、文本属性：
-
-vertical-align：垂直文本对齐
-
-text-decoration：规定添加到文本的装饰
-
-text-shadow：文本阴影效果
-
-white-space：空白符的处理
-
-unicode-bidi：设置文本的方向
+* vertical-align：垂直文本对齐
+* text-decoration：规定添加到文本的装饰
+* text-shadow：文本阴影效果
+* white-space：空白符的处理
+* unicode-bidi：设置文本的方向
 
 3、盒子模型的属性：width、height、margin 、margin-top、margin-right、margin-bottom、margin-left、border、border-style、border-top-style、border-right-style、border-bottom-style、border-left-style、border-width、border-top-width、border-right-right、border-bottom-width、border-left-width、border-color、border-top-color、border-right-color、border-bottom-color、border-left-color、border-top、border-right、border-bottom、border-left、padding、padding-top、padding-right、padding-bottom、padding-left
 
@@ -338,44 +332,30 @@ unicode-bidi：设置文本的方向
 9、声音样式属性：pause-before、pause-after、pause、cue-before、cue-after、cue、play-during
 
  
-
-二、有继承性的属性
+### 二、有继承性的属性
 
 1、字体系列属性
-
-font：组合字体
-
-font-family：规定元素的字体系列
-
-font-weight：设置字体的粗细
-
-font-size：设置字体的尺寸
-
-font-style：定义字体的风格
+* font：组合字体
+* font-family：规定元素的字体系列
+* font-weight：设置字体的粗细
+* font-size：设置字体的尺寸
+* font-style：定义字体的风格
 
 font-variant：设置小型大写字母的字体显示文本，这意味着所有的小写字母均会被转换为大写，但是所有使用小型大写字体的字母与其余文本相比，其字体尺寸更小。
 
-font-stretch：对当前的 font-family 进行伸缩变形。所有主流浏览器都不支持。
-
-font-size-adjust：为某个元素规定一个 aspect 值，这样就可以保持首选字体的 x-height。
+* font-stretch：对当前的 font-family 进行伸缩变形。所有主流浏览器都不支持。
+* font-size-adjust：为某个元素规定一个 aspect 值，这样就可以保持首选字体的 x-height。
 
 2、文本系列属性
 
-text-indent：文本缩进
-
-text-align：文本水平对齐
-
-line-height：行高
-
-word-spacing：增加或减少单词间的空白（即字间隔）
-
-letter-spacing：增加或减少字符间的空白（字符间距）
-
-text-transform：控制文本大小写
-
-direction：规定文本的书写方向
-
-color：文本颜色
+* text-indent：文本缩进
+* text-align：文本水平对齐
+* line-height：行高
+* word-spacing：增加或减少单词间的空白（即字间隔）
+* letter-spacing：增加或减少字符间的空白（字符间距）
+* text-transform：控制文本大小写
+* direction：规定文本的书写方向
+* color：文本颜色
 
 3、元素可见性：visibility
 
@@ -392,20 +372,20 @@ color：文本颜色
 9、声音样式属性：speak、speak-punctuation、speak-numeral、speak-header、speech-rate、volume、voice-family、pitch、pitch-range、stress、richness、、azimuth、elevation
  
 
-三、所有元素可以继承的属性
+### 三、所有元素可以继承的属性
 
 1、元素可见性：visibility
 
 2、光标属性：cursor
 
  
-四、内联元素可以继承的属性
+### 四、内联元素可以继承的属性
 
 1、字体系列属性
 
 2、除text-indent、text-align之外的文本系列属性
 
-五、块级元素可以继承的属性
+### 五、块级元素可以继承的属性
 
 1、text-indent、text-align
 
@@ -473,9 +453,11 @@ Shadow DOM 为 Web 组件中的 DOM 和 CSS 提供了封装。Shadow DOM 使得�
     <!--<content></content>-->
 
     <!-- 绑定#host p的内容 -->
+
     <content select=".subtitle"></content>
     <!-- 绑定#host h1的内容 -->
     <content select="h1"></content>
+
 </template>
 <script>
     var host = document.querySelector('#host');
@@ -493,7 +475,7 @@ Shadow DOM 为 Web 组件中的 DOM 和 CSS 提供了封装。Shadow DOM 使得�
 
 * 主dom可以修改shadow-host的样式；
 * 在shadow-dom中用:host选择器表示shadow-host；
-* 在shadow-dom中用::content选择器表示在template标签中用到的<content>，只能通过该选择器来操作其后代元素（即通过select来选中的元素，该元素既受主dom样式影响也受template里的style声明的样式::content影响）。；
+* 在shadow-dom中用::content选择器表示在template标签中用到的\<content>，只能通过该选择器来操作其后代元素（即通过select来选中的元素，该元素既受主dom样式影响也受template里的style声明的样式::content影响）。；
 * 要更改shadow-root里面元素的样式，可以直接在template标签内添加style标签像平时写样式一样即可。（content里面指代的元素样式要用::content更改）；
 * shadow-dom 和 主dom的样式互不影响；
 
@@ -546,7 +528,7 @@ span {
 chrome默认的字体大小是12px，也就是1em默认为12px，如果最外层的父元素直接把font-size设为1.5em，那么该元素的字体大小为18px（12*1.5）。
 
 ### rem
-rem是全部的长度都相对于根元素，根元素是谁？<html>元素。通常做法是给html元素设置一个字体大小，然后其他元素的长度单位就为rem。
+rem是全部的长度都相对于根元素，根元素是谁？\<html>元素。通常做法是给html元素设置一个字体大小，然后其他元素的长度单位就为rem。
 
 上代码：（html代码如上，只是把css代码的元素长度单位变了）
 ``` css
@@ -573,9 +555,5 @@ span {
     display: block;
 }
 ```
-
-
-
-
 
 :::

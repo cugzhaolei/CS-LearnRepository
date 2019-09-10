@@ -2,7 +2,7 @@
 
 ## 前端入门
 ::: tip 
-- ### [html](./html/)
+- ### [HTML](./html/)
 - ### [CSS](./css/)
 - ### [JavaScript](./javascript/)
 - ### [Browser](./browser/)
@@ -10,13 +10,14 @@
 :::
 
 ## HTTP
-- ###[http](./http/)
+- ### [HTTP](./http/)
 
 
 ## [前端绘图](./visiual/)
 ::: tip 
 - WebGL
-- canvas svg 
+- [Canvas](./visiual/canvas/)
+- [SVG](./visiual/svg)
 - [Three.js](https://threejs.org/)
 - [zrender.js](https://ecomfe.github.io/zrender-doc/public/)
 - echart.js

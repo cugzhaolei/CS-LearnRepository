@@ -1,5 +1,10 @@
 # 算法
 ::: tip
+
+## [算法模式](./mode/)
+
+## [LeetCode](./LeetCode/)
+
 ## 五大算法
 * 贪心算法: 局部最优解法
 * 分治算法: 分成多个小模块，与原问题性质相同
@@ -8,7 +13,7 @@
 * 分支限界法
 
 ## 基础排序算法
-<!-- ![](/images/algorithm-sort.jpg) -->
+![](/images/algorithm-sort.jpg)
 * 冒泡排序
 - 两两比较
 ``` js

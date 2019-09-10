@@ -18,8 +18,7 @@ SVG 是万维网联盟的标准。
 •	SVG 图像可在任何的分辨率下被高质量地打印；
 •	SVG 可在图像质量不下降的情况下被放大；
 三、浏览器支持情况
- 
-image.png
+
 四、使用方式
 1、可在浏览器直接打开；
 2、在HTML中的使用；
@@ -29,34 +28,47 @@ SVG的代码可以直接嵌入到HTML页面中，或直接链接到SVG文件。
 •	优势：所有主要浏览器都支持，并允许使用脚本
 •	缺点：不推荐在HTML4和XHTML中使用（但在HTML5允许）
 示例：
+``` js
 <embed width="300px" height="300px" src="img/demo.svg" type="image/svg+xml" />
+```
 （2）使用 \<object> 标签
 •	优势：所有主要浏览器都支持，并支持HTML4，XHTML和HTML5标准
 •	缺点：不允许使用脚本。
 示例：
+``` js
 <object width="300px" height="300px" data="img/demo.svg" type="image/svg+xml"></object>
+```
 （3）使用 \<iframe> 标签
 •	优势：所有主要浏览器都支持，并允许使用脚本
 •	缺点：不推荐在HTML4和XHTML中使用（但在HTML5允许）
 示例：
+``` js
 <iframe width="300px" height="300px" src="img/demo.svg"></iframe>
+```
 （4）直接在HTML嵌入SVG代码
 示例：
+``` js
 <svg width="500px" height="500px" style="margin:50px;" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <rect x="20" y="20" rx="10" ry="10" width="300" height="300" style="fill:rgb(0,0,255);stroke-width:1;stroke:rgb(0,0,0);fill-opacity:0.1;stroke-opacity:0.9;opacity:0.9;"/> 
 </svg>
+```
 （5）使用\<img>标签
 示例：
+``` js
 <img src="img/demo.svg" width="300px" height="300px"/>
+```
 （6）链接到svg文件
 示例：
+``` js
 <a href="img/demo.svg">查看svg</a>
+```
 3、在css中使用
 示例：
+``` js
 .container{
   background: white url(img/demo.svg) repeat;
 }
-
+```
 
 作者：ywyan
 链接：https://www.jianshu.com/p/0899c6b481cd
@@ -130,7 +142,7 @@ stroke-opacity
     控制描边的不透明度（范围：0 - 1）
 stroke-width
     定义矩形边框的宽度
-（二）圆形 <circle>
+（二）圆形 \<circle>
 示例代码及效果：
 ``` css
 <!--圆形--> 
@@ -145,7 +157,7 @@ cx
     圆点的x坐标
 cy
     圆点的y坐标
-（三）椭圆 <ellipse>
+（三）椭圆 \<ellipse>
 示例代码及效果：
 
 ``` js
