@@ -548,3 +548,42 @@ call和bind的区别是：在绑定this到对象参数的同时：
  
 1.call将立即执行该函数
 2.bind不执行函数，只返回一个可供执行的函数
+
+
+## 数组乱序
+
+``` js
+function shuffle(arr){
+    arr.sort(function(a,b){
+        return Math.random()>0.5?-1:1;
+    });
+    return arr;
+}
+
+if (!Array.prototype.shuffle) {
+    Array.prototype.shuffle = function() {
+        for(var j, x, i = this.length; i; j = parseInt(Math.random() * i), x = this[--i], this[i] = this[j], this[j] = x);
+        return this;
+    };
+}
+arr.shuffle();
+
+var count = 100000,arr = [];
+for(var i=0;i.5 ? -1 : 1;});
+Array.prototype.sort.call(arr,function(a,b){ return Math.random()>.5 ? -1 : 1;};
+document.write(arr+'');
+var t1 = new Date().getTime();
+document.write(t1-t);
+//以下方法效率最高
+if (!Array.prototype.shuffle) {
+    Array.prototype.shuffle = function() {
+        for(var j, x, i = this.length; i; j = parseInt(Math.random() * i), x = this[--i], this[i] = this[j], this[j] = x);
+        return this;
+    };
+}
+var t = new Date().getTime();
+arr.shuffle();
+document.write(''+arr+'');
+var t1 = new Date().getTime();
+document.write(t1-t);
+```

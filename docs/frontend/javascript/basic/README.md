@@ -248,4 +248,152 @@ addEventListener('',function(e){
 })
 ```
 
+### Math
+#### Math 对象属性
+属性	|描述
+--:|:--
+E	|返回算术常量 e，即自然对数的底数（约等于2.718）。
+LN2	|返回 2 的自然对数（约等于0.693）。
+LN10	|返回 10 的自然对数（约等于2.302）。
+LOG2E	|返回以 2 为底的 e 的对数（约等于 1.414）。
+LOG10E	|返回以 10 为底的 e 的对数（约等于0.434）。
+PI	|返回圆周率（约等于3.14159）。
+SQRT1_2	|返回返回 2 的平方根的倒数（约等于 0.707）。
+SQRT2	|返回 2 的平方根（约等于 1.414）。
+
+#### Math 对象方法
+方法	|描述
+--:|:--
+abs(x)	|返回数的绝对值。
+acos(x)	|返回数的反余弦值。
+asin(x)	|返回数的反正弦值。
+atan(x)	|以介于 -PI/2 与 PI/2 弧度之间的数值来返回 x 的反正切值。
+atan2(y,x)	|返回从 x 轴到点 (x,y) 的角度（介于 -PI/2 与 PI/2 弧度之间）。
+ceil(x)	|对数进行上舍入。
+cos(x)	|返回数的余弦。
+exp(x)	|返回 e 的指数。
+floor(x)	|对数进行下舍入。
+log(x)	|返回数的自然对数（底为e）。
+max(x,y)	|返回 x 和 y 中的最高值。
+min(x,y)	|返回 x 和 y 中的最低值。
+pow(x,y)	|返回 x 的 y 次幂。
+random()	|返回 0 ~ 1 之间的随机数。
+round(x)	|把数四舍五入为最接近的整数。
+sin(x)	|返回数的正弦。
+sqrt(x)	|返回数的平方根。
+tan(x)	|返回角的正切。
+toSource()	|返回该对象的源代码。
+valueOf()	|返回 Math 对象的原始值
+
+## [浏览器多页面通信](https://blog.csdn.net/scottsu11/article/details/88357990)
+
+一：websocket通讯
+
+全双工(full-duplex)通信自然可以实现多个标签页之间的通信
+
+WebSocket是HTML5新增的协议，它的目的是在浏览器和服务器之间建立一个不受限的双向通信的通道，比如说，服务器可以在任意时刻发送消息给浏览器。为什么传统的HTTP协议不能做到WebSocket实现的功能？这是因为HTTP协议是一个请求－响应协议，请求必须先由浏览器发给服务器，服务器才能响应这个请求，再把数据发送给浏览器。
+
+也有人说，HTTP协议其实也能实现啊，比如用轮询或者Comet。这个机制的缺点一是实时性不够，二是频繁的请求会给服务器带来极大的压力。
+
+Comet本质上也是轮询，但是在没有消息的情况下，服务器先拖一段时间，等到有消息了再回复。这个机制暂时地解决了实时性问题，但是它带来了新的问题：以多线程模式运行的服务器会让大部分线程大部分时间都处于挂起状态，极大地浪费服务器资源。另外，一个HTTP连接在长时间没有数据传输的情况下，链路上的任何一个网关都可能关闭这个连接，而网关是我们不可控的，这就要求Comet连接必须定期发一些ping数据表示连接“正常工作”。
+
+WebSocket并不是全新的协议，而是利用了HTTP协议来建立连接。为什么WebSocket连接可以实现全双工通信而HTTP连接不行呢？实际上HTTP协议是建立在TCP协议之上的，TCP协议本身就实现了全双工通信，但是HTTP协议的请求－应答机制限制了全双工通信。WebSocket连接建立以后，其实只是简单规定了一下：接下来，咱们通信就不使用HTTP协议了，直接互相发数据吧。安全的WebSocket连接机制和HTTPS类似。首先，浏览器用wss://xxx创建WebSocket连接时，会先通过HTTPS创建安全的连接，然后，该HTTPS连接升级为WebSocket连接，底层通信走的仍然是安全的SSL/TLS协议。
+
+WebSocket连接必须由浏览器发起，特点：
+
+（1）建立在 TCP 协议之上，服务器端的实现比较容易。
+
+（2）与 HTTP 协议有着良好的兼容性。默认端口也是80和443，并且握手阶段采用 HTTP 协议，因此握手时不容易屏蔽，能通过各种 HTTP 代理服务器。
+
+（3）数据格式比较轻量，性能开销小，通信高效。
+
+（4）可以发送文本，也可以发送二进制数据。
+
+（5）没有同源限制，客户端可以与任意服务器通信。
+
+（6）协议标识符是ws（如果加密，则为wss），服务器网址就是 URL。
+
+二：定时器setInterval+cookie
+
+在页面A设置一个使用 setInterval 定时器不断刷新，检查 Cookies 的值是否发生变化，如果变化就进行刷新的操作。
+
+由于 Cookies 是在同域可读的，所以在页面 B 审核的时候改变 Cookies 的值，页面 A 自然是可以拿到的。
+
+这样做确实可以实现我想要的功能，但是这样的方法相当浪费资源。虽然在这个性能过盛的时代，浪费不浪费也感觉不出来，但是这种实现方案，确实不够优雅。
+
+三：使用localstorage
+
+localstorage是浏览器多个标签共用的存储空间，所以可以用来实现多标签之间的通信(ps：session是会话级的存储空间，每个标签页都是单独的）。
+
+直接在window对象上添加监听即可：
+
+window.onstorage = (e) => {console.log(e)}// 或者这样window.addEventListener('storage', (e) => console.log(e))
+
+onstorage以及storage事件，针对都是非当前页面对localStorage进行修改时才会触发，当前页面修改localStorage不会触发监听函数。然后就是在对原有的数据的值进行修改时才会触发，比如原本已经有一个key会a值为b的localStorage，你再执行：localStorage.setItem('a', 'b')代码，同样是不会触发监听函数的。
+
+四：html5浏览器的新特性SharedWorker
+
+普通的webworker直接使用new Worker()即可创建，这种webworker是当前页面专有的。然后还有种共享worker(SharedWorker)，这种是可以多个标签页、iframe共同使用的。
+
+SharedWorker可以被多个window共同使用，但必须保证这些标签页都是同源的(相同的协议，主机和端口号)
+
+首先新建一个js文件worker.js，具体代码如下：
+
+// sharedWorker所要用到的js文件，不必打包到项目中，直接放到服务器即可let data = ''onconnect = function (e) {  let port = e.ports[0]  port.onmessage = function (e) {    if (e.data === 'get') {      port.postMessage(data)    } else {      data = e.data    }  }}
+
+webworker端(暂且这样称呼)的代码就如上，只需注册一个onmessage监听信息的事件，客户端(即使用sharedWorker的标签页)发送message时就会触发。
+
+注意webworker无法在本地使用，出于浏览器本身的安全机制，所以我这次的示例也是放在服务器上的，worker.js和index.html在同一目录。
+
+
+因为客户端和webworker端的通信不像websocket那样是全双工的，所以客户端发送数据和接收数据要分成两步来处理。示例中会有两个按钮，分别对应的向sharedWorker发送数据的请求以及获取数据的请求，但他们本质上都是相同的事件--发送消息。
+
+webworker端会进行判断，传递的数据为'get'时，就把变量data的值回传给客户端，其他情况，则把客户端传递过来的数据存储到data变量中。下面是客户端的代码：
+
+// 这段代码是必须的，打开页面后注册SharedWorker，显示指定worker.port.start()方法建立与worker间的连接
+
+    if (typeof Worker === "undefined") {
+
+      alert('当前浏览器不支持webworker')
+
+    } else {
+
+      let worker = new SharedWorker('worker.js')
+
+      worker.port.addEventListener('message', (e) => {
+
+        console.log('来自worker的数据：', e.data)
+
+      }, false)
+
+      worker.port.start()
+
+      window.worker = worker
+
+    }
+
+// 获取和发送消息都是调用postMessage方法，我这里约定的是传递'get'表示获取数据。
+
+window.worker.port.postMessage('get')
+
+window.worker.port.postMessage('发送信息给worker')
+
+页面A发送数据给worker，然后打开页面B，调用window.worker.port.postMessage('get')，即可收到页面A发送给worker的数据。
+
+### this.指向
+
+* 箭头函数在自己的作用域内没有自己的this,如果需要使用this，就会指向定义时所在的作用域的this
+箭头函数不会创建自己的this,它只会从自己的作用域链的上一层继承this。
+
+this就几种情况：
+
+* new，指向新对象。
+* bind/apply/call，指向第一个参数（如果第一个参数是null则指向window）。
+* 作为对象的方法调用，指向对象。
+* 函数调用，指向window。
+
+
+
+
+
 :::

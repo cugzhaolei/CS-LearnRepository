@@ -1,11 +1,11 @@
 ---
 home: true
-heroImage: /moto.jpg
+heroImage: /images/moto.jpg
 actionText: 个人介绍 →
 actionLink: /profile/
 features:
 - title: 前端基础
-  details: 前端主要利用HTML+CSS+JavaScript
+  details: 前端:HTML+CSS+JavaScript
 - title: 后端基础
   details: 微软.NET Core & Java Spring
 - title: 诗和远方

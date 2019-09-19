@@ -467,7 +467,62 @@ function knapSack(capacity,values,weights){
 在本节中，我们会介绍一种新的范式，叫作函数式编程。函数式编程是一种曾经主要用于学术领域的范式，多亏了Python和Ruby等现代语言，它才开始在行业开发者中流行起来。值得欣慰的是，借助ES6的能力， JavaScript也能够进行函数式编程。
 
 ### 函数式编程与命令式编程
+命令式编程：
+``` js
+var printArray = function(array) {
+    for (var i = 0; i < array.length; i++) {
+        console.log(array[i]);
+    }
+};
+printArray([1, 2, 3, 4, 5]);
+```
+函数式编程：
+``` js
+var forEach = function(array,action){
+    for(let i=0;i<array,length;i++){
+        action(array[i]);
+    }
+};
+var logItem = function(item){
+    console.log(item);
+};
+forEach([1,2,3,4,5],logItem);
+```
+有几点要注意：
+*  主要目标是描述数据，以及要对数据应用的转换；
+*  程序执行顺序的重要性很低，而在命令式编程中，步骤和顺序是非常重要的；
+*  函数和数据集合是函数式编程的核心；
+*  在函数式编程中，我们可以使用和滥用函数和递归，而在命令式编程中，则使用循环、赋值、条件和函数。
+### ES2015和函数式编程
+求最小值：
+``` js
+var findMinArray = function(array) {
+    var minValue = array[0];
+        for (var i = 1; i < array.length; i++) {
+            if (minValue > array[i]) {
+                minValue = array[i];
+            }
+        }
+    return minValue;
+};
+console.log(findMinArray([8, 6, 4, 5, 9])); //输出4
+```
+ES2015 解构赋值(...)
+``` js
+const min_ = function(array) {
+    return Math.min(...array)
+};
+console.log(min_([8, 6, 4, 5, 9])); //输出4
+```
+箭头函数
+``` js
+const min = arr=>Math.min(..arr);
+console.log(min([8,6,4,5,9]));
+```
 
+# 算法复杂度
+
+## 大O表示法
 
 :::
 
