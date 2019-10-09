@@ -523,9 +523,87 @@ console.log(min([8,6,4,5,9]));
 # 算法复杂度
 
 ## 大O表示法
+![](/images/datastructure-O-analysis-1.jpg)
+
+### O(1)
+``` js
+function increment(num){
+    return ++num;
+}
+```
+### O(n)
+``` js
+function sequentialSearch(array, item){
+    for (var i=0; i<array.length; i++){
+        if (item === array[i]){ //{1}
+            return i;
+        }
+    }
+    return -1;
+}
+
+function sequentialSearch(array, item){
+    var cost = 0;
+    for (var i=0; i<array.length; i++){
+        cost++;
+        if (item === array[i]){ //{1}
+            return i;
+        }
+    }
+    console.log('cost for sequentialSearch with input size ' +
+    array.length + ' is ' + cost);
+    return -1;
+}
+```
+### O(n^2)
+``` js
+function swap(array, index1, index2){
+    var aux = array[index1];
+    array[index1] = array[index2];
+    array[index2] = aux;
+}
+function bubbleSort(array){
+    var length = array.length;
+    for (var i=0; i<length; i++){ //{1}
+    for (var j=0; j<length-1; j++ ){ //{2}
+            if (array[j] > array[j+1]){
+                swap(array, j, j+1);
+            }
+        }
+    }
+}
+```
+
+###  时间复杂度比较
+
+![](/images/datastructure-O-complixity.png)
+
+1. 数据结构
+
+![](/images/datastructure-O-compare.png)
+
+2. 图
+
+![](/images/datastructure-O-graph.png)
+
+3. 排序算法
+
+![](/images/datastructure-sort-complixity.jpg)
+
+4. 搜索算法
+
+![](/images/datastructure-O-search.png)
+
+### NP 完全理论概述
+
+还有一类NP（ nondeterministic polynomial， 非确定性多项式）算法。如果一个问题可以在多项式时间内验证解是否正确，则计为NP。
+
+NP问题中最难的是NP完全问题，它满足以下两个条件：
+* (1) 是NP问题，也就是说，可以在多项式时间内验证解，但还没有找到多项式算法；
+* (2) 所有的NP问题都能在多项式时间内归约为它。
+
 
 :::
-
 
 
 

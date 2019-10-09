@@ -8,6 +8,19 @@
 
 ## [git](https://git-scm.com/)
 
+## [面筋](./interview/)
+
+## [工业](./industrial/)
+::: tip
+- Ethernet/IP
+- Modbus
+- EtherCAT
+- Profinet
+:::
+
+
+## [物联网](./IoT/)
+
 ### INSTALL GIT
 ``` md
 INSTALL GIT

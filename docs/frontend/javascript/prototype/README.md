@@ -594,3 +594,185 @@ var objectSayColor = sayColor.bind(o);
 objectSayColor();    //blue
 ```
 在这里，sayColor()调用bind()并传入对象o，创建了objectSayColor()函数。objectSayColor()函数的this值等于o，因此即使是在全局作用域中调用这个函数，也会看到"blue"。只要是将某个函数指针（即函数名）以值的形式进行传递，同时该函数必须在特定环境中执行，被绑定函数的效用就突显出来了。它们主要用于事件处理程序以及setTimeout()和setInterval()。然而，被绑定函数与普通函数相比有更多的开销，它们需要更多内存，同时也因为多重函数调用稍微慢一点，所以最好只在必要时使用。
+
+
+## [7种继承方式](https://www.jianshu.com/p/47c4ab07f271)
+
+[参考链接](https://www.jianshu.com/p/270a037c46c9)
+
+创建对象的过程，便是画一份设计图，JS一共提供了 7 种创建的方式（来自高程三），包括：
+1. 工厂模式
+2. 构造函数模式
+3. 原型模式
+4. 组合使用构造函数模式和原型模式
+5. 动态原型模式
+6. 寄生构造函数模式
+7. 稳妥构造函数模式
+
+### 1.工厂模式
+
+``` js  
+function createInstance(args1,args2){
+    var obj = new Object();
+    obj.args1 = args1;
+    obj.args2 = args2;
+    obj.poly = function(){
+        console.log(this.args1+this.args2);
+    };
+    return obj;
+}
+var ins1 = createInstance('00','12');
+```
+在函数内部创建一个对象，然后将参数绑定后再返回，可以实现封装一个类的功能，但缺点是所有的对象的都是Object，无法准确判断它们的类型，比如“人”类是Object，“动物”类也是Object。
+  于是出现了构造函数模式。
+
+### 2.构造函数模式
+``` js
+function Person(name,age){
+    this.name = name;
+    this.age = age;
+    this.fullName = function(){
+        console.log(this.name)
+    };
+}
+
+var person = new Person("菜鸟",25);
+```
+不用return对象，将属性和方法直接给了this对象，这样便可以用alert(person instanceof Person);//ture来检测对象的类型，这意味着将来可以将Person标识为一种特定的类型，更利于类的概念。
+使用构造函数创建对象，必须使用到new操作符，若是当做普通函数来使用，就相当是为全局对象添加了属性，最后会出现window.fullName();//打印出传入的name变量，而使用new来调用构造函数会经历一下四个步骤：
+1. 创建一个新对象
+2. 将构造函数的作用域赋给新对象
+3. 执行构造函数中的代码（为新对象添加属性）
+4. 返回这个新对象
+构造函数模式同样有其缺陷，比如上面的例子中，如果创建了两个“人”，就有两个同样的sayName()方法，可以实现同样的功能（打印名字），一个两个还好，如果我们有成百上千个Person实例的话，name就有千百个fullName()方法，这在内存中的开销无疑是极大的，既然是同样的功能，那么让它们共同使用一个函数就足够了，因此可以将这个函数摘出来，这样写：
+``` js
+function Person(name,age){
+    this.name = name;
+    this.age = age;
+    this.fullName = fullName;
+}
+function fullName(){
+    console.log(this.name);
+}
+```
+将内部引用外部命名的函数，而将函数体放在外面，这样指向的就是同一个方法了，只是如此一来fullName这个方法相当于是放在了全局作用域中，但方法本身却只想让Person的对象使用，大炮打蚊子，有点小尴尬，同时类的封装性也遭到了破坏，由此问题，便引出了第三种创建方法——原型模式。
+
+### 3.原型模式
+每个构造函数都有一个prototype属性，这个属性是一个指针，指向一个对象，而这个对象的用途，便是容纳同一类下所有实例公有的方法和属性，写法如下。
+``` js
+function Person(){
+
+}
+Person.prototype.name = '菜鸟';
+Person.prototype.age = '25';
+Person.prototype.fullName = function(){
+    console.log(this.name);
+};
+var person = new Person();
+//or
+Person.prototype = {
+    name:'菜鸟',
+    age:'25',
+    fullName:function(){
+        console.log(this.name);
+    }
+}
+```
+好处很明显，同一类下所有对象可以共享属性和方法，当然，缺点一样明显，创建对象的时候无法传入自定义参数，除非设置如person1.name = "夏娃";才会覆盖掉原来的名字，更为严重的是，如果Person的原型中包含了一个数组（引用类型），如果一个对象修改了这个数组，其他对象的数组都会发生变化，因为引用类型的变量指向的是同一块内存地址，这样事情就变得很麻烦了。
+构造函数模式无法设置共享的属性，而原型模式无法自定义属性，那如果将两者优点结合起来，那不是天下无敌了吗！？
+  所以，我们有了第四种方式——组合使用构造函数模式和原型模式。
+
+###  4.组合使用构造函数和原型模式
+``` js
+function Person(name,age){
+    this.name = name;
+    this.age = age;
+}
+Person.prototype = {
+    constructor:Person,  //确保实例的构造函数指向Persom
+    fullName:function(){
+        console.log(this.name);
+    }
+}
+var person = new Person('菜鸟',25);
+```
+可以自定义的属性（包括引用类型）都放在构造函数里，随便修改都不会影响其他实例，而公共的方法则放在原型对象中，避免资源浪费。
+
+### 5.动态原型模式
+
+当我们为对象定义一个方法时，有时可能存在冲突，必要的情况下，我们可以检查某个应该存在的方法是否有效，如果有效，看一眼走人，如果无效，我们再初始化原型。
+``` js
+function Person(name,age){
+    this.name = name;
+    this.age = age;
+}
+if(typeof this.fullName !="function"){
+    Person.prototype.fullName = function(){
+        console.log(this.name);
+    }
+}
+```
+如上述代码，仅当fullName方法不存在的情况下，才会在原型中添加此方法，而且只会在初次调用构造函数的时候才会执行这条语句，一旦定义后，由于是定义在原型上的方法，所有对象之后都可以直接调用了。
+  这种方法的缺陷，同样是不能重写原型，否则会切断现有实例与心源性之间的联系。
+
+### 6.寄生构造函数模式
+.在前面几种模式都不适用的情况下（应该不会遇到吧...），可以使用寄生构造函数模式创建对象，基本思想是：创建一个函数，其作用仅仅只是封装创建对象的代码，然后再返回新创建的对象。
+``` js
+function Person(name,age){
+    var obj = new Object();
+    obj.name = name;
+    obj.age = age;
+    abj.fullName = function(){
+        console.log(this.name);
+    };
+    return obj;
+}
+var person = new Person("菜鸟",25);
+```
+除了用new操作符以外，其余写法和工厂模式一模一样，一般会在特殊情况下使用它，例如要创建一个数组对象（Array），但在这个对象中要添加新的方法，直接修改Array的构造函数的话，程序里所有的数组都变了，GG，所以可以使用这个模式。代码如下：
+``` js
+function specialArray(){
+    var arr = new Array();
+    arr.newFunction = function(){
+        console.log("new array function ");
+    }
+    //function2
+    return arr;
+}
+var list = new specailArray();
+list.newFunction();//我叫数组的新方法
+```
+ 要注意，返回的对象与构造函数之间没有关系，不能使用instanceof来确定对象类型，这一点与工厂模式相同，因此建议尽可能不要使用这种方法。
+
+### 7.稳妥构造函数模式
+
+稳妥对象，指的是没有公共属性，也不引用this对象，这种模式适合在禁止使用 this 和 new 的环境中，或者在防止数据被其他应用程序（如Mashup程序）改动时使用，除了不使用 this 和 new 以外，和寄生构造函数模式类似，代码如下：
+``` js
+function Person(name,age){
+    var obj = new Object();
+    obj.fullName = function(){
+        console.log(name);
+    };
+    return obj;
+}
+var person = Person("菜鸟",25);
+person.fullName();
+```
+除了使用fullName() 方法外，没有其他办法访问 name 的值，方法中定义的私有变量和属性也无法影响传入的 name 值，安全性杠杠的！
+  当然，与寄生构造函数模式、工厂模式相同，它也不能使用 instanceof 检测其类型。
+
+
+## 小结
+
+ECMAScript 支持面向对象（OO）编程，但不使用类或者接口。对象可以在代码执行过程中创建和增强，因此具有动态性而非严格定义的实体。在没有类的情况下，可以采用下列模式创建对象。
+*  工厂模式，使用简单的函数创建对象，为对象添加属性和方法，然后返回对象。这个模式后来被构造函数模式所取代。
+*  构造函数模式，可以创建自定义引用类型，可以像创建内置对象实例一样使用 new 操作符。不过，构造函数模式也有缺点，即它的每个成员都无法得到复用，包括函数。由于函数可以不局限于任何对象（即与对象具有松散耦合的特点），因此没有理由不在多个对象间共享函数。
+*  原型模式，使用构造函数的 prototype 属性来指定那些应该共享的属性和方法。组合使用构造函数模式和原型模式时，使用构造函数定义实例属性，而使用原型定义共享的属性和方法。
+
+继承方式
+*  原型式继承，可以在不必预先定义构造函数的情况下实现继承，其本质是执行对给定对象的浅
+复制。而复制得到的副本还可以得到进一步改造。
+*  寄生式继承，与原型式继承非常相似，也是基于某个对象或某些信息创建一个对象，然后增强
+对象，最后返回对象。为了解决组合继承模式由于多次调用超类型构造函数而导致的低效率问
+题，可以将这个模式与组合继承一起使用。
+*  寄生组合式继承，集寄生式继承和组合继承的优点与一身，是实现基于类型继承的最有效方式。
