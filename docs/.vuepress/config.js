@@ -20,8 +20,7 @@ module.exports = {
       {text: '前端基础', link: '/frontend/' },
       {text: '后端基础', link: '/backend/'},
       {text: '移动应用', link: '/app/'},
-      {text: '诗和远方', link: '/others/'},
-      {text: '微博', link: '#'}      
+      {text: '诗和远方', link: '/others/'}
     ],
     // sidebar:{
     //   '/accumulate/': [

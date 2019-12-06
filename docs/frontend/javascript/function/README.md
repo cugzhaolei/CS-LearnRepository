@@ -174,7 +174,7 @@ console.log(lenArray);//[10, 6, 3, 4, 1]
 
 https://blog.bitsrc.io/understanding-higher-order-functions-in-javascript-75461803bad
 
-currying（柯里化）
+### currying（柯里化）
 关于curring我们首先要聊的是什么是函数柯里化。
 curring又称部分求值。一个curring的函数首先会接受一些参数，接受了这些参数之后，该函数并不会立即求值，而是继续返回另外一个函数，刚才传入的参数在函数形成的闭包中被保存起来。待到函数中被真正的需要求值的时候，之前传入的所有参数被一次性用于求值。
 生硬的看概念不太好理解，我们来看接下来的例子
@@ -263,8 +263,19 @@ let costCurring = (function() {
 - costCurring(2000, 2)
 - costCurring(9000, 12)
 - costCurring()
+
+//es6的函数柯里化
+const curry = (fn, ...args1) => (...args2) => 
+(arg => arg.length === fn.length ? fn(...arg) : curry(fn, ...arg))([...args1, ...args2]);
+
+// 调用
+const foo = (a, b, c) => a * b * c;
+curry(foo)(2, 3, 4); // -> 24
+curry(foo, 2)(3, 4); // -> 24
+curry(foo, 2, 3)(4); // -> 24
+curry(foo, 2, 3, 4)(); // -> 24
 ```
-函数节流
+### 函数节流
 JavaScript中的大多数函数都是用户主动触发的，一般情况下是没有性能问题，但是在一些特殊的情况下不是由用户直接控制。容易大量的调用引起性能问题。毕竟DOM操作的代价是非常昂贵的。下面将列举一些这样的场景：
 window.resise事件。
 mouse, input等事件。
@@ -453,8 +464,6 @@ function sectionToChinese(section){
     return chnstr;
 }
 
-
-
 //定义整个数字全部转换的方法，需要依次对数字进行10000为单位的取余，然后分成小节，按小节计算，当每个小节的数不足1000时，则需要进行补零
 
 function TransformToChinese(num){
@@ -482,8 +491,6 @@ function TransformToChinese(num){
          
          return chnStr+a;
 }
-
-
 
 TransformToChinese(12339492835.99302);
 //输出    "一百二十三亿三千九百四十九万二千八百三十五点九九三零二"

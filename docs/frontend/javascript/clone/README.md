@@ -31,7 +31,7 @@ function copyArr(arr){
 let arr1 = [1,2,3];
 let arr2 = arr1.slice(0);
 ```
-####3. contact
+#### 3. contact
 ``` js
 let arr1 = [1,2,3];
 let arr2 = arr1.contact();

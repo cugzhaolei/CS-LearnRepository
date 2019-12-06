@@ -535,6 +535,245 @@ function jsonp(url, jsonpCallback, success) {
 
 ```
 
+### json转换
 
+将数组obj格式：
+``` js
+var obj = [
+    {id:1, parent: null},
+    {id:2, parent: 1},
+    {id:3, parent: 2},
+];
+```
+转换为obj2格式：
+``` js
+var obj2 = {
+    obj: {
+        id: 1,
+        parent: null,
+        child: {
+            id: 2,
+            parent: 1,
+            child: {
+                id: 3,
+                parent: 2
+            }
+        }
+    }
+```
+
+``` js
+var oj2 = {};
+fucntion createObj2(obj,child){
+    if(child.parent){
+        if(obj.obj){
+            createObj2(obj.obj,child);
+        }else{
+            if(obj.id====child.parent){
+                obj.child={
+                    id:child.id,
+                    parent:child.parent,
+                }
+            }else{
+                if(obj.child){
+                    createObj2(obj.child,child);
+                }else{
+                    console.log('obj22未匹配到对应的parent关系')
+                }
+            }
+        }
+    }else{//不在父节点 则为根节点
+        obj.obj={
+            id:child.id,
+            parent:child.parent,
+            child:{}
+        }
+    }
+}
+obj.forEacf(item,item_i=>{
+    createObj2(obj2,item)
+})
+console.log('obj2':obj2)
+```
+
+### [LazyMan]()
+``` js
+//实现一个LazyMan，可以按照以下方式调用:
+LazyMan("Hank")//输出:
+	//Hi! This is Hank!
+LazyMan("Hank").sleep(10).eat("dinner")//输出
+//Hi! This is Hank!
+//等待10秒..
+//Wake up after 10
+//Eat dinner~
+
+LazyMan("Hank").eat("dinner").eat("supper")//输出
+//Hi This is Hank!
+//Eat dinner~
+//Eat supper~
+
+LazyMan("Hank").sleepFirst(5).eat("supper")//输出
+//等待5秒
+//Wake up after 5
+//Hi This is Hank!
+//Eat supper
+
+//这是一个典型的流程控制，我们需要按照条件把事件注册到队列中，然后再执行，执行下一个事件通过next来控制
+//然后要实现链式调用
+
+function LazyMan(name){
+    this.events=[];
+    var self = this;
+    var fn = (function(name){
+        //使用闭包保证正确输出
+        return function(){
+            console.log("Hi! This is "+name+"!");
+            self.next();
+        }
+    })(name)
+    this.events.push(fn);
+    //在下一次eventLoop中启动，啫喱水事件队列开始执行的启动点
+    setTimeout(function(){
+        self.next();
+    },0);
+}
+
+LazyMan.prototype = {
+    //next执行事件
+    next:function(){
+        var self = this;
+        //事件执行按照先进先出方式
+        var fn = self.events.shift();
+        fn&&fn();
+    },
+    sleep:function(time){
+        if(isNaN(time)){
+            throw new Error(time+"must be numeric");
+        }
+        var self = this;
+        var fn = (function(time){
+            return function(){
+                var timer = setTimeout(function(){
+                    console.log("Wake up after"+time+"s");
+                    self.next();
+                },time*1000)
+            }
+        })(time)
+        self.events.unshift(fn);
+        return self;//实现链式调用
+    }，
+    sleepFirst:function(time){
+        id(isNaN(time)){
+            throw new Error(time+"必须是数字")；
+        }
+        var self = this;
+        var fn = (function(time){
+            return function(){
+                var timer = setTimeout(function(){
+                    console.log("Wake up after"+time+"s");
+                    self.next();
+                },time*1000)
+            }
+        })(time);
+        self.events.unshift(fn);//top priority
+        return self;
+    },
+    eat:fucntion(name){
+        var self = this;
+        var fn = (function(name){
+            return function(){
+                    console.log("Wake up after"+time+"s");
+                    self.next();
+            }
+        })(name);
+        self.events.push(fn);
+        return self;
+    }
+}
+
+function LazyMan(name){
+    return new lazyMan(name);
+}
+```
+
+### [EventBus](https://segmentfault.com/a/1190000017907688)
+EventBus是消息传递的一种方式，基于一个消息中心，订阅和发布消息的模式。
+ 1. 设计模式：订阅者发布者模式
+ 2. API设计
+    1. 只能构造一个消息对象
+    2. on('msgName',func)订阅消息，msgname订阅的消息名称;func订阅的消息
+    3. one('msgName',func)经订约一次消息，后订阅的会替换前面订阅的消息
+    4. emit('msgname',msg)发布消息 msgName；消息名称 msg:发布的消息
+    5. off('msgName)移除消息
+
+代码实现
+``` js
+//构造EventBus
+EventBusClass = function(){
+    this.msgQueues = {}
+}
+
+EventBusClass.prototype = {
+    //消息保存到当前消息队列中
+    on:function(msgName,func){
+        if(this.msgQueues.hasOwnProperty(msgName)){
+            if(typeof this.msgQueues[msgName]==='function'){
+                this.msgQueues[msgName] = [this.msgQueues[msgName],func]
+            }else{
+                this.msgQueues[msgName] = [...this.msgQueues[msgName],func]
+            }
+        }else{
+            this.msgQueues[msgName] = func;
+        }
+    },
+    //消息队列中仅保存一个消息
+    one:function(msgName,func){
+        this.msgQueues[msgName] = func;
+    },
+    //发送消息
+    emit:function(msgName,msg){
+        if(!this.msgQueues.hasOwnProperty(msgName)){
+            return
+        }
+        if(typeof this.msgQueues[msgName]==='function'){
+            this.msgQueue[msgName](msg)
+        }else{
+            this.msgQueues[msgName].map((fn)=>{
+                fn(msg)
+            })
+        }
+    },
+    //移除消息
+    off:function(msgName){
+        if(!this.msgQueues.hasOwnProperty(msgName)){
+            return
+        }
+        delete this.msgQueues[msgName]
+    }
+}
+//将EventBus放到window对象中
+const EventBus = new EventBusClass();
+window.EventBus = EventBus;
+
+//使用EventBus
+//订阅消息
+function subscribe(){
+    EventBus.on('first-event',function(msg){
+        alert(`订阅的消息是：${msg}`);
+    });
+}
+
+//发送消息
+function emit(){
+    const msgInput = document.getElementById('msgInputId')
+    EventBus.emit('first-event',msgInput.value)
+}
+//移除消息
+function off(msgName){
+    EventBus.off(msgName);
+}
+```
+
+[CodePen](https://codepen.io/beyondverage0908/pen/maQpgR/)
 
 :::

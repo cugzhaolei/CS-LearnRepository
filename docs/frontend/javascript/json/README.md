@@ -22,8 +22,33 @@ JSON 不支持变量、函数或对象实例，它就是一种表示结构化数
 }
 ```
 
+## JSONP
 
+网页动态插入一个`<script>`元素，向跨域服务器请求JSON数据。服务器收到请求后，将数据放在一个指定名字的回调函数里传回来。
+ 
+ 
+只支持get
+``` js
+function callback(data){
+    console.log(data);
+}
 
+function jsonpHack(url){
+    var scriptTag = document.createElement('script');
+    scriptTag.setAttribute("type","text/javascript");
+    scriptTag.src = url;
+    document.body.appendChild(scriptTag);
+}
+
+window.onload = function(){
+    jsonpHack('http://example.com/data:callback=callback');
+}
+
+//调用函数
+callback({
+    "fn":"console.log(this)";
+})
+```
 
 
 

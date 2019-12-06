@@ -48,5 +48,83 @@
 <meta http-equiv=”expires” content=”0″>
 
 ```
+## 网页布局
 
+### 三列布局，左右定宽 中间自适应
+
+#### float
+左右定宽，右边元素要在中间元素之前 
+``` html
+<div>
+    <div class="left"></div>
+    <div class="right"></div>
+    <div class="middle"></div>
+</div>
+```
+
+``` css
+.left .right{
+    width:60px;
+    height:30px;
+}
+.left{
+    float:left;
+}
+.right{
+    float:right;
+}
+.middle{
+    margin-right:70px;
+    margin-left:70px;
+    height:30px;
+}
+```
+
+#### flex 
+父元素display：flex，左右定宽，中间flex：1自适应
+
+``` html
+<div class="container">
+    <div class="left"></div>
+        <div class="middle"></div>
+    <div class="right"></div>
+</div>
+```
+
+``` css
+.container{
+    display:flex;
+}
+.left .right{
+    width:60px;
+    height:30px;
+}
+.middle{
+    flex:1;
+    margin-left:10px;
+    margin-right:10px
+}
+```
+
+#### grid
+``` html
+<div class="container">
+    <div class="left"></div>
+        <div class="middle"></div>
+    <div class="right"></div>
+</div>
+```
+
+``` css
+.container{
+    display:grid;
+    width:100%;
+    grid-template-rows:30px;
+    grid-template-columns:60px auto 60px;
+}
+.middle{
+    margin-left:10px;
+    margin-right:10px;
+}
+```
 :::

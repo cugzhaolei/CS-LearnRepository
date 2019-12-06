@@ -53,10 +53,29 @@ console.log(People1.age, People2.age) // 24 24
 
 ## 原型链
 
+### [protytype和_proto_](https://www.cnblogs.com/myfirstboke/p/10449272.html)
+所有的对象都拥有__proto__属性，它指向Object.prototype（Object是一个原生函数，所有的对象都是Object的实例）
+``` js
+let obj = {}
+obj.__proto__ === Object.prototype // true
+```
+所有的函数都同时拥有__proto__和protytpe属性,函数的__proto__指向自己的函数实现 函数的protytpe是一个对象 所以函数的prototype也有__proto__属性 指向Object.prototype
+``` js
+function func(){}
+func.prototype._proto_===Object
+```
+Object.prototype.__proto__指向null
+``` js
+Object.prototype._proto_===null
+```
+
+
 __proto__和Object.getPrototypeOf(target)： 对象的原型
 __proto__是对象实例和它的构造函数之间建立的链接，它的值是：构造函数的`prototype。
+
 也就是说：__proto__的值是它所对应的原型对象，是某个函数的prototype
 Object.getPrototypeOf(target)全等于__proto__。
+
 它是ES6的标准，兼容IE9，主流浏览器也都支持，[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/GetPrototypeOf#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9)，本文将以Object.getPrototypeOf(target)指代__proto__。
 
 <b>不要再使用__proto__:</b>
@@ -79,6 +98,111 @@ Object.getPrototypeOf(target)全等于__proto__。
 
 ``` js
 let newObj = new someFn() // 构造调用函数
+
+Object.prototype.a = 'Object';
+Function.prototype.a = 'Function';
+function Person(){}
+var child = new Person();
+
+console.log(Person.a);  //Function
+console.log(child.a);   //Object
+console.log(child._proto_);  //
+console.log(child._proto_._proto_);
+console.log(child._proto_._proto_.constructor);
+console.log(child._proto_._proto_.constructor.constructor);
+console.log(child._proto_._proto_.constructor.constructor.constructor);
+
+
+VM322:6 Function
+VM322:7 Object
+VM322:8 {constructor: ƒ}constructor: ƒ Person()__proto__: Object
+VM322:9 {a: "Object", constructor: ƒ, __defineGetter__: ƒ, __defineSetter__: ƒ, hasOwnProperty: ƒ, …}
+VM322:10 ƒ Object() { [native code] }
+VM322:11 ƒ Function() { [native code] }
+VM322:12 ƒ Function() { [native code] }
+```
+
+### 初始化
+`Function()`new了`Object()`出来。然后他们各自的`.prototype`，也是各自new出来的。
+ 
+这里面的指向有几个规则，也有几个特例：
+
+#### 规则
+ 
+1. 构造函数/对象，都是对象。
+ 
+   只要是对象，下面就有两个属性：`constructor`和`__proto__`
+ 
+- `.constructor`：谁new的我 我就指谁。
+  这是用来记录谁是构造函数的
+ 
+- `.__proto__`：谁new的我 我指他`.prototype`
+ 
+  顺着`constructor`找到爹，然后在下面找到他的`.prototype`，指向他。
+ 
+  这是用来记录，该去哪继承方法/属性的。
+   
+  自己下面找不到方法/函数，就去`.__proto__`的指针地址里面找。
+ 
+2. 构造函数下面多一个属性，叫`.prototype`
+ 
+   这只有构造函数才有，所以`Function.prototype`相当于`Function().prototype`
+ 
+   构造函数在出生的时候，同时会自动new一个对象出来，`.prototype`会指向这个对象
+ 
+   这个对象，对于这个构造函数没啥用，主要是给new出来的孩子们用的。即其他对象找不到了方法/属性，就通过`.__proto__`找到这里，在这里面继续找。类似于存放给人继承的东西的地方
+ 
+
+#### 特例
+ 
+1. `Function()`非常特殊，几乎整个都是特例
+ 
+- `Function()`可以看作是自己new了自己，因此`.constructor`指的是自己，`.__proto__`指的也是自己的`.prototype`
+ 
+- `Function()`new出的`Function.prototype`，是个函数
+ 
+  而其他构造函数，new出来的都是对象。
+ 
+- `Function.prototype.__proto__`应该是`Function.prototype`才是呀，但是这样就变成死循环了，自己下面找不到的方法/属性，还是找不到
+ 
+  所以就指向了`Object.prototype`，去继承了`Object.prototype`的方法
+ 
+2. `Object.prototype.__proto__`，指向的是`null`
+ 
+   理应是指向`Object.prototype`的，但那样的话又死循环了，于是就让它指向null，他都没有的方法就全世界都没有了
+ 
+   这下`Object.prototype`就变成了万物方法/属性之源了
+    
+3. 由`Function`new出来的构造函数，它的`.prototype`的`.__proto__`，指向的是`Objet.prototype`，这个下面再说
+ 
+   感觉就是，遇到死循环不知道该继承谁，就去继承`object.prototype`
+   然后`Object.prototype.__proto__`就去继承`null`
+ 
+```js
+console.log(Person.a)
+// Function
+// Person()下面找不到，沿着.__proto__找它爹Function.prototype，里面找到了a=Function，就是结果了。
+console.log(child.a)
+// Object
+// child下面没有a，沿着.__proto__找爹，Person.prototype下面也没有a，再沿着Person.prototype.__proto__找爹，找到了Object.prototype下面有个a是Object，输出
+console.log(child.__proto__)
+// {constructor: Person()}
+// 也就是Person.prototype
+console.log(child.__proto__.__proto__)
+// {constructor: Object()}
+// 也就是Object.prototype
+console.log(child.__proto__.__proto__.constructor)
+// Object()
+console.log(child.__proto__.__proto__.constructor.constructor)
+// Function()
+console.log(child.__proto__.__proto__.constructor.constructor.constructor)
+// Function()
+```
+ 
+ 
+```js
+Object.prototype.a='Object'
+Function.prototype.a = 'Function'
 ```
 
 <b>构造/new调用函数的时候做了什么：</b>
@@ -91,7 +215,6 @@ let newObj = new someFn() // 构造调用函数
 
 <b>原型继承就是利用构造调用函数的特性：</b>
 ``` js
-
 SubType.prototype = new SuperType();  // 原型继承：SubType继承SuperType
 SubType.prototype.constructor = SubType // 重新指定constructor指向 方便找到构造函数
 // 挂载SuperType的this和prototype的属性和方法到SubType.prototype上
@@ -111,10 +234,10 @@ SubType.prototype.constructor = SubType // 重新指定constructor指向 方便�
 ``` js
 function foo() { }
 const newObj = new foo() // 构造调用foo 返回一个新对象
-const newObj__proto__ = Object.getPrototypeOf(newObj) // 获取newObj的原型对象
-newObj__proto__ === foo.prototype // true 验证newObj的原型指向foo
-const foo__proto__ = Object.getPrototypeOf(foo.prototype) // 获取foo.prototype的原型
-foo__proto__ === Object.prototype // true foo.prototype的原型是Object.prototype
+const newObj.__proto__ = Object.getPrototypeOf(newObj) // 获取newObj的原型对象
+newObj.__proto__ === foo.prototype // true 验证newObj的原型指向foo
+const foo.__proto__ = Object.getPrototypeOf(foo.prototype) // 获取foo.prototype的原型
+foo.__proto__ === Object.prototype // true foo.prototype的原型是Object.prototype
 ```
 如果用以前的语法，从newObj查找foo的原型，是这样的：
 
@@ -137,7 +260,7 @@ newObj.__proto__.__proto__ // 这种关系就是原型链
 let test = function () { }
 let testObject = new test();
 testObject instanceof test // true test.prototype在testObject的原型链上
- testObject instanceof Function // false Function.prototype 不在testObject的原型链上
+testObject instanceof Function // false Function.prototype 不在testObject的原型链上
 testObject instanceof Object // true Object.prototype在testObject的原型链上
 
 ```
@@ -301,8 +424,8 @@ const prototype = Object.prototype;
 
 
 ::: tip
-https://www.cnblogs.com/goloving/p/9297019.html
-### js new一个对象的过程
+
+### [js new一个对象的过程](https://www.cnblogs.com/goloving/p/9297019.html)
 - 创建一个新对象 
 ``` js
 let obj = {};
@@ -343,6 +466,191 @@ function New(f) {
 }
 ```
 
+### [es5实现继承](https://blog.csdn.net/weixin_42098339/article/details/87900369)
+
+1. call实现继承
+``` js
+function Parent1(){
+    this.name="parent";
+}
+function Child1(){
+    Parent1.call(this);
+    this.type = 'child1';
+}
+console.log(new Child1);
+```
+这样写的时候子类虽然能够拿到父类的属性值，但是问题是父类中一旦存在方法那么子类无法继承。那么引出下面的方法。
+
+2. 借助原型链实现继承
+``` js
+function Parent2 (){
+    this.name = 'paren2';
+    this.paly = [1,2,3];
+}
+function Child2(){
+    this.type = 'Child2';
+}
+Child2.prototype = new Parent2();
+console.log(new Child2());
+```
+看似没有问题，父类的方法和属性都能够访问，但实际上有一个潜在的不足。举个例子
+
+``` js
+var s1 = new Child2();
+var s2 = new Child2();
+s1.play.push(4);
+console.log(s.play,s2.play);  //[1, 2, 3, 4] [1, 2, 3, 4]
+```
+明明我只改变了s1的play属性，为什么s2也跟着变了呢？很简单，因为两个实例使用的是同一个原型对象。
+
+3. 组合使用call和原型
+``` js
+function Parent3(){
+    this.name = 'parent3';
+    this.play = [1,2,3];
+}
+function Child3(){
+    Parent3.call(this);
+    this.type = 'child3';
+}
+Child3.prototype = new Parent3();
+var s3 = new Child3();
+var s4 = new Child3();
+s3.play.push(4);
+console.log(s3.play,s4.play);//[1, 2, 3, 4] [1, 2, 3]
+```
+4. 组合继承
+``` js
+function Parent4(){
+    this.name = 'parent4';
+    this.play = [1,2,3];
+}
+function Child4(){
+    Parent4.call(this);
+    this.type = 'child4';
+}
+Child4.prototype = Parnet4.prototype;
+```
+这里让将父类原型对象直接给到子类，父类构造函数只执行一次，而且父类属性和方法均能访问，但是我们来测试一下：
+
+``` js
+var s3 = new Child4();
+var s4 = new Child4();
+console.log(s3);
+```
+子类实例的构造函数是Parent4，显然这是不对的，应该是Child4。
+
+第五种方式(最推荐使用)：优化2
+``` js
+function Person5(){
+    this.name = 'parent5';
+    this.play = [1,2,3];
+}
+function Child5(){
+    Parent5.call(this);
+    this.type = 'child5';
+}
+Child5.prototype = Object.create(Parent5.prototype);
+Child5.prototype.constructor = Child5;
+```
+
+### [es5/es6实现继承](https://blog.csdn.net/weixin_29364823/article/details/87858328)
+
+1. 定义一个Person类
+``` js
+function Person(name="default" age=10){
+    this.name = name;
+    this.age = age;
+    var currentClassName = 'Person'; //私有属性
+    this.printClassName  = function(){  //特权方法 主要用来访问私有属性
+        console.log("className:"+currentClassName);
+    }
+}
+//原型属性
+Person.prototype.className = "Person";
+//原型方法
+Person.prototype.printName = function(){
+    console.log("My name is"+this.name)
+}
+//静态属性
+Person.Version = 1.1
+```
+2. 定义一个People类，并继承person类
+``` js
+function People(name="default",age=18,sex='man'){
+    //特权属性及方法继承
+    Person.call(this.name,age);
+    this.sex = sex;
+    let currentClassName = 'people';//私有属性
+    this.printClassName = function(){
+        //特权方法 主要是用来访问私有属性
+        console.log("className"+currentClassName);
+    }
+}
+//原型属性
+Person.prototype.className = 'People';
+//原型方法
+People.prototype.printSex = function(){
+    console.log('my sex is'+this.sex);
+}
+//原型链属性继承
+People.prototype._proto_ = Person.prototype;
+//静态属性继承
+People._proto_ = Person;
+```
+3. 执行并运行
+``` js
+const p = new People('three',25,'male');
+p.printClassName();  //className：people
+p.printSex();        //my name is three
+p.printName();       //my sex is male
+console.log(p.className);    //people
+console.log(Person.version)  //1.1
+```
+### ES6实现继承
+``` js
+class Person{
+    constructor(name='defalut',age='18'){
+        this.name = name;
+        this.age = age;
+        let currentClassName = 'Person';//私有属性
+        this.printClassName = function(){
+            console.log('className:'+currentClassName);
+        }
+    }
+    printName(){
+        console.log(`my name is `+this.name)
+    }
+    get className(){
+        return 'Person'
+    }
+    static get Version(){
+        return 1.1
+    }
+}
+
+class People extends Person{
+    constructor(name='default',age=18,sex='male'){
+        super(name.age);
+        this.sex = sex;
+        let currentClassName = 'people'; //私有属性
+        this.printClassName = function(){
+            //特权方法 主要用来访问私有属性
+            console.log(`className`+this.currentClassName)
+        }
+    }
+    printSex(){
+        console.log(`my sex is `+this.sex)
+    }
+}
+
+const p = new people('',25,'male');
+p.printClassName(); //className:people
+p.printName();      //my name is three
+p.printSex();       //my sex is male
+console.log(People.version)   //1.1
+```
+
 ## 优先级
 
 ``` js
@@ -360,20 +668,20 @@ Foo.getName = function () {
 };
 //先从.属性访问符号开始往前面找一个最近的对象，同时注意new Foo()优先于Foo();
 var a=new Foo.getName();//3;
-属性.的优先级高于new foo()，所以===new (Foo.getName)();返回Foo.getName类型的实例
+//属性.的优先级高于new foo()，所以===new (Foo.getName)();返回Foo.getName类型的实例
 var b=new Foo().getName();//2;
-new foo()的优先级高于foo()，所以就相当于new foo()的属性，===(new Foo()).getName()；返回undefined
+//new foo()的优先级高于foo()，所以就相当于new foo()的属性，===(new Foo()).getName()；返回undefined
 var c=new new Foo().getName();//2;
-new foo()优先级低于属性.，所以其实相当于就是new一个new foo()的getName属性函数，===new (new Foo().getName)();返回Foo.getName类型的实例
+//new foo()优先级低于属性.，所以其实相当于就是new一个new foo()的getName属性函数，===new (new Foo().getName)();返回Foo.getName类型的实例
 new Date().getTime();//===((new Date()).getTime)()
 (new Date).getTime();//===((new Date()).getTime)()
 new Date.getTime();//Uncaught TypeError: Date(...).getTime is not a function；===new (Date.getTime)()
 ```
 :::
 
-### JavaScript mixin
 
-链接：https://www.jianshu.com/p/7c1471ec4c50
+### [JavaScript mixin](https://www.jianshu.com/p/7c1471ec4c50)
+
 ::: tip
 
 Mixin模式，混合模式。这是一种不用继承就可以复用的技术。主要还是为了解决多重继承的问题。多继承的继承路径是个问题。
@@ -713,7 +1021,7 @@ if(typeof this.fullName !="function"){
 }
 ```
 如上述代码，仅当fullName方法不存在的情况下，才会在原型中添加此方法，而且只会在初次调用构造函数的时候才会执行这条语句，一旦定义后，由于是定义在原型上的方法，所有对象之后都可以直接调用了。
-  这种方法的缺陷，同样是不能重写原型，否则会切断现有实例与心源性之间的联系。
+  这种方法的缺陷，同样是不能重写原型，否则会切断现有实例与新原型之间的联系。
 
 ### 6.寄生构造函数模式
 .在前面几种模式都不适用的情况下（应该不会遇到吧...），可以使用寄生构造函数模式创建对象，基本思想是：创建一个函数，其作用仅仅只是封装创建对象的代码，然后再返回新创建的对象。
@@ -722,7 +1030,7 @@ function Person(name,age){
     var obj = new Object();
     obj.name = name;
     obj.age = age;
-    abj.fullName = function(){
+    obj.fullName = function(){
         console.log(this.name);
     };
     return obj;

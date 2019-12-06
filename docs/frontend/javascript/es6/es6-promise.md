@@ -737,6 +737,8 @@ class MyPromise{
 ```
 :::
 
+## [ES5实现Promise](https://juejin.im/post/5db556376fb9a0207a6ddce7)
+
 ## Promose 实现Ajax请求
 ::: tip
 ``` js

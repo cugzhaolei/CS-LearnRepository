@@ -39,6 +39,68 @@ Function.prototype.myCall = function(context = window,..args){
 }
 ```
 
+## 实现generator
+``` js
+
+// 使用 * 表示这是一个 Generator 函数
+// 内部可以通过 yield 暂停代码
+// 通过调用 next 恢复执行
+function* test() {
+  let a = 1 + 2;
+  yield 2;
+  yield 3;
+}
+let b = test();
+console.log(b.next()); // >  { value: 2, done: false }
+console.log(b.next()); // >  { value: 3, done: false }
+console.log(b.next()); // >  { value: undefined, done: true }
+
+// cb 也就是编译过的 test 函数
+function generator(cb) {
+  return (function() {
+    var object = {
+      next: 0,
+      stop: function() {}
+    };
+
+    return {
+      next: function() {
+        var ret = cb(object);
+        if (ret === undefined) return { value: undefined, done: true };
+        return {
+          value: ret,
+          done: false
+        };
+      }
+    };
+  })();
+}
+// 如果你使用 babel 编译后可以发现 test 函数变成了这样
+function test() {
+  var a;
+  return generator(function(_context) {
+    while (1) {
+      switch ((_context.prev = _context.next)) {
+        // 可以发现通过 yield 将代码分割成几块
+        // 每次执行 next 函数就执行一块代码
+        // 并且表明下次需要执行哪块代码
+        case 0:
+          a = 1 + 2;
+          _context.next = 4;
+          return 2;
+        case 4:
+          _context.next = 6;
+          return 3;
+		// 执行完毕
+        case 6:
+        case "end":
+          return _context.stop();
+      }
+    }
+  });
+}
+```
+
 ##  实现Object.create方法
 ``` js
 function create(proto){
@@ -64,7 +126,76 @@ Function.prototype.bind = function(context,...args){
     fBound.prototype = Object.create(this.prototype); //保证原函数的原型对象上的属性不丢失
     return fBound;
 }
+
+
+Function.prototype.bind=function(context,...args){
+    if(typeof this!=='function'){
+        throw new Error('not a function');
+    }
+    let fn = this;
+    let resFn = function(...args2){
+        return fn.apply(this instanceof resFn?this:context,args.contact(args2));
+    };
+    const DumpFunction = function DumpFunction(){};
+    DumpFunction.prototype = this.prototype;
+    resFn.prototype = new DumpFunction();
+    return resFn;
+}
+
+Function.prototype.myFind=function(context){
+    if(typeof this!=='function'){
+        throw new TypeError('Error');
+    }
+    var _this = this;
+    var args = [...arguments].slice(1)
+    //return a function 
+    return function F(){
+        //due to return a function ,use new F() 
+        if(this instanceof F){
+            return new _this(...args,...arguments)
+        }
+        return _this.apply(context,args.contact(...arguments))
+    }
+}
 ```
+
+## 实现Call
+
+``` js
+Function.prototype.call = function(context){
+    var context = context||window;
+    //add property to context
+    // getValue.call(a, 'yck', '24') => a.fn = getValue
+    context.fn = this;
+    //将context后面的参数取出来
+    var args = [...arguments].slice(1);
+    /// getValue.call(a, 'yck', '24') => a.fn('yck',24)
+    var result = context.fn(...args)
+    //删除fn
+    delete context.fn;
+    return result;
+}
+```
+
+## 实现apply
+``` js
+Function.prototype.apply = function(context){
+    var context = context||window;
+    context.fn = this;
+    var result 
+    //判断是否存储第二个参数
+    //如果存在，就将第二个参数展开
+    if(arguments[1]){
+        result = context.fn(...arguments[1])
+    }else{
+        result = context.fn();
+    }
+
+    delete context.fn;
+    return result;
+}
+```
+
 ##  实现new关键字
 核心要点:
 
@@ -183,7 +314,109 @@ while(ary.some(Array.isArray)){
     ary = [].contact(...ary);
 }
 
+// 多维数组扁平化
+var arr = [1,2,[3,4,5,[6,7,8,[9,10]]]];
+
+function streamroller(arr){
+    var res = [];
+    for(var i=0;i<arr.length;i++){
+        if(Array.isArray(arr[i])){
+            res.push.apply(res,steamroller(arr[i]));
+        }else{
+            res.push(arr[i]);
+        }
+    }
+    return res;
+}
+
+console.log(steamroller(arr));
+
+//apply+some
+// 利用arr.some判断当数组中还有数组的话，递归调用steamroller2扁平函数(利用apply扁平), 用concat连接，最终返回arr;
+function steamroller2(arr){
+    while(arr.some(item=>Array.isArray(item))){
+        arr = [].concat.apply([],arr);
+    }
+    return arr;
+}
+console.log(steamroller2(arr));
+
+//reduce方法
+// 当数组中还有数组的话，递归调用steamroller3扁平函数(利用reduce扁平), 用concat连接，最终返回arr.reduce的返回值;
+function steamroller3(arr){
+    return arr.reduce((pre,next)=>{
+        return pre.concat(Array.isArray(next)?steamroller3(next):next);
+    },[])
+}
+
+//es6
+// 利用arr.some判断当数组中还有数组的话，递归调用flatten扁平函数(利用es6展开运算符扁平), 用concat连接，最终返回arr;
+function steamroller4(arr){
+    while(arr.some(item=>Array.isArray(item))){
+        arr=[].concat(...arr);
+    }
+    return arr;
+}
+console.log(steamroller4(arr))
 ```
+
+## 数组去重排序
+
+方法一：
+双层循环，外层循环元素，内层循环时比较
+如果有相同的值则跳过，不相同则push进数组
+``` js
+Array.prototype.distinct = function(){
+    var arr = this;
+    result = [],i,j,len=arr.length;
+    for(i=0;i<len;i++){
+        for(j=i+1;j<len;j++){
+            if(arr[i]==arr[j]){
+                j=++i;
+            }
+        }
+    result.push(arr[i]);
+    }
+    return result;
+}
+
+var array = [1,2,3,4,5,5,4,1,5,2];
+console.log(array.distinct());
+```
+ES6
+``` js
+[...new Set(arr)].sort()
+```
+
+hash数组去重
+``` js
+    var arr=[1,8,5,6,4,2,3,8,6,7,5,3];
+    var n={},r=[];  //n为hash表，r为临时数组
+        for(var i=0;i<arr.length;i++){
+          if(!n[arr[i]]){ //如果hash表中没有当前项
+             n[arr[i]]=true;   /把当前项/存入hash表
+            r.push(arr[i]); //把当前项
+             r.sort();
+             r.severse();
+           }
+         }
+        console.log(r);
+```
+
+利用新数组indexof查找
+``` js
+       var arr=[1,8,5,6,4,2,3,8,6,7,5,3];
+       var res=[];
+       for(var i=0;i<arr.length;i++){
+         if(res.indexOf(arr[i])==-1){
+             res.push(arr[i]);
+             res.sort();
+         }
+      }
+     console.log(res);
+```
+
+
 ##  reduce模拟map
 ``` js
 // 别忘了map的第二个参数

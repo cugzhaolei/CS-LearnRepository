@@ -1,6 +1,6 @@
 # async/await
 
-ES7 提出的async 函数，终于让 JavaScript 对于异步操作有了终极解决方案。No more callback hell。
+ES2017 提出的async 函数，终于让 JavaScript 对于异步操作有了终极解决方案。No more callback hell。
 *async 函数是 Generator 函数的语法糖。使用 关键字 async 来表示，在函数内部使用 await 来表示异步。
 想较于 Generator，Async 函数的改进在于下面四点：
 
@@ -39,8 +39,121 @@ const makeRequest = async()=>{
         return data;
     }
 }
+```
+
+### [阮一峰大神的ES6入门](http://es6.ruanyifeng.com/#docs/async)
+
+返回thenable对象
+``` js
+class sleep{
+    constructor(timeout){
+        this.timeout = timeout;
+    }
+    then(resolve,reject){
+        const startTime = Date.now();
+        setTimeout(
+            ()=>resolve(Date.now()-startTime),
+        this.timeout
+        );
+    }
+}
+(async ()=>{
+    const sleep = await new Sleep(1000);
+    console.log(sleepTime);
+})();
+```
+
+javascript 休眠
+``` js
+function sleep(interval) {
+  return new Promise(resolve => {
+    setTimeout(resolve, interval);
+  })
+}
+
+// 用法
+async function one2FiveInAsync() {
+  for(let i = 1; i <= 5; i++) {
+    console.log(i);
+    await sleep(1000);
+  }
+}
+
+one2FiveInAsync();
+```
+任何一个await语句后面的 Promise 对象变为reject状态，那么整个async函数都会中断执行。
+``` js
+async function f() {
+  await Promise.reject('出错了');
+  await Promise.resolve('hello world'); // 不会执行
+}
+```
+
+### 错误处理
+
+如果await后面的异步操作出错，那么等同于async函数返回的 Promise 对象被reject。
+
+``` js
+async function f(){
+    await new Promise(function(resolve,reject){
+        throw new Error("出错了");
+    });
+}
+f()
+.then(v=>console.log(v))
+.catch(e=>console.log(e))
+//Error 出错了
+```
+防止出错的方法，也是将其放在try...catch代码块之中。
+``` js
+async function f(){
+    try{
+        await new Promiseh(function(resolve,reject){
+            throw new Error('出错了');
+        });
+    }catch(e){
+
+    }
+    return await('hello world');
+}
+```
+
+### 实现原理
+将Generator函数和自动执行器包装在一个函数中
+``` js
+async function fm(args){
+    //something to do 
+}
 
 
-
-
+function fn(args){
+    return spawn(function* (){
+        //
+    });
+}
+```
+spawn 是自动执行器 简单实现如下：
+``` js
+function spawn(genF) {
+  return new Promise(function(resolve, reject) {
+    const gen = genF();
+    function step(nextF) {
+      let next;
+      try {
+        next = nextF();
+      } catch(e) {
+        return reject(e);
+      }
+      if(next.done) {
+        return resolve(next.value);
+      }
+      Promise.resolve(next.value).then(function(v) {
+        step(function() { return gen.next(v); });
+      }, function(e) {
+        step(function() { return gen.throw(e); });
+      });
+    }
+    step(function() { return gen.next(undefined); });
+  });
+}
 ```
