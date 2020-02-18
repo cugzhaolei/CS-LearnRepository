@@ -24,9 +24,13 @@ new Vue({
 ```
 这个状态自管理应用包含以下几个部分：
 
-* state，驱动应用的数据源；
+* state，驱动应用的数据源,定义了应用状态的数据结构，可以在这里设置默认的初始状态。;
 * view，以声明方式将 state 映射到视图；
-* actions，响应在 view 上的用户输入导致的状态变化。
+* actions，用于提交 mutation，而不是直接变更状态，可以包含任意异步操作。响应在 view 上的用户输入导致的状态变化。
+* Getter：允许组件从 Store 中获取数据，mapGetters 辅助函数仅仅是将 store 中的 getter 映射到局部计算属性。
+* Mutation：是唯一更改 store 中状态的方法，且必须是同步函数。
+* Module：允许将单一的 Store 拆分为多个 store 且同时保存在单一的状态树中。
+
 以下是一个表示“单向数据流”理念的极简示意：
 ![](/images/vuex.png)
 
@@ -55,7 +59,7 @@ Vuex 和单纯的全局对象有以下两点不同：
 这一节我们主要来分析 Vuex 的初始化过程，它包括安装、Store 实例化过程 2 个方面。
 
 ## 安装
-当我们在代码中通过 import Vuex from 'vuex' 的时候，实际上引用的是一个对象，它的定义在 src/index.js 中：
+当我们在代码中通过 import Vuex from 'vuex' 的时候，实际引用的是一个对象，它的定义在 src/index.js 中：
 ``` js
 export default {
   Store,

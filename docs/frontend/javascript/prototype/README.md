@@ -53,6 +53,8 @@ console.log(People1.age, People2.age) // 24 24
 
 ## 原型链
 
+![](/images/frontend-JavaScript-prototype.webp)
+
 ### [protytype和_proto_](https://www.cnblogs.com/myfirstboke/p/10449272.html)
 所有的对象都拥有__proto__属性，它指向Object.prototype（Object是一个原生函数，所有的对象都是Object的实例）
 ``` js

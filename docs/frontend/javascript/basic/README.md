@@ -5,13 +5,13 @@
 ##  JS 支持哪些数据类型
 ![](/images/js-data-type.webp)
 
-Undefined
-Null
-Boolean
-String
-Symbol
-Number
-Object
+- Undefined
+- Null
+- Boolean
+- String
+- Symbol
+- Number
+- Object
 
 ### JavaScript的特性是什么
 ![](/images/js-property.webp)
@@ -50,7 +50,6 @@ document.cookie的值是由分号分隔的name=value对的列表，其中name是
 ### Attribute 和Property
 
 Attribute——提供关于元素的更多细节，如id、类型、值等。
-
 Property —— 分配给属性的值，如type =“text”，value ='Name'等
 
 ### JS访问HTML元素
@@ -92,7 +91,7 @@ innerText:从起始位置到终止位置的内容, 但它去除Html标签
 值传递：意味着创建原始文件的副本。把它想象成一对双胞胎:他们出生的时候一模一样，但是双胞胎中的老大在战争中失去了一条腿，而老二却没有。
 引用传递: 意味着创建原始文件的别名。当我妈妈叫沙雕的时候，虽然我的名字叫小智，但这并不是说我就突然就克隆了一个自己:我仍然是我，只是可以用不同名字来称呼我而已。
 
-### S中将任意基的字符串转换为整数
+### JS中将任意基的字符串转换为整数
 
 parseInt(string, radix) 将一个字符串 string 转换为 radix 进制的整数， radix 为介于2-36之间的数,如下：
 ``` js
@@ -210,7 +209,7 @@ var cbName = 'callback_' + new Date().getTime();
 var queryString = url.indexOf('?') == -1 ? '?' : '&';
 // 遍历传进来的data实参赋值给查询字符串
 for(var k in data){
-queryString += k + '=' + data[k] + '&';
+  queryString += k + '=' + data[k] + '&';
 }
 // 查询字符串加上回调函数
 queryString += 'callback=' + cbName;
@@ -238,8 +237,6 @@ $jsonp('http://api.douban.com/v2/movie/in_theaters',{
 </script>
 </body>
 </html>
-
-
 ```
 
 ### addEventListener
@@ -615,7 +612,6 @@ for (var index in myArray) {
   console.log(myArray[index]);
 }
 
-
 VM87:7 1
 VM87:7 2
 VM87:7 4
@@ -648,3 +644,368 @@ VM89:2 7
 * attribute不会同步property上的值；
 * attribute和property之间的数据绑定是单向的，attribute->property；
 * 更改property和attribute上的任意值，都会将更新反映到HTML页面中
+
+## 浏览器相关
+[1.开箱即用的JS干货助力金三银四](https://juejin.im/post/5e4365006fb9a07cd248c21d)
+
+### 浏览器相关
+
+#### 检查是否为浏览器环境
+``` js
+const isBrowser = ()=>![typeof window,typeof document].includes('undefined')
+
+isBrowser() //true(browser)
+isBrowser() //false(node)
+```
+
+#### 判断手机类型
+``` js
+let getMobile=function(){
+  var u = navigator.userAgent
+  var isAndroid = u.indexOf('Android')>-1||u.indexOf('Linux')>-1//g
+  var isIOS = !!u.match(/\(i[^;]+;(U;)?CPU.+Mac OS X/))  //ios终端
+  if(isAndroid){
+    return 'Android'
+  }
+  if(isIOS){
+    return 'IOS'
+  }
+}
+```
+
+#### 判断微信/QQ浏览器
+``` js
+let url = navigator.useAgent.toLowerCase()
+//使用tolowercase将字符串全部转为小写，方便我们判断
+if(url.indexOf('15b202 qq')>-1){
+  //单独判断QQ浏览器
+  alert("QQ APP 内置浏览器")
+}
+if(url.indexOf('micromessenger')){
+  alert("微信内置浏览器")
+}
+if(url.indexOf('15b202')){
+  alert("QQ和微信内置浏览器")
+}
+```
+
+#### 判断手机开屏/息屏
+``` js
+document.addEventListener('visibilitychange',()=>{
+  console.log(document.visibilityState);
+  if(document.visibilityState==='hidden'){
+    console.log('息屏时间')
+  }else if(document.visibilityState==='visible'&&vm.hidden){
+    console.log('开屏时间')
+  }
+})
+```
+
+#### 监听联网状态
+``` js
+window.addEventListener("offline",function(e){alert('offline');})
+window.addEventListener("online",function(e){alert("online");})
+if(window.navigator.onLine==true){
+  alert("已连接")
+}else{
+  alert("未连接")
+}
+```
+
+#### 检测手机横屏
+``` js
+window.addEventListener('resize',()=>{
+  if(window.orientation === 180||window.orientation===0){
+    //正常方向或者屏幕旋转180度
+    console.log("竖屏")
+  }
+  if(window.orientation===90||window.orientaion===90){
+     // 屏幕顺时钟旋转90度或屏幕逆时针旋转90度
+    console.log("横屏")
+  }
+})
+```
+
+### 字符串有关
+
+#### 首字母大写
+``` js
+const capitalize = ([first,...rest])=>first.toUpperCase()+rest.join('')
+capitalize('fooBar') //FooBar
+```
+
+#### 单个单词首字母大写
+``` js
+const capitalizeEveryWord = str=>str.replace(/\b[a-z]g,char=>toUpperCase())
+capitalizeEveryWord("Hello World!") //Hello world
+```
+
+#### 删除字符中的HTML标签
+``` js
+const stringHTMLtag = str=>str.replace(/<[^>]*>/g,"")
+stripHTMLTags('<p><em>Hello</em> <strong>World</strong></p>') // 'Hello World!'
+```
+
+#### 字符串反转
+``` js
+//方法一
+var arr = str.split('')
+var newArr = []
+for(var i=0;i<arr.length;i++){
+  newArr[i] = arr[arr.length-i-1]
+}
+var newStr = newArr.join("")
+console.log(newStr)
+
+//方法二
+var newStr = ''
+for(var i=0;i<str.length;i++){
+  newStr += str.charAt(str.length-i-1)
+}
+console.log(newStr)
+
+//方法三
+var newStr = str.split('')
+                .reverse()
+                .join('')
+console.log(newStr)
+
+//方法四
+var arr = str.split('')
+var obj = Array.from(new Set([...arr]))
+var newStr = ''
+for(let i of obj){
+  newStr +=obj[arr.lengthi]
+}
+console.log(newStr)
+
+//方法五
+var arr = str.split('')
+var newArr = []
+while(arr.length>0){
+  newArr.push(arr.pop())
+}
+var newStr = newArr.join('')
+console.log(newStr)
+```
+
+#### 统计字符串出现最多的字母和次数
+``` js
+var str = 'abcdeddd'
+var n = {}
+for(var i = 0;i<str.length;i++){
+  var char = str.charAt(i)
+  if(n[char]){
+    n[char]++ //计算出现的次数
+  }else{
+    n[char]=1 //第一次出现标记为1
+  }
+}
+console.log(n)
+var max = 0
+var maxChar = null
+for(var key in n){
+  if(max<n[key]){
+    max = n[key]
+    maxChar = key
+  }
+}
+console.log('最多的字符'+maxChar) //最多的字符d
+console.log('出现次数'+max)    //出现次数4
+```
+
+### 数字相关
+
+#### 格式化金钱 毎千分位加逗号
+``` js
+function format(str){
+  let s = ''
+  let count = 0
+  for(let i=str.length-1;i>=0;i--){
+    s = str[i]+s
+    count++
+    if(count%3==0&&i!=0){
+      s = ','+s
+    }
+  }
+  return s
+}
+
+function format(str){
+  return str.replace(/(\d)(?=(?:\d{3})+$)/g,'$1,')
+}
+```
+
+#### 文件单位显示
+``` js
+function bytesToSize(bytes){
+  if(bytes===0) return '0 B'
+  var k = 1024 //1024
+  var sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+  var  i = Math.floor(Math.log(bytes)/Math.log(k))
+  return (bytes/Math.pow(k,i)).toPrecision(3)+' '+sizes[i]
+}
+console.log(bytesToSize(25))
+console.log(bytesToSize(24535))
+console.log(bytesToSize(2534554))
+console.log(bytesToSize(542555454))
+console.log(bytesToSize(12112125545))
+console.log(bytesToSize(927212121212105))
+console.log(bytesToSize(1865553555555323825))
+
+VM124:8 25.0 B
+VM124:9 24.0 KB
+VM124:10 2.42 MB
+VM124:11 517 MB
+VM124:12 11.3 GB
+VM124:13 843 TB
+VM124:14 1.62 EB
+```
+
+#### 计算两点的距离
+``` js
+const distance = (x0,y0,x1,y1) => Math.hypot(x1-x0,y1-y0)
+distance(1,4,4,8) //5
+```
+
+### 数组/对象相关
+
+#### 获取URL参数
+``` js
+function getQueryString(name){
+  var reg = new RegExp('(^|&'+name+'=([^&]*)(&|$)','i')
+  var r = window.location.search.substr(1).match(reg)
+  if(r!=null)return unescape(r[2])
+  return null
+}
+```
+
+#### 实现对五种JS数据的克隆
+```  js
+function clone(obj){
+  var copy
+  switch(typeof obj){
+    case 'undefined':
+      break
+    case 'number':
+      copy = obj-0
+      break
+    case 'string'
+      copy = obj+''
+      break
+    case 'boolean':
+      copy = obj
+      break
+    case 'object': //array object
+      if(obj===null){
+        copy =null
+      }else{
+        if(object.prototype.toString.call(obj).slice(8,-1)==='Array'){
+          copy = []
+          for(var i=0;i<obj.length;i++){
+            copy.push(clone(obj[i]))
+          }
+        }else{
+          copy = {}
+          for(var j in obj){
+            copy[j] = clone(obj[j])
+          }
+        }
+      }
+      break
+      default:
+        copy = obj
+        break
+  }
+  return copy
+}
+```
+
+#### 统计数组中出现的次数的对象
+``` js
+const nums = [1,5,6,7,3,4,1,3,4,1]
+const result = nums.reduce((pre,next)=>{
+  pre[next]?pre[next]++:(pre[next]=1)
+  return pre
+},{})
+
+console.log(result)//{1: 3, 3: 2, 4: 2, 5: 1, 6: 1, 7: 1}
+```
+
+#### 顺序运行Promise
+``` js
+function runPromiseInSequence(arr,input){
+  return arr.reduce((promiseChain,currentFunction)=>promiseChain.then(currentFunction),Promise.resolve(input)
+  );
+}
+
+// promise function 1
+function p1(a) {
+  return new Promise((resolve, reject) => {
+    resolve(a * 5);
+  });
+}
+
+// promise function 2
+function p2(a) {
+  return new Promise((resolve, reject) => {
+    resolve(a * 2);
+  });
+}
+
+// function 3  - will be wrapped in a resolved promise by .then()
+function f3(a) {
+ return a * 3;
+}
+
+// promise function 4
+function p4(a) {
+  return new Promise((resolve, reject) => {
+    resolve(a * 4);
+  });
+}
+const promiseArr = [p1,p2,f3,p4];
+runPromiseInSequence(promiseArr,10)
+.then(console.log) //1200
+```
+
+#### 检测数值出现次数
+``` js
+const countOccurrences = (arr,val)=>{
+  arr.reduce((a,v)=>(v===val?a+1:a),0)
+}
+countOccurrences([1,1,2,1,3],1)
+```
+
+#### 数组对象排序
+1. 单个属性排序
+``` js
+function compare(property){
+  return funtion(a,b){
+    let value1 = a[property];
+    let value2 = b[property];
+    return value1-value2
+  }
+}
+```
+2. 多个属性排序
+``` js
+function compare(name,minor){
+  return function(o,p){
+    var a,b
+    if(o&&p&&typeof o==='object'&&typeof p ==='object'){
+      a = o[name]
+      b = p[name]
+      if(a===b){
+        return typeof minor === 'function'?minor(o,p):0
+      }
+      if(typeof a === typeof b){
+        return a<b?-1:1
+      }
+    return typeof a<typeof b?-1:1
+    }else{
+      console.log('error')
+    }
+  }
+}
+```

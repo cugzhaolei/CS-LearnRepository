@@ -3,10 +3,8 @@
 
 ## [webworker](./webworker/)
 ## [vue 相关](./vue/)
-## [Vue面试知识](./vue/)
 ## [防抖与节流](https://www.jianshu.com/p/566c66aafa22)
 
-:::
 ## array 相关
 ::: tip
 - map() 方法创建一个新数组，其结果是该数组中的每个元素都调用一个提供的函数后返回的结果。
@@ -27,11 +25,15 @@ console.log(ary);
 ```
 :::
 
-## 自执行函数
+### IIFE 自执行函数
 ::: tip
 ``` js
+function foo(){}()
+```
+IIFE 代表立即调用的函数表达式。JS解析器读取函数foo(){}();作为函数foo(){}和();，前者是一个函数声明，后者(一对括号)是尝试调用一个函数，但没有指定名称，因此它抛出Uncaught SyntaxError: Unexpected token 异常。
 
-常见两种方式
+* 常见两种方式
+``` js
 1.(function(){...})()
   (function(x){
       console.log(x);
@@ -42,7 +44,6 @@ console.log(ary);
   }(12345))
 作用 不破坏污染全局的命名空间，若需要使用，将其用变量传入如
 （function(window){...}(window)）
-
 ```
 :::
 
@@ -185,6 +186,284 @@ Serialization construtor ~~~~~~
 <Point3D x="7, y=8, z=9">
 */
 ```
+
+### compose函数
+组合的思想就是把小函数组合成大函数
+
+* 组合单个函数
+```  js
+const compose = (a,b)=>(c)=>a(b(c));
+
+let splitIntoSpaces = (str)=>str.split(" ");
+let count = (array)=>array.length;
+//构建新函数计算字符串中单词的数量
+const countWords = compose(count,splitIntoSpace);
+countWords("Hello your reading about composition"); //5
+```
+* 组合多个函数
+``` js
+const compose = (...fns)=>
+(value)=>reduce(fns.reduce(),(acc,fn)=>fn(acc),value);
+
+//判断一个字符串长度是奇数还是偶数
+let oddOrEven = (ip)=>ip%2==0?"even":"odd";
+const oddOrEvenWords = compose(oddOrEven,count,splitIntoSpaces);
+oddOrEvenWords("Hello  your reading about composition");//odd
+```
+### 管道/序列
+compose的数据流是从右到左，因为最右侧的函数首先执行，将数据传递给下一个函数，最左侧的最后执行。pipe函数就是从左到右处理数据流的过程称为管道(pipeline)或者序列(sequence)
+``` js
+const pipe = (...fns)=>
+(value)=>reduce(fns,(acc,fn)=>fn(acc),value);//fns没有使用reverse
+
+//重新执行
+const oddOrEvenWords = pipe(splitIntoSpace,count,oddOrEven);
+oddOrEvenWords("Hello  your reading about composition");//odd
+```
+### 组合的优势
+* 组合满足结合律
+``` js
+compose(f,compose(g,h)) == compose(compose(f,g),h);
+//compose(compose(f,g),h)
+let oddOrEvenWords = compose(compose(oddOrEven,count),splitIntoSpaces);
+let oddOrEvenWords("Hello  your reading about composition");//odd
+
+//compose(f,compose(g,h))
+let oddOrEvenWords = compose(oddOrEven,compose(count,splitIntoSpaces));
+let oddOrEvenWords("Hello  your reading about composition");//odd
+```
+
+### 函子
+用一种纯函数式的方式帮助我们处理错误
+::: tip
+* 函子是什么：函子是一个普通对象(在其他语言中，可能是一个类)，他实现了map函数，在遍历每个对象值的时候生成一个新对象。
+:::
+``` js
+const Container = function(val){
+    this.val = val;
+}
+
+//使用箭头函数 由于this在箭头函数中没有 prototype和constructor 因此会报错
+const Container = function(val)=>{
+    this.val = val;
+}
+//当new container的时候，将会报错如下： Container is not a constructor(...)(anonymous function)
+
+//应用container
+let testValue = new Container(3)     //Container(value:3)
+let testObj = new Container({a:1})   //Container(value:{a:1})
+let testArray = new Container([1,2]) //Container(value:[1,2])
+
+//of方法定义
+Container.of = function(value){
+    return new Container(value);
+}
+
+//用of创建container
+testValue = Container.of(3) //Container(value:3)
+testObj = Container.of({a:1})  //Container(value:{a:1})
+testArray = Container.of([1,2]) //Container(value:[1,2])
+
+//container.of嵌套 将输出如下
+Container{
+    value:Container{
+        value:3,
+    }
+}
+```
+#### 函子实现map
+
+``` js
+Container.prototype.map =function(fn){
+    return Container.of(fn(this.value));
+}
+
+let double =(x)=>x+x;
+Container.of(3).map(double) //Container(value:6)
+
+//container链式调用
+Container.of(3).map(double).map(double).map(double) //Container{value:24}
+```
+::: tip
+函子是一个普通对象（在其他语言中，可能是一个类）它实现了map函数，在遍历每个对象值的时候生成了一个新对象-函子是实现了map契约的对象
+:::
+
+### MayBe函子
+处理函数中的代码
+``` js
+//MayBe定义
+const MayBe = function(val){
+    this.val = val;
+} 
+MayBe.of = function(val){
+    return new MayBe(val);
+}
+//MayBe的map函数定义
+MayBe.prototype.isNothing = function(){
+    //应用传入函数之前先检查容器中的值是否为null或者undefined
+    return (this.value === null||this.value===undefined);
+};
+MayBe.prototype.map = function(fn){
+    //map把应用函数的返回值放回了容器
+    return this.isNothing()?MayBe.of(null):MayBe.of(fn(this.value));
+};
+
+// in action
+//创建一个MayBe
+MayBe.of("String")map((x)=x.toUpperCase())
+//返回
+MayBe {vale:"STRING"}
+//更重要和有趣的是 x是否是null或者undefined并不关心。 它已经被MayBe函子抽象出来了
+(x)=>x.toUpperCase()
+//传入null
+MayBe.of(null).map((x)=>toUpperCase())
+//it returns 
+MayBe {value:null}
+
+//map链式调用
+MayBe.of("George")
+   .map((x)=>x.toUpperCase())
+   .map((x)=>"Mr. "+ x)
+//MayBe {value: "Mr. GEORGE "}
+```
+
+#### MayBe真实用例
+用一个api获取Reddit网站子版块的Top10数据
+``` js
+let getTopTenSubRedditPosts = (type)=>{
+    let response 
+    try{
+        response = JSON.parse(request('GET','https://www.reddit.com/r/subreddits/'+type+".json?limit=10").getBody('utf8'))
+    }catch(err){
+        response = {message:"Something went wrong",errorCode: err['statusCode']}
+    }
+    return response;
+}
+//request 来自 sync-request
+//调用api
+getTopTenSubRedditPosts("new")
+```
+使用maybe实现获取Reddit子版块的Top10帖子
+``` js
+//导入类库的ArrayList对象
+import {arrayUtils} from '.../lib/es6-functional.js'
+
+let getTopTenSubRedditData = (type)=>{
+    let response = getTopTenSubRedditPosts(type);
+    return MayBe.of(response)
+        //函数序列
+        .map((arr)=>arr['data'])
+        .map((arr)=>arr['children'])
+        //遍历children 并且只返回title和URL
+        .map((arr)=>arrayUtils.map(arr,(x)=>{
+            return {
+                titile:x['data'].title,
+                url:x['data'].url
+            }
+        }))
+}
+```
+
+### Either函子
+Either函子能够解决分支拓展问题(branching-out problem)
+给出一个上下文，看一下上节的例子
+``` js
+MayBe.of("George")
+     .map(()=>undefined)
+     .map((x)=>"Mr."+x)
+
+     //返回如下结果
+     MayBe {value:null}
+```
+#### 实现Either函子
+``` js
+const Nothing = function(val){
+    this.value = val;
+};
+Nothing.of = function(val){
+    return new Nothing(val);
+}
+
+//返回对象本身
+Nothing.prototype.map = function(f){
+    return this;
+};
+
+const Some = function(val){
+    this.value = val;
+};
+
+Some.of = function(val){
+    return new Some(val);
+};
+//一个container的副本
+Some.prototype.map = function(fn){
+    return Some.of(fn(this.value));
+}
+//可以在some上运行函数，但是不能在nothing上面运行。
+//eg:
+Some.of("test").map((x)=>x.toUpperCase())
+=>Some {value:"TEST"}
+Nothing.of("test").map((x)=>x.toUpperCase())
+=>Nothing {value:"test"}
+```
+* Either定义
+``` js
+const Either = {
+    Some:Some,
+    Nothing:Nothing
+}
+```
+#### reddit例子的Either版本
+
+``` js
+let getTopTenSubRedditData = (type)=>{
+    let response = getTopTenSubRedditPosts(type);
+    return MayBe.of(response).map((arr)=>arr['data'])
+                             .map((arr)=>arr['children'])
+                             .map((arr)=>arrayUtils.map(arr,(x)={return {
+                                 title:x['data'].title,
+                                 url:x['data'].url
+                             }}))
+}
+//传入错误l类型
+getTopTenSubRedditData('unknow')
+=>MayBe(value:null)
+```
+* 使Either获取Reddit子版块的Top10帖子
+``` js
+let getTopTenSubRedditPostsEither = (type)=>{
+    let response
+    try{
+        //封装正确响应
+        response = Some.of(JSON.parse(request('get','https://www.reddit.com/r/subreddits'+type+".json?limit=10").getBody('utf8')))
+    }catch(err){
+        //封装错误响应
+        response = Nothing.of((message:"Something went wrong",errorCode:err['statusCode']))
+    }
+    return response;
+}
+```
+* 将Reddit API修改如下
+``` js
+let getTopTenSubRedditDataEither=(type)=>{
+    let response = getTopTenSubRedditPostsEither(type);
+    return response.map((arr)=>arr['data'])
+                   .map((arr)=>arr['children'])
+                   .map((arr)=>arrayUtils.map(arr,(x)={
+                       return {
+                           title:x['data'].title,
+                           url:x['data'].url
+                       }
+                   }))
+}
+//使用错误的Reddit数据调用新的api
+getTopTenSubRedditDataEither('new2')
+//返回
+Nothing(value:{message:'Something went wrong',errorCode：404})
+```
+使用either获得了分支失败的确切原因，在getTopTenSubRedditEither返回Nothing，因此函数永远不会执行
+
 ### 高阶对象实现
 ``` js
 const Serialization = Sup => class extends Sup{
@@ -226,6 +505,217 @@ Point sonctructor
 ```
 
 ## 常见面试题
+
+### [EventLoop](https://www.nowcoder.com/discuss/337035?type=post&order=time&pos=&page=1)
+``` js
+async function async1() {
+console.log('async1 start');
+await async2();
+console.log('async1 end');
+}
+async function async2() {
+console.log('async2');
+}
+console.log('script start');
+setTimeout(function () {
+console.log('setTimeout');
+}, 0);
+async1();
+new Promise(function (resolve) {
+console.log('promise1');
+resolve();
+}).then(function () {
+console.log('promise2');
+});
+console.log('script end');
+VM154:9 script start
+VM154:2 async1 start
+VM154:7 async2
+VM154:15 promise1
+VM154:20 script end
+VM154:4 async1 end
+VM154:18 promise2
+undefined
+VM154:11 setTimeout
+```
+
+### 数组与对象
+``` js
+if ([] == false) {console.log(1);};
+if ({} == false ) {console.log(2);};
+if ([]) {console.log(3);};
+if ([1] == [1]) {console.log(4);};
+VM36:1 1
+VM36:3 3
+```
+
+### ES5和ES6的构造函数区别
+``` js
+//ES5 
+function Person(){
+    this.name = name;
+}
+
+//ES6 
+class Person{
+    constructor(name){
+        this.name = name;
+    }
+}
+
+//ES5继承
+function Student(name,studentId){
+    //调用类的构造函数以初始化类派生的成员
+    Person.call(this,name);
+    //初始化子类的成员
+    this.studentId = studentId;
+}
+Student.prototype = Object.create(Person.prototype);
+Student.prototype.constructor = Student;
+
+//ES6 
+class Student extends Person{
+    constructor(name,studentId){
+        super(name)
+        this.studentId = studentId
+    }
+}
+```
+
+### js定义枚举
+``` js
+var DaysEnum = Object.freeze({
+    'monday':1,
+    'tuesday':2,
+    'wednesday':3,
+    'thursday':4,
+    'friday':5,
+    'saturday':6,
+    'sunday':7,
+})
+//Or
+var DaysEnum = {
+    'monday':1,
+    'tuesday':2,
+    'wednesday':3,
+    'thursday':4,
+    'friday':5,
+    'saturday':6,
+    'sunday':7,
+}
+Object.freeze(DaysEnum);
+```
+
+### JS冻结对象
+没有深冻结
+``` js
+let Person = {
+    name:'Leonardo',
+    profession:{
+        name:'developer'
+    }
+};
+Object.freeze(Person);
+person.profession.name = 'doctor';
+console.log(person); //output { name: 'Leonardo', profession: { name: 'doctor' } }
+```
+深冻结
+``` js
+function deepFreeze(object) {
+    let propNames = Object.getOwnPropertyNames(object);
+    for (let name of propNames) {
+        let value = object[name];
+        object[name] = value && typeof value === "object" ?
+            deepFreeze(value) : value;
+    }
+    return Object.freeze(object);
+}
+let person = {
+    name: "Leonardo",
+    profession: {
+        name: "developer"
+    }
+};
+deepFreeze(person);
+person.profession.name = "doctor"; // TypeError: Cannot assign to read only property 'name' of object
+```
+
+### js提升
+提升是指 JS 解释器将所有变量和函数声明移动到当前作用域顶部的操作，提升有两种类型
+
+* 变量提升
+* 函数提升
+``` js
+var a = 2;
+foo()  //正常运行 foo被提升
+
+function foo(){
+    a = 3;
+    console.log(a); //3
+    var a;
+}
+
+console.log(a); //2
+```
+
+### 临时死区
+``` js
+//console.log(aLet)  // would throw ReferenceError
+
+let aLet;
+console.log(aLet); // undefined
+aLet = 10;
+console.log(aLet); // 10
+```
+
+### [不用箭头函数](https://juejin.im/post/5dc8a231f265da4d40712f8a)
+不应该使用箭头函数一些情况：
+
+* 当想要函数被提升时(箭头函数是匿名的)
+* 要在函数中使用this/arguments时，由于箭头函数本身不具有this/arguments，因此它们取决于外部上下文
+* 使用命名函数(箭头函数是匿名的)
+* 使用函数作为构造函数时(箭头函数没有构造函数)
+* 当想在对象字面是以将函数作为属性添加并在其中使用对象时，因为咱们无法访问 this 即对象本身。
+
+### ES6 map weakmap
+WeakMaps 提供了一种从外部扩展对象而不影响垃圾收集的方法。当咱们想要扩展一个对象，但是因为它是封闭的或者来自外部源而不能扩展时，可以应用WeakMap。
+WeakMap只适用于 ES6 或以上版本。WeakMap是键和值对的集合，其中键必须是对象。
+
+``` js
+var map = new Weakmap();
+var pavloHero = {
+    first:'Pavlo',
+    last:'hero'
+};
+var gabrielFranco={
+    first:'Gabriel',
+    last:'Franco'
+}
+map.set(pavloHero,"This is Hero");
+map.set(gabrielFranco,'This is Franco');
+console.log(map.get(pavloHero)); //This is hero
+```
+WeakMaps的有趣之处在于，它包含了对map内部键的弱引用。弱引用意味着如果对象被销毁，垃圾收集器将从WeakMap中删除整个条目，从而释放内存。
+
+``` js
+var map = new Map();
+var weakmap = new WeakMap();
+(function(){
+    var a = {
+        x:12
+    }；
+    var b={
+        y:12
+    }
+
+    map.set(a,1);
+    weakmap.set(b,2)
+})
+```
+执行上面的 IIFE，就无法再引用{x：12}和{y：12}。垃圾收集器继续运行，并从 WeakMa中删除键b指针，还从内存中删除了{y：12}。
+但在使用 Map的情况下，垃圾收集器不会从Map中删除指针，也不会从内存中删除{x：12}。
+WeakMap 允许垃圾收集器执行其回收任务，但Map不允许。对于手动编写的 Map，数组将保留对键对象的引用，以防止被垃圾回收。但在WeakMap中，对键对象的引用被“弱”保留，这意味着在没有其他对象引用的情况下，它们不会阻止垃圾回收
+
 
 ### 节点的CRUD操作
 
@@ -590,7 +1080,7 @@ fucntion createObj2(obj,child){
         }
     }
 }
-obj.forEacf(item,item_i=>{
+obj.forEach(item,item_i=>{
     createObj2(obj2,item)
 })
 console.log('obj2':obj2)
@@ -678,7 +1168,7 @@ LazyMan.prototype = {
         self.events.unshift(fn);//top priority
         return self;
     },
-    eat:fucntion(name){
+    eat:function(name){
         var self = this;
         var fn = (function(name){
             return function(){

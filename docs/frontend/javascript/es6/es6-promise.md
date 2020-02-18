@@ -422,7 +422,7 @@ _resolve(val){
         const runFulfilled = (value)=>{
             let cb;
             while(cb=this._fulfilledQueues.shift()){
-                cb(calue);
+                cb(value);
             }
         }
         //依次执行失败队列中的函数
@@ -826,9 +826,6 @@ setTimeout(() =>
 }, 1000);
 ```
 
-
-
-
 ### Node.js中未处理的Promise错误
 
 监听unhandledRejection事件，即可捕获到未处理的Promise错误：
@@ -845,7 +842,197 @@ function foo()
  
 foo();
 ```
-
-
 :::
 
+
+### promise.finally()
+ES2018引入，不管Promise对象最后状态如何，都会执行操作
+``` js
+promise.then(resolve=>{...})
+       .catch(error=>{...})
+       .finally(()=>{...})
+```
+无论promise状态如何，执行完then和catch指定的回调函数都会执行finally指定的回调函数
+``` js
+promise.finally(()=>{
+    //执行函数
+});
+
+//等价于
+promise.then(
+    result=>{
+        //语句
+        return result;
+    },
+    error=>{
+        //语句
+        throw error
+    }
+)
+```
+不用finally实现，需要为成功和失败情况各写一次，有了finally方法只需要写一次
+``` js
+Promise.prototype,finally = function(callback){
+    let p = this.constructor;
+    return this.then(
+        value =>p.resolve(callback()).then(()=>value),
+        reason=>p.resovel(callback()).then(()=>{throw reason})
+    );
+};
+```
+
+### promise.all()
+Promise.all()方法用于将多个 Promise 实例，包装成一个新的 Promise 实例。
+``` js
+const promiseAll = Promise.all([p1,p2,p3]);
+```
+* promiseAll的状态由p1,p2,p3决定，分为两者情况 
+   * p1,p2,p3全部为fullfilled，promiseAll变为fullfilled,返回一个数组，传递给p的回调函数
+   * 其中一个变为rejected,promiseAll的状态就变为rejected，第一个返回的reject的值，返回给promiseALl
+
+``` js
+//eg1
+const promise = [1,2,3,4,5,6].map(function(id){
+    return  getJson('/post/'+id+".json");
+});
+
+Promise.all(promises).then(function(posts){
+    //...
+}).catch(function(reason){
+    //...
+});
+//只有6个实例的状态都变成fullfilled，或者其中一个变成rejected，才会调用promise.all方法后面的回调函数
+
+
+//eg2
+const databasePromise = connectDatabase();
+const booksPromise = databasePromise.then(findAllBooks);
+const userPormise = databasePromise.then(getCurrentUser);
+
+Promise.all([
+    booksPromise,
+    userPromise
+]).then(([books,user])=>pickTopRecommendations(books,user));
+//上面代码中，booksPromise和userPromise是两个异步操作，只有等到它们的结果都返回了，才会触发pickTopRecommendations这个回调函数。
+```
+::: danger
+如果作为参数的 Promise 实例，自己定义了catch方法，那么它一旦被rejected，并不会触发Promise.all()的catch方法。
+:::
+
+``` js
+const p1 = new Promise((resolve, reject) => {
+  resolve('hello');
+})
+.then(result => result)
+.catch(e => e);
+
+const p2 = new Promise((resolve, reject) => {
+  throw new Error('报错了');
+})
+.then(result => result)
+.catch(e => e);
+
+Promise.all([p1, p2])
+.then(result => console.log(result))
+.catch(e => console.log(e));
+// ["hello", Error: 报错了]
+
+//如果没有catch方法则会调用promise.all()的catch方法
+```
+
+### promise.race()
+Promise.race()同样是将多个Promise实例包装成新的Promise实例
+
+``` js
+const p = Promise.all([p1,p2,p3]);
+```
+Promise.race()方法的参数与Promise.all()方法一样，如果不是 Promise 实例，就会先调用下面讲到的Promise.resolve()方法，将参数转为 Promise 实例，再进一步处理。
+
+``` js
+const p = Promise.race([
+    fetch('/resource-that-may-take-a-while'),
+    new Promise(function(resolve,reject){
+        setTimeout(()=>reject(new Error('request timeout')),5000)
+    })
+]);
+p.then(console.log)
+ .catch(console.error)
+```
+
+### promise.allSettled()
+本标准由ES2020引入。接收一组Promise实例作为参数，包装成新的Promise实例,所有的参数实例都返回结果，包装实例才结束
+``` js
+const promises = [
+    fetch('/api-1'),
+    fetch('/api-2'),
+    fetch('/api-3'),
+];
+await Promise.allSettled(promises);//3分请求结束后 加载图标都消失
+removeLoadingIndicator();
+```
+promise实例在函数监听结束后，返回数组
+``` js
+const resolved = Promise.resolve(42);
+const rejected = Promise.reject(-1);
+
+const allSettledPromise = Promise.allSettled([resolved, rejected]);
+
+allSettledPromise.then(function (results) {
+  console.log(results);
+});
+// [
+//    { status: 'fulfilled', value: 42 },
+//    { status: 'rejected', reason: -1 }
+// ]
+
+const promises = [ fetch('index.html'), fetch('https://does-not-exist/') ];
+const results = await Promise.allSettled(promises);
+
+// 过滤出成功的请求
+const successfulPromises = results.filter(p => p.status === 'fulfilled');
+
+// 过滤出失败的请求，并输出原因
+const errors = results
+  .filter(p => p.status === 'rejected')
+  .map(p => p.reason);
+```
+
+
+### promise.any()
+任何一个为fullfilled则包装实例变为fullfilled，所有的变为rejected，则变为rejected
+Promise.any()跟Promise.race()方法很像，只有一点不同，就是不会因为某个 Promise 变成rejected状态而结束。
+``` js
+const promises = [
+  fetch('/endpoint-a').then(() => 'a'),
+  fetch('/endpoint-b').then(() => 'b'),
+  fetch('/endpoint-c').then(() => 'c'),
+];
+try {
+  const first = await Promise.any(promises);
+  console.log(first);
+} catch (error) {
+  console.log(error);
+}
+```
+
+### promise.resolve()
+
+``` js
+Promise.resolve('foo')
+//equals
+new Promise(resolve=>resolve('foo'))
+```
+
+## 案例应用
+
+### 加载图片
+``` js
+const preloadImage = function(path){
+    return new Promise(function(resolve,reject){
+        const image = new Image();
+        image.onload = resolve;
+        image.onerror = reject;
+        image.src = path;
+    });
+};
+```

@@ -757,5 +757,829 @@ public Node connect(Node root){
 
 
 ## Backtrace
+回溯是一种通过穷举所有可能情况来找到所有解的算法。如果一个候选解最后被发现并不是可行解，回溯算法会舍弃它，并在前面的一些步骤做出一些修改，并重新尝试找到可行解。
 
-### 
+套用[算法模板](https://leetcode-cn.com/problems/combination-sum/solution/hui-su-suan-fa-tao-mo-ban-ji-ke-by-jeromememory/)
+直接上回溯算法框架。解决一个回溯问题，实际上就是一个决策树的遍历过程。你只需要思考 3 个问题：
+
+1、路径：也就是已经做出的选择。
+
+2、选择列表：也就是你当前可以做的选择。
+
+3、结束条件：也就是到达决策树底层，无法再做选择的条件。
+
+``` 
+result = []
+def backtrack(路径, 选择列表):
+    if 满足结束条件:
+        result.add(路径)
+        return
+
+for 选择 in 选择列表:
+    做选择
+    backtrack(路径, 选择列表)
+    撤销选择
+```
+其核心就是 for 循环里面的递归，在递归调用之前「做选择」，在递归调用之后「撤销选择」，特别简单。
+``` java
+List<List<Integer>> res = new LinkedList<>();
+
+/* 主函数，输入一组不重复的数字，返回它们的全排列 */
+List<List<Integer>> permute(int[] nums) {
+    // 记录「路径」
+    // 这里的 选择列表 即包含在nums中
+    LinkedList<Integer> track = new LinkedList<>();
+    backtrack(nums, track);
+    return res;
+}
+
+// 路径：记录在 track 中
+// 选择列表：nums 中的元素
+// 结束条件：nums 中的元素全都在 track 中出现
+void backtrack(int[] nums, LinkedList<Integer> track) {
+    // 触发结束条件
+    if (track.size() == nums.length) {
+        res.add(new LinkedList(track));
+        return;
+    }
+    
+    for (int i = 0; i < nums.length; i++) {
+        // 排除不合法的选择
+        if (track.contains(nums[i]))
+            continue;
+        // 做选择
+        track.add(nums[i]);
+        // 进入下一层决策树
+        backtrack(nums, track);
+        // 取消选择，返回上一层决策树
+        track.removeLast();
+    }
+}
+```
+解决LeetCode 39题的回溯算法
+``` java
+public class combinationSum_39 {
+
+    public static void main(String[] args) {
+        combinationSum(new int[]{2,3,6,7},7);
+        System.out.println(res);
+
+    }
+    public static List<List<Integer>> res =  new LinkedList<>();
+
+    public static List<List<Integer>> combinationSum(int[] candidates, int target) {
+        LinkedList<Integer> track = new LinkedList<>();
+        //排序后剪枝更容易
+        Arrays.sort(candidates);
+        //套用公式，canditates是指选择列表。targete用来判断是否结束和用于剪枝
+        //track是路径 已经做出的选择
+        backtrack(candidates, 0, target, track);
+        return res;
+    }
+
+    private static void backtrack(int[] candidates, int start, int target, LinkedList<Integer> track) {
+        //先判断结束条件
+        if (target < 0) return;
+        if (target == 0){
+            //target为0时 将路径加入结果列表
+            res.add(new LinkedList<>(track));
+            return;
+        }
+        //遍历选择列表
+        for(int i = start;i < candidates.length;i++){
+            if(target < candidates[i]) break;
+            track.add(candidates[i]);
+            backtrack(candidates,i,target-candidates[i],track);
+            track.removeLast();
+        }
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### [17.电话号码的字母组合](https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/)
+给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。
+
+给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+示例:
+“
+输入："23"
+输出：["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
+”
+``` java
+class Solution {
+
+    Map<String,String> phone = new HashMap<String,String>(){{
+        put("2","abc");
+        put("3","def");
+        put("4","ghi");
+        put("5","jkl");
+        put("6","mno");
+        put("7","pqrs");
+        put("8","tuv");
+        put("9","wxyz");
+    }};
+
+    List<String> output = new ArrayList<String>();
+
+    public void backtrace(String combination,String next_digits){
+        //没有数字
+        if(next_digits.length()==0){
+            //组合完成
+            output.add(combination);
+            
+        //如果next_digits不为空
+        }else{
+            //枚举在map中的所有字母中可用的字符
+            String digit = next_digits.substring(0,1);
+            String letters = phone.get(digit);
+            for(int i=0;i<letters.length();i++){
+                String letter = phone.get(digit).substring(i,i+1);
+                //将当前字符添加到组合中
+                //处理下一个数字
+                backtrace(combination+letter,next_digits.substring(1));
+            }
+        }
+    }
+
+    public List<String> letterCombinations(String digits) {
+        if(digits.length()!=0)
+        {
+            backtrace("",digits);
+        }
+        return output;
+    }
+}
+```
+
+### [复原IP地址](https://leetcode-cn.com/problems/restore-ip-addresses/)
+给定一个只包含数字的字符串，复原它并返回所有可能的 IP 地址格式。
+
+示例:
+```
+输入: "25525511135"
+输出: ["255.255.11.135", "255.255.111.35"]
+```
+[BFS+回溯](https://leetcode.wang/leetCode-93-Restore-IP-Addresses.html)
+``` java
+    public List<String> restoreIpAddresses(String s) {
+        List<String> ans = new ArrayList<>(); //保存最终的所有结果
+        getAns(s,0,new StringBuilder(),ans,0);
+        return ans;
+    }
+
+    private void getAns(String s,int start,StringBuilder temp,List<String> ans,int count){
+        //长度大于剩下部分的最长长度
+        if(s.length()-start>3*(4-count)){
+            return;
+        }
+        //刚好到达了末尾
+        if(start==s.length()){
+            //当前刚好是4的部分 将结果加入
+            if(count==4){
+                ans.add(new Sring(temp.substring(0,temp.length()-1)));
+            }
+            return;
+        }
+
+        //当前超过末尾，或者已经到达了4部分结束
+        if(start>s.length()||count==4){
+            return;
+        }
+
+        //保存当前解
+        StringBuilder before = new StringBuilder(temp);
+
+        //加入1位数
+        temp.append(s.charAt(start)+""+'.');
+        getAns(s,start+1,temp,ans,count+1);
+
+        //如果开头是0
+        if(s.charAt(start)=='0'){
+            return;
+        }
+
+        //加入2位数
+        if(start+1<s.length()){
+            temp = new StringBuilder(before);//恢复为之前的解
+            temp.append(s.substring(start,start+2)+""+'.');
+            getAns(s,start+2,temp,ans,count+1);
+        }
+
+        //加入3位数
+        if(start+2<s.length()){
+            temp = new  StringBuilder(before);
+            int num = Integer.parseInt(s.substring(start,start+3));
+            if(num>=0&&num<=255){
+                temp.append(s.substring(start,start+3)+""+'.');
+                getAns(s,start+3,temp,ans,count+1);
+            }
+        }
+    }
+
+```
+### [79.单词搜索](https://leetcode-cn.com/problems/word-search/)
+给定一个二维网格和一个单词，找出该单词是否存在于网格中。
+
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+
+示例:
+```
+board =
+[
+  ['A','B','C','E'],
+  ['S','F','C','S'],
+  ['A','D','E','E']
+]
+
+给定 word = "ABCCED", 返回 true.
+给定 word = "SEE", 返回 true.
+给定 word = "ABCB", 返回 false.
+```
+[DFS](https://leetcode.wang/leetCode-79-Word-Search.html)
+我们需要做的就是，在深度优先遍历过程中，判断当前遍历元素是否对应 word 元素，如果不匹配就结束当前的遍历，返回上一次的元素，尝试其他路径。当然，和普通的 dfs 一样，我们需要一个 visited 数组标记元素是否访问过。
+``` java
+public boolean exist(char[][] board,String word){
+    int rows = board.length;
+    if(rows == 0){
+        return false;
+    }
+    int cols = board[0].length;
+    boolean[][] vivisted = new boolean[rows][cols];
+    //从不同位置开始
+    for(int i=0;i<rows;i++){
+        for(int j=0;j<cols;j++){
+            //从当前位置 开始 符合就返回true
+            if(existRecursive(board,i,j,word,0,visited)){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+private boolean existRecursive(char[][] board,int row,int col,String word,int index,boolean[][] visited){
+    //判断是否越界
+    if(row<0||row>=board.length||col<0||col>=board[0].length){
+        return false;
+    }
+
+    //当前元素访问过或者当前word不匹配返回false
+    if(visited[row][col]||board[row][col]!=word.charAt(index)){
+        return false;
+    }
+    //匹配到了最后一个字母 反击true
+    if(index==word.length()-1){
+        return true;
+    }
+
+    //将当前位置标记为已访问
+    visited[row][col] = true;
+    //对四个位置分别尝试
+    boolean up = existRecursive(board,row-1,col,word,index+1,visited);
+    if(up){
+        return true;
+    }
+    boolean down = existRecursive(board,row+1,col,word,index+1,visited);
+    if(down){
+        return true;
+    }
+    boolean left = existRecursive(board,row,col-1,word,index+1,visited);
+    if(left){
+        return true;
+    }
+    boolean right = existRecursive(board,row,col+1,word,index+1,visited);
+    if(right){
+        return true;
+    }
+    //当前位置未被访问
+    visited[row][col] = false;
+    return false;
+}
+```
+###  [257.二叉树的所有路径](https://leetcode-cn.com/problems/binary-tree-paths/)
+
+给定一个二叉树，返回所有从根节点到叶子节点的路径。
+说明: 叶子节点是指没有子节点的节点。
+示例:
+```
+输入:
+
+   1
+ /   \
+2     3
+ \
+  5
+
+输出: ["1->2->5", "1->3"]
+解释: 所有根节点到叶子节点的路径为: 1->2->5, 1->3
+```
+* [递归](https://leetcode-cn.com/problems/binary-tree-paths/solution/er-cha-shu-de-suo-you-lu-jing-by-leetcode/)
+``` java
+class Solution {
+    public List<String> binaryTreePaths(TreeNode root) {
+        LinkedList<String> paths = new LinkedList();
+        constructor_paths(root,"",paths);
+        return paths;
+    }
+
+    private void construct_paths(TreeNode root,String path,LinkedList<String> paths){
+        //递归的结束条件
+        if(root!=null){
+            path+=Integer.toString(root.val);
+            if((root.left==null)&&(root.right==null)){
+                //当前节点是叶子结点
+                //将当前节点加入路径
+                paths.add(path);
+            }else{
+                //当前节点不是叶子节点
+                path+="->";
+                //从左右节点开始递归
+                //递归的返回值是 path 和 paths
+                construct_paths(root.left,path,paths);
+                construct_paths(root.right,path,paths);
+            }
+        }
+    }
+}
+```
+* 迭代实现
+迭代（宽度优先搜索）的方法实现。我们维护一个队列，存储节点以及根到该节点的路径。一开始这个队列里只有根节点。在每一步迭代中，我们取出队列中的首节点，如果它是一个叶子节点，则将它对应的路径加入到答案中。如果它不是一个叶子节点，则将它的所有孩子节点加入到队列的末尾。当队列为空时，迭代结束。
+
+``` java
+class solution{
+    public List<String> binarTreePaths(TreeNode root){
+        LinkedList<String> paths = new LinkedList();
+        if(root==null)
+        {
+            return paths;
+        }
+
+        LinkedList<TreeNode> node_stack = new LinkedList();
+        LinkedList<String> path_stack = new LinkedList();
+        node_stack.add(root);
+        path_stack.add(Integer.toString(root.val));
+        TreeNode node;
+        String path;
+        while(!node_stack.isEmpty()){
+            node = node_stack.pollLast();
+            path = path_stack.pollLast();
+            if((node.left==null)&&(node.right==null)){
+                paths.add(path);
+            }
+            if(node.left!=null){
+                node_stack.add(node.left);
+                path_stack.add(path+"->"+Integer.toString(node.left.val));
+            }
+            if(node.right!=null){
+                node_stack.add(node.right);
+                path_stack.add(path+"->"+Integer.toString(node.right.val));
+            }
+        }
+        return path;
+    }
+}
+```
+
+### [113.路径总和II](https://leetcode-cn.com/problems/path-sum-ii/)
+给定一个二叉树和一个目标和，找到所有从根节点到叶子节点路径总和等于给定目标和的路径。
+
+说明: 叶子节点是指没有子节点的节点。
+
+示例:
+给定如下二叉树，以及目标和 sum = 22，
+```
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \    / \
+        7    2  5   1
+```
+返回:
+```
+[
+   [5,4,11,2],
+   [5,8,4,5]
+]
+```
+解题思路改造一下上面的算法，将sum在每次遍历中减去，实现如下：
+``` java
+class Solution{
+    private List<List<Integer>> resultList = new ArrayList<>();
+    private List<Integer> tempList = new ArrayList<>();
+
+    public List<List<Integer>> pathSum(TreeNode root,int sum){
+        dfs(root,sum);
+        return resultList;
+    }
+
+    private void dfs(TreeNode node,int sum){
+        if(node==null){
+            return ;
+        }
+        tempList.add(node.val);
+        sum-=node.val;
+        if(node.left==null&&node.right==null&&sum==0){
+             resultList.add(new ArrayList<>(tempList));
+        }
+
+        if(node.left!=null){
+            dfs(node.left,sum);
+        }
+        if(node.right!=null){
+            dfs(node.right,sum);
+        }
+        tempList.remove(tempList.size()-1);
+    }
+
+}
+```
+
+### [437.路径总和III](https://leetcode-cn.com/problems/path-sum-iii/)
+给定一个二叉树，它的每个结点都存放着一个整数值。
+
+找出路径和等于给定数值的路径总数。
+
+路径不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）。
+
+二叉树不超过1000个节点，且节点数值范围是 [-1000000,1000000] 的整数。
+
+示例：
+```
+root = [10,5,-3,3,2,null,11,3,-2,null,1], sum = 8
+
+      10
+     /  \
+    5   -3
+   / \    \
+  3   2   11
+ / \   \
+3  -2   1
+
+返回 3。和等于 8 的路径有:
+
+1.  5 -> 3
+2.  5 -> 2 -> 1
+3.  -3 -> 11
+```
+``` java
+public int pathSum(TreeNode root, int sum) {
+		return pathSum(root, sum, new int[1000], 0);
+	}
+
+	public int pathSum(TreeNode root, int sum, int[] array/*保存路径*/, int p/*指向路径终点*/) {
+		if (root == null) {
+			return 0;
+		}
+		int tmp = root.val;
+		int n = root.val == sum ? 1 : 0;
+		for (int i = p - 1; i >= 0; i--) {//从后往前，后面的才是新增的，前面的已经算过了。
+			tmp += array[i];
+			if (tmp == sum) {
+				n++;
+			}
+		}
+		array[p] = root.val;
+		int n1 = pathSum(root.left, sum, array, p + 1);//往左走，往右走
+		int n2 = pathSum(root.right, sum, array, p + 1);
+		return n + n1 + n2;//当前子树、左子树、右子树存在的满足路径的数量
+	}
+```
+* [递归](https://leetcode-cn.com/problems/path-sum-iii/solution/leetcode-437-path-sum-iii-by-li-xin-lei/)
+``` java
+	 public static class TreeNode {
+	        int val;
+	        TreeNode left;
+	        TreeNode right;
+	        TreeNode(int x) { val = x; }
+	    }
+	 public  int pathSum(TreeNode root,int sum) {
+		 if(root==null) {
+			 return 0;
+		 }
+		 return PathS(root,sum)+PathS(root.left,sum)+PathS(root.right,sum);
+	 }
+	 
+	 private  int PathS(TreeNode root,int sum) {
+		 if(root==null) {
+			 return 0;
+		 }
+		 int res = 0;
+		 if(root.val==sum) {
+			 res +=1;
+		 }
+		 res += PathS(root.left,sum-root.val);
+		 res += PathS(root.right,sum-root.val);
+		 return res;
+	 }
+```
+
+### [46.全排列](https://leetcode-cn.com/problems/permutations/)
+给定一个没有重复数字的序列，返回其所有可能的全排列。
+
+示例:
+```
+输入: [1,2,3]
+输出:
+[
+  [1,2,3],
+  [1,3,2],
+  [2,1,3],
+  [2,3,1],
+  [3,1,2],
+  [3,2,1]
+]
+```
+* [回溯法](https://leetcode-cn.com/problems/permutations/solution/quan-pai-lie-by-leetcode/)
+``` java
+public List<List<Integer>> permute(int[] nums){
+    //初始化
+    List<List<Integer>> output = new LinkedList();
+    //将数组转化为list
+    ArrayList<Integer> nums_list = new ArrayList<Integer>();
+    for(int num:nums){
+        nums_list.add(num);
+    }
+    int n = nums.length;
+    backtrace(n,nums_list,output,0);
+    return output;
+}
+
+private void backtrace(int n,ArrayList<Integer> nums,List<List<Integer>> output,int first){
+    //所有的数字已使用
+    if(first==n){
+        output.add(new ArrayList<Integer>(nums));
+    }
+            for(int i=first;i<n;i++){
+            //将第i个整数到当前排列
+            Collections.swap(nums,first,i);
+            //添加下一个数字到排列中
+            backtrace(n,nums,output,first+1);
+            //回溯
+            Collections.swap(nums,first,i);
+        }
+}
+```
+* [回溯2](https://leetcode-cn.com/problems/permutations/solution/hui-su-suan-fa-by-powcai-2/)
+
+
+### [47.含有相同元素求排列](https://leetcode-cn.com/problems/permutations-ii/)
+
+给定一个可包含重复数字的序列，返回所有不重复的全排列。
+
+示例:
+```
+输入: [1,1,2]
+输出:
+[
+  [1,1,2],
+  [1,2,1],
+  [2,1,1]
+]
+```
+* [回溯+剪枝算法](https://leetcode-cn.com/problems/permutations-ii/solution/hui-su-suan-fa-python-dai-ma-java-dai-ma-by-liwe-2/)
+   * 对数组排序后，发现有重复元素则跳过当前分支，达到剪枝效果。
+   * 在进入一个新的分支之前，看一看这个数是不是和之前的数一样，如果这个数和之前的数一样，并且之前的数还未使用过，那接下来如果走这个分支，就会使用到之前那个和当前一样的数，就会发生重复，此时分支和之前的分支一模一样
+``` java
+class Solution{
+    private List<List<Integer>> res = new ArrayList<>();
+    private boolean[] used;
+
+    private void findPermuteUnique(int[] nums,int depth,Stack<Integer> stack){
+        if(depth == nums.length){
+            res.add(new ArrayList<>(stack));
+            return ;
+        }
+        for(int i=0;i<nums.length;i++){
+            if(!used[i]){
+                //修改2：因为排序后重复的数一定不会出现在开始，故i>0
+                //和之前的数相等，并且之前的数还未使用过，只有出现这种情况，
+                //才会出现相同分支，跳过这种情况
+                if(i>0&&nums[i]==nums[i-1]&&!used[i-1]){
+                    continue;
+                }
+                used[i] = true;
+                stack.add(nums[i]);
+                findPermuteUnique(nums,depth+1,stack);
+                stack.pop();
+                used[i] = false;
+            }
+        }
+    }
+
+    public List<List<Integer>> permuteUnique(int[] nums){
+        int len = nums.length;
+        if(len==0){
+            return res;
+        }
+        //修改1，首先排序，之后才可能发现重复分支
+        Arrays.sort(nums);
+
+        used = new boolean[len];
+        findPermuteUnique(nums,0,new Stack<>());
+        return res;
+    }
+}
+```
+
+### [77.组合](https://leetcode-cn.com/problems/combinations/)
+给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
+
+示例:
+``` 
+输入: n = 4, k = 2
+输出:
+[
+  [2,4],
+  [3,4],
+  [2,3],
+  [1,2],
+  [1,3],
+  [1,4],
+]
+```
+* [回溯法](https://leetcode-cn.com/problems/combinations/solution/zu-he-by-leetcode/)
+是一种通过遍历所有可能成员来寻找全部可行解的算法。若候选 不是 可行解 (或者至少不是 最后一个 解)，回溯法会在前一步进行一些修改以舍弃该候选，换而言之， 回溯 并再次尝试。
+
+这是一个回溯法函数，它将第一个添加到组合中的数和现有的组合作为参数。 backtrack(first, curr)
+
+若组合完成- 添加到输出中。
+
+遍历从 first t到 n的所有整数。
+
+将整数 i 添加到现有组合 curr中。
+
+继续向组合中添加更多整数 :
+backtrack(i + 1, curr).
+
+将 i 从 curr中移除，实现回溯
+
+链接：https://leetcode-cn.com/problems/combinations/solution/zu-he-by-leetcode/
+
+``` java
+class Solution{
+    List<List<Integer>> output = new LinkedList();
+    int n;
+    int k;
+
+    public void backtrace(int first,LinkedList<Integer> curr){
+        //如果组合被使用了
+        if(curr.size()==k){
+            output.add(new LinkedList(curr));
+        }
+
+        for(int i=first;i<n+1;++i){
+            //将i添加到当前组合中
+            curr.add(i);
+            //将下一个整数加入
+            backtrace(i+1,curr);
+            //回溯
+            curr.removeLast();
+        }
+    }
+
+    public List<List<Integer>> combine(int n,int k){
+        this.n = n;
+        this.k = k;
+        backtrace(1,new LinkedList<Integer>());
+        return output;
+    }
+}
+```
+
+### [39.组合求和](https://leetcode-cn.com/problems/combination-sum/)
+给定一个无重复元素的数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+
+candidates 中的数字可以无限制重复被选取。
+
+说明：
+
+所有数字（包括 target）都是正整数。
+解集不能包含重复的组合。 
+示例 1:
+```
+输入: candidates = [2,3,6,7], target = 7,
+所求解集为:
+[
+  [7],
+  [2,2,3]
+]
+```
+[回溯算法](https://leetcode-cn.com/problems/combination-sum/solution/hui-su-suan-fa-jian-zhi-python-dai-ma-java-dai-m-2/)
+``` java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
+
+public class Solution {
+
+    private List<List<Integer>> res = new ArrayList<>();
+    private int[] candidates;
+    private int len;
+
+    private void findCombinationSum(int residue, int start, Stack<Integer> pre) {
+        if (residue == 0) {
+            // Java 中可变对象是引用传递，因此需要将当前 path 里的值拷贝出来
+            res.add(new ArrayList<>(pre));
+            return;
+        }
+        // 优化添加的代码2：在循环的时候做判断，尽量避免系统栈的深度
+        // residue - candidates[i] 表示下一轮的剩余，如果下一轮的剩余都小于 0 ，就没有必要进行后面的循环了
+        // 这一点基于原始数组是排序数组的前提，因为如果计算后面的剩余，只会越来越小
+        for (int i = start; i < len && residue - candidates[i] >= 0; i++) {
+            pre.add(candidates[i]);
+            // 【关键】因为元素可以重复使用，这里递归传递下去的是 i 而不是 i + 1
+            findCombinationSum(residue - candidates[i], i, pre);
+            pre.pop();
+        }
+    }
+
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        int len = candidates.length;
+        if (len == 0) {
+            return res;
+        }
+        // 优化添加的代码1：先对数组排序，可以提前终止判断
+        Arrays.sort(candidates);
+        this.len = len;
+        this.candidates = candidates;
+        findCombinationSum(target, 0, new Stack<>());
+        return res;
+    }
+
+    public static void main(String[] args) {
+        int[] candidates = {2, 3, 6, 7};
+        int target = 7;
+        Solution solution = new Solution();
+        List<List<Integer>> combinationSum = solution.combinationSum(candidates, target);
+        System.out.println(combinationSum);
+    }
+}
+```
+
+``` java
+public List<List<Integer>> combinationSum(int[] canditates,int target){
+    List<List<Integer>> combinations = new ArrayList<>();
+    backtracking(new ArrayList<>(),combinations,0,target,candidates);
+    return combinations;
+}
+private void backtracking(List<Integer> tempCombination,List<List<Integer>> combinations,int start,int target,final int[] candidates){
+    if(target==0){
+        combinations.add(new ArrayList<>(tempCombination));
+        return;
+    }
+
+    for(int i=start;i<canditates.length;i++){
+        if(candidates[i]<=target){
+            tempConbination.add(canditates[i]);
+            backtracking(tempCombination,combinations,i,target-candidates[i]);
+            tempCombination.remove(tempCombination.size()-1);
+        }
+    }
+}
+```
+
+### [40.含有相同元素的组合求和](https://leetcode-cn.com/problems/combination-sum-ii/)
+
+给定一个数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+
+candidates 中的每个数字在每个组合中只能使用一次。
+
+说明：
+
+所有数字（包括目标数）都是正整数。
+解集不能包含重复的组合。 
+示例 1:
+``` 
+输入: candidates = [10,1,2,7,6,1,5], target = 8,
+所求解集为:
+[
+  [1, 7],
+  [1, 2, 5],
+  [2, 6],
+  [1, 1, 6]
+]
+```
+
+``` java
+class Solution {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        
+    }
+}
+```

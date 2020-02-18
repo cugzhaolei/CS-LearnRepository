@@ -1,5 +1,6 @@
 # Array
 
+[1.MDN Array](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array)
 ## 数组扁平化
 ``` js
 var inputArr = [1,2,3,[4,5,[6,7,[8,9,[10,11,[12]]]]]];
@@ -78,6 +79,84 @@ console.log(originalArray);
 cosnt obj = {};
 const result = originalArray.filter(item=>obj.hasOwnProperty(typeof item+item)?false:(obj[typeof item + item]=true));
 consoel.log(result)
+
+//method6
+var myArray = ['a', 'b', 'a', 'b', 'c', 'e', 'e', 'c', 'd', 'd', 'd', 'd'];
+var myOrderedArray = myArray.reduce(function(accumulator,currentValue){
+    if(accumulator.indexOf(currentValue)===-1){
+        accumulator.push(currentValue);
+    }
+    return accumulator
+},[])
+console.log(myOrderArray) //(5) ["a", "b", "c", "e", "d"]
+
+//method7 利用数组的indexof下标属性查询
+function unique7(arr){
+    var newArr = []
+    for(var i=0;i<arr.length;i++){
+        if(newArr.indexOf(arr[i])===-1){
+            newArr.push(arr[i])
+        }
+    }
+    return newArr
+}
+console.log(unique7([1,2,5,6,8,8,7,3,6,9,11])) //[1, 2, 5, 6, 8, 7, 3, 9, 11]
+
+//method8 先将原数组排序，相邻元素比较，不同则存入新数组
+function unique7(arr){
+    var fromArr = arr.sort()
+    var newArr = [fromArr[0]]
+    for(let i=1;i<fromArr.length;i++){
+        if(fromArr[i]!==fromArr[i-1]){
+            newArr.push(fromArr[i])
+        }
+    }
+    return newArr
+}
+console.log(unique7([1,5,6,8,,4,6,3,6,7,4,1,2,5])) //[1, 2, 3, 4, 5, 6, 7, 8, undefined]
+
+//method8 利用对象属性存在的特性，如果没有该属性则存入新数组
+function unique8(arr){
+    var obj ={}
+    var newArr = []
+    for(let i=0;i<arr.length;i++){
+        if(!obj[arr[i]]){
+            obj[arr[i]] = 1
+            newArr.push(arr[i])
+        }
+    }
+    return newArr
+}
+console.log(unique8([1,5,2,3,4,1,5,6,2,4,5,3,4,1]))  // [1, 5, 2, 3, 4, 6]
+
+//method9 利用数组原型的includes方法
+function unique9(arr){
+    var newArr = []
+    for(var i=0;i<arr.length;i++){
+        if(!newArr.includes(arr[i])){
+            newArr.push(arr[i])
+        }
+    }
+    return newArr
+}
+console.log(unique9([1,2,4,5,1,3,4,5,3,1,2])) // [1, 2, 4, 5, 3]
+
+//method10 利用数组原型对象上的 filter 和 includes方法。
+function unique10(arr){
+    var newArr = []
+    newArr = arr.filter(function(item){
+        return newArr.includes(item)?'':newArr.push(item)
+    })
+    return newArr
+}
+console.log(unique10([1,2,1,3,5,1,5,3,8,4,9,5,1,3,7,8]))//[1, 2, 3, 5, 8, 4, 9, 7]
+
+//method11 ES6的set方法
+function unique11(arr){
+    return Array.from(new Set(arr))  //利用array.from将set结构转换为数组
+}
+console.log(unique11([1,2,1,3,4,1,2,5,3,7,8]))//[1, 2, 3, 4, 5, 7, 8]
+
 ```
 
 ### 对象数组去重
@@ -94,6 +173,7 @@ const result = responseList.reduce((acc.cur)=>{
     return ids.includes(cur.id)?acc:[...acc,cur];
 },[]);
 console.log(result);
+
 ```
 
 ### 数组去重
@@ -118,4 +198,20 @@ function unique(arr){
     }
     return temp;
 }
+```
+
+### 数组拆解
+
+``` js
+Array.prototype.flat = function(){
+    return this.toString().split(',').map(item+=>item);
+}
+```
+
+### 数组乱序
+``` js
+var arr = [1,2,3,4,5,6,7,8,9,10];
+arr.sort(function(){
+    return Math.random()-0.5;
+})
 ```

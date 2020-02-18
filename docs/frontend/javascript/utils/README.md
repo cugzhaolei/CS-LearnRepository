@@ -175,6 +175,7 @@ Function.prototype.call = function(context){
     delete context.fn;
     return result;
 }
+
 ```
 
 ## 实现apply
@@ -221,6 +222,21 @@ function myInstanceOf(left,rigth){
         proto = Object.getPrototype(proto);
     }
 }
+
+function instance_of(L:Object,R:any){
+    let protoChain = Object.getOwnProperty(L);
+    const LPrototype = R.prototype;
+    //最坏的情况递归查到Object.prototype === null
+    while(protoChain){
+        //两个对象指向同一个内存地址，则为同一个对象
+        if(protoChain === LPrototype){
+            return true;
+        }
+        protoChain = Object.getPrototypeOf(protoChain);
+    }
+    //找到终点还没有找到，则无
+    return false;
+}
 ```
 
 ##  实现单例模式
@@ -246,14 +262,13 @@ function proxy(fun){
 ``` js
 const debounce = (fn,delay)=>{
     let timer = null;
-    return (..args) =>{
+    return (...args) =>{
         clearTimeout(timer);
         timer = setTimeout(()=>{
             fn.apply(this,args);
         },delay);
     };
 };
-
 ```
 
 ##  实现节流功能
@@ -394,8 +409,8 @@ hash数组去重
     var n={},r=[];  //n为hash表，r为临时数组
         for(var i=0;i<arr.length;i++){
           if(!n[arr[i]]){ //如果hash表中没有当前项
-             n[arr[i]]=true;   /把当前项/存入hash表
-            r.push(arr[i]); //把当前项
+             n[arr[i]]=true;   //把当前项存入hash表
+             r.push(arr[i]);   //把当前项
              r.sort();
              r.severse();
            }

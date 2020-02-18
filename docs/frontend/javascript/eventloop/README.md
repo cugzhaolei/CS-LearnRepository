@@ -1,5 +1,32 @@
 # [Event Loop](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/)
 在JavaScript中，任务被分为两种，一种宏任务（MacroTask）也叫Task，一种叫微任务（MicroTask）。
+## 事件流
+事件流描述的是从页面中接受事件的顺序，事件 捕获阶段 处于目标阶段 事件冒泡阶段 addeventListener 最后这个布尔值参数如果是true，表示在捕获阶段调用事件处理程序；如果是false，表示在冒泡阶段调用事件处理程序。
+  1、事件捕获阶段：实际目标div在捕获阶段不会接受事件，也就是在捕获阶段，事件从document到<html>再到<body>就停止了。
+  2、处于目标阶段：事件在div发生并处理，但是事件处理会被看成是冒泡阶段的一部分。
+  3、冒泡阶段：事件又传播回文档
+
+   阻止冒泡事件event.stopPropagation()
+``` js   
+	  function stopBubble(e) {
+    		if (e && e.stopPropagation) { // 如果提供了事件对象event 这说明不是IE浏览器
+      		e.stopPropagation()
+    		} else {
+      		window.event.cancelBubble = true //IE方式阻止冒泡
+    	      }
+  		   }
+```
+   阻止默认行为event.preventDefault()
+``` js
+ function stopDefault(e) {
+    if (e && e.preventDefault) {
+      e.preventDefault()
+    } else {
+      // IE浏览器阻止函数器默认动作的行为
+      window.event.returnValue = false
+    }
+  }
+```
 
 ## MacroTask（宏任务）
 script全部代码、setTimeout、setInterval、setImmediate（浏览器暂时不支持，只有IE10支持，具体可见MDN）、I/O、UI Rendering。

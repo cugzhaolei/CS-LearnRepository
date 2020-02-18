@@ -3,7 +3,7 @@
 
 ## 浏览器内核
 
-|浏览器/RunTime|：内核（渲染引擎）|JavaScript 引擎
+浏览器/RunTime|：内核（渲染引擎）|JavaScript 引擎
 --：|：--|：--
 Chrome	|Blink（28~） Webkit（Chrome 27）	|V8
 FireFox |Gecko |	SpiderMonkey
@@ -11,7 +11,7 @@ Safari	|Webkit|	JavaScriptCore
 Edge	|EdgeHTML	|Chakra(for JavaScript)
 IE	|Trident	|Chakra(for JScript)
 PhantomJS	|Webkit	|JavaScriptCore
-Node.js	-	|V8|
+Node.js	-	|V8|-
 
 <table>
     <thead>

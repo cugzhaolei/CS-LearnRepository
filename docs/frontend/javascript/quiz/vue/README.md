@@ -1,4 +1,5 @@
-# [30 道 Vue 面试题](https://juejin.im/post/5d59f2a451882549be53b170)
+# Vue相关
+## [30 道 Vue 面试题](https://juejin.im/post/5d59f2a451882549be53b170)
 
 ## [中高级前端大厂面试秘籍，为你保驾护航金三银四，直通大厂(上)](https://juejin.im/post/5c64d15d6fb9a049d37f9c20)
 
@@ -18,7 +19,7 @@ function _init(){
     //编译slot,vnode
     initRender(vm);
     //触发钩子
-    callHook(vm,'beforeCreated)
+    callHook(vm,'beforeCreated')
     //添加inject功能
     initInject(vm);
     //完成数据响应性 props/data/watch/computed/methods
@@ -26,7 +27,7 @@ function _init(){
     //添加provide功能
     initProvide(vm);
     //触发钩子
-    callHook(vm,'created)
+    callHook(vm,'created')
 
     //挂载节点
     if(vm.$option.el){
@@ -44,7 +45,7 @@ function mountComponent(vm){
         this.options.render= render;
     }
     //触发钩子
-    callHook('beforeMount);
+    callHook('beforeMount');
     //初始化观察者
     //render 渲染vdom
     vdom = vm.render();
@@ -91,30 +92,22 @@ Vue.prototype.$destory = function(){
 
 ### 数据响应
 ::: tip
-看完生命周期后，里面的watcher等内容其实是数据响应中的一部分。数据响应的实现由两部分构成: 观察者( watcher ) 和 依赖收集器( Dep )，其核心是 defineProperty这个方法，它可以 重写属性的 get 与 set 方法，从而完成监听数据的改变。
+看完生命周期后，里面的watcher等内容其实是数据响应中的一部分。数据响应的实现由两部分构成: 观察者( watcher ) 和 依赖收集器( Dep )，其核心是 defineProperty这个方法，它可以重写属性的 get 与 set 方法，从而完成监听数据的改变。
 
 * Observe (观察者)观察 props 与 state
-
    - 遍历 props 与 state，对每个属性创建独立的监听器( watcher )
-
 * 使用 defineProperty 重写每个属性的 get/set(defineReactive）
-
    * get: 收集依赖
-
       - Dep.depend()
-
       - watcher.addDep()
-
-* set: 派发更新
-
-    - Dep.notify()
-    - watcher.update()
-    - queenWatcher()
-    - nextTick
-    - flushScheduleQueue
-    - watcher.run()
-    - updateComponent()
-
+    * set: 派发更新
+        - Dep.notify()
+        - watcher.update()
+        - queenWatcher()
+        - nextTick
+        - flushScheduleQueue
+        - watcher.run()
+        - updateComponent()
 ``` js
 let data = {a: 1}
 // 数据响应性
@@ -203,6 +196,56 @@ class Watcher {
 
 ```
 :::
+
+### v-if和v-show
+v-if 是真正的条件渲染，因为它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建；也是惰性的：如果在初始渲染时条件为假，则什么也不做——直到条件第一次变为真时，才会开始渲染条件块。
+v-show 就简单得多——不管初始条件是什么，元素总是会被渲染，并且只是简单地基于 CSS 的 “display” 属性进行切换。
+所以，v-if 适用于在运行时很少改变条件，不需要频繁切换条件的场景；v-show 则适用于需要非常频繁切换条件的场景。
+
+### Vue中异步请求
+* created(推荐 更快获取服务器数据-减少页面loading时间 ssr不支持beforeMounted mounted)
+* beforeMounted
+* mounted(可以访问到dom)
+
+### v-model原理
+v-model指令主要用于在表单input、textarea、select等元素上实现双向绑定 
+* text和textarea元素使用value和input事件
+* CheckBox和radio使用checked属性和change事件
+* select字段将value作为prop并将change作为事件
+以input为例
+``` js
+<input v-model='something'>
+    
+// 相当于
+
+<input v-bind:value="something" v-on:input="something = $event.target.value">
+```
+
+
+### 组件监听
+``` js
+//Parent.vue
+<Child @mounted="doSomething"></Child>
+//child.cue
+mounted(){
+    this.$emit('mounted');
+}
+
+//parent.vue
+<Child @hook:mounted = "doSomething"></Child>
+
+doSomething(){
+    console.log('父组件监听到mounted钩子函数')
+}
+//child.vue
+mounted(){
+    console.log('子组件触发mounted钩子函数')
+}
+
+//输出顺序如下：
+//子组件触发mounted钩子函数
+//父组件监听mounted钩子函数
+```
 
 ### virtual dom 原理实现
 ::: tip
@@ -348,6 +391,20 @@ function diffList(oldList,newList,index,patches){
 }
 ```
 :::
+
+### 侦听对象数组变化
+vue2.0中对属性的劫持是通过Object.defineProperty()实现的，但是对于数组，对象等监听只能通过如下方法
+``` js
+//observe a list of array item
+observeArray(items:Array<any>){
+    for(let i=0;i<items.length;i++){
+        observe(items[i]) //observe功能为监测数据的变化
+    }
+}
+
+let childOb = !isShallow&&observe(val)  //observe为监测数据的变化
+```
+
 
 ### [Proxy对比defineProperty的优势](https://www.jianshu.com/p/2df6dcddb0d7)
 ::: tip

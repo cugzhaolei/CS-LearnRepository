@@ -1,7 +1,7 @@
 # JavaScript函数
 
 
-## 立即执行函数(IEF)
+## 立即执行函数(IIEF)
 ``` js
 常见两种方式
 1.(function(){...})()
@@ -149,6 +149,41 @@ const sum = arr.reduce(function(accumulator,currentValue){
 console.log(sum); //35
 ```
 
+
+## reduce
+``` js
+cosnt reduce = (array,fn,initialValue)=>{
+    let accumu;ator;
+    if(initialValue!=undefined){
+        accumator = initialValue;
+    }else{
+        accumator = array[0];
+    }
+    if(initialValue === undefined){
+        for(let i=0;i<array.length;i++){
+            accumator = fn(accumulator,array[i]);
+        }
+    }else{
+        for(const  value of array){
+            accumulator =fn(accumulator,value);
+        }
+    }
+    return [accumulator];
+}
+```
+
+## zip函数
+合并两个给定是数组
+``` js
+const zip = (leftArr,rightArr,fn)=>{
+    let index,results = [];
+    for(index = 0;index<Math.min(leftArr)>)
+}
+```
+
+
+
+
 ## 创造高阶函数
 
 到目前为止，我们看到了语言中内置的各种高阶函数。 现在让我们来创造自己的高阶函数。
@@ -171,12 +206,53 @@ const lenArray = mapForEach(strArray,item=>item.length);
 
 console.log(lenArray);//[10, 6, 3, 4, 1]
 ```
-
 https://blog.bitsrc.io/understanding-higher-order-functions-in-javascript-75461803bad
+
+### 偏函数
+``` js
+const partial = function(fn,...partialArgs){
+    let args = partialArgs;
+    return function(...fullArguments){
+        let arg = 0;
+        for(let i=0;i<args.length&&arg<fullArguments.length;i++){
+            if(args[i]===undefined){
+                args[i]=fullArguments[args++];
+            }
+        }
+        return fn.apply(null,args);
+    }
+}
+```
 
 ### currying（柯里化）
 关于curring我们首先要聊的是什么是函数柯里化。
 curring又称部分求值。一个curring的函数首先会接受一些参数，接受了这些参数之后，该函数并不会立即求值，而是继续返回另外一个函数，刚才传入的参数在函数形成的闭包中被保存起来。待到函数中被真正的需要求值的时候，之前传入的所有参数被一次性用于求值。
+``` js
+const curry = (binaryFn)=>{
+    return function(firstArg){
+        return function(secondArg){
+            return binaryFn(firstArg,secondArg);
+        }
+    }
+}
+```
+- 多参数函数转换为一元curry函数
+``` js
+let curry =(fn)=>{
+    if(typeof fn!='function'){
+        throw Error('No function provided');
+    }
+    return function curriedFn(...args){
+        if(args.length<fn.length){
+            return function(){
+                return curriedFn.apply(null,args.concat([].slice.call(arguments)));
+            }
+        }
+        return fn.apply(null,args);
+    };
+};
+```
+
 生硬的看概念不太好理解，我们来看接下来的例子
 我们需要一个函数来计算一年12个月的消费，在每个月月末的时候我们都要计算消费了多少钱。正常代码如下
 
@@ -275,7 +351,141 @@ curry(foo, 2)(3, 4); // -> 24
 curry(foo, 2, 3)(4); // -> 24
 curry(foo, 2, 3, 4)(); // -> 24
 ```
+
+柯里化是一种模式，其中一个具有多个参数的函数被分解成多个函数，当被串联调用时，这些函数将一次累加一个所需的所有参数。这种技术有助于使用函数式编写的代码更容易阅读和编写。需要注意的是，要实现一个函数，它需要从一个函数开始，然后分解成一系列函数，每个函数接受一个参数。
+
+``` js
+function curry(fn){
+    if(fn.length===0){
+        return fn;
+    }
+
+    function _curry(depth,args){
+        return function(newArgument){
+            if(depth-1===0){
+                return fn(...args,newArgument);
+            }
+            return _curry(depth-1,[...args,newArgument]);
+        }
+    }
+    return _curry(fn.length,[]);
+}
+
+function add(a,b){
+    return a+b;
+}
+
+var curriedAdd = curry(add);
+var addFive = curried(5);
+
+var result = [0,1,2,3,4,5].map(addFive);
+```
+
+``` js
+function curry(fn: any) {
+  return function judgeCurry(...args: any) {
+      return fn.length > args.length ? 
+          (...args1: any) => judgeCurry(...args,...args1):
+          fn(...args);
+  }
+}
+```
+
+### formatMoney(千分位)
+``` js
+function fmoney(num: number){
+    /* 正则实现 */
+    // 参考：https://www.cnblogs.com/lvmylife/p/8287247.html
+    let [integer, decimal] = String(num).split('.');
+    let regExp = /\d{1,3}(?=(\d{3})+$)/g;
+    integer = integer.replace(regExp, '$&,');
+    return `${integer}${decimal === undefined ? '': '.'+decimal}`;
+    // 正则解释
+    // 正则表达式 \d{1,3}(?=(\d{3})+$)  表示前面有1~3个数字，后面的至少由一组3个数字结尾
+    // 先行肯定断言(?=)会作为匹配校验，但不会出现在匹配结果字符串里面
+    // ?=表示正向引用，可以作为匹配的条件，但匹配到的内容不获取，并且作为下一次查询的开始
+    // $& 表示与正则表达式相匹配的内容，具体的可查看 w3school的replace()方法
+
+    /* Number.prototype.toLocaleString()实现 */
+    // Number.prototype.toLocaleString()
+    // return num.toLocaleString('en');
+
+    /* Intl.NumberFormat().format(number)实现 */
+    // Intl.NumberFormat().format(number)
+    // return Intl.NumberFormat('en').format(num);
+
+    // reduce 方案
+    // let arr = String(num).split('.');
+    // let char = arr[0].split('').reverse();   
+    // let IntStr = char.reduce((acc, value, index) => {
+    //     return `${index % 3 === 0 ? String(value)+',' : String(value)}${acc}`;
+    // }, '').slice(0, -1);
+    // return `${IntStr}${arr[1]? '.'+arr[1] : '' }`;
+}
+```
+
+### 组合函数compose
+
+``` js
+function compose(...args:any[]){
+    return (subArgs:any)=>{
+        return args.reverse().reduce((acc,func,index)=>{
+            return func(acc);
+        },subArgs);
+    }
+}
+```
+### 函数管道
+``` js
+function pipe(...args:any[]){
+    return args(subArgs:any)=>{
+        return args.reduce((acc,func,index)=>{
+            return func(acc);
+        },subArgs);
+    }
+}
+```
 ### 函数节流
+``` js
+function throttle(fn:any,wait:number){
+    let last:any;
+    return function(){
+        let now:any = Date.now();
+        //初次执行
+        if(!last){
+            fn.apply(this,arguments);
+            last = now;
+            return;
+        }
+        //以后触发，需要判断是否到延迟
+        if(now-last>=wait){
+            fn.apply(this,arguments);
+            last = now;
+        }
+    }
+}
+```
+
+### 函数防抖
+``` js
+function debounce(func:any,delay:number){
+    //初次触发定时器为null，后面产生一份定时器并记下定时器id
+    let timer:any = null;
+    return function(){
+        let args = arguments;
+        //如果已有定时器id，则需要清除,重新开始延迟执行
+        if(timer){
+            clearTimeout(timer);
+            timer =null;
+        }
+        timer = setTimeout(()=>{
+            func.apply(this,args);
+        //销毁定时器id，以便下次节流函数触发
+        timer = null;
+        },delay);
+    }
+}
+```
 JavaScript中的大多数函数都是用户主动触发的，一般情况下是没有性能问题，但是在一些特殊的情况下不是由用户直接控制。容易大量的调用引起性能问题。毕竟DOM操作的代价是非常昂贵的。下面将列举一些这样的场景：
 window.resise事件。
 mouse, input等事件。

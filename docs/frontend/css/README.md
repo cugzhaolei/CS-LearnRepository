@@ -334,6 +334,155 @@ const planetStyle = (index, l) => {
 (6) animation-direction: 方向
 (7) animation-fill-mode: 禁止模式
 
+* [CSS骨骼动画](https://juejin.im/post/5deb49a251882512302daa92)
+简单摆动
+``` css
+.animation_1{
+    animation:swing 1s ease-in-out infinite;
+    transfoem:rotate(-5deg);
+    transform-origin:top center;
+}
+@keyframes swing{
+    0%  {transform:rotate(-5deg);}
+    50%  {transform:rotate(5deg);}
+    100% {transform:rotate(-5deg);}
+}
+```
+改进
+``` html
+<div class="animate-2">
+    <!--元素1-->
+    <div class="item-1"></div>
+    <!--元素2-->
+    <div class="item-2"></div>
+    <!--元素3-->
+    <div class="item-3"></div>
+</div>
+```
+``` css
+.animate-2 .item-1 {
+    /* 设置margin是为了定位，使其部分重叠在一起 */
+    margin-bottom: -8px;
+    margin-left: 18px;
+    position: relative;
+    z-index: 1;
+    animation: swing2-1 1s ease-in-out infinite;
+    transform: rotate(-3deg);
+    transform-origin: top center;
+}
+.animate-2 .item-2 {
+    animation: swing2-2 1s ease-in-out infinite;
+    transform: rotate(5deg);
+    transform-origin: top center;
+}
+.animate-2 .item-3 {
+    margin-top: -5px;
+    margin-left: 17.5px;
+    position: relative;
+    animation: swing2-3 1s ease-in-out infinite;
+    transform: rotate(-5deg);
+    transform-origin: top center;
+}
+@keyframes swing2-1 {
+    0% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg);}
+    100% { transform: rotate(-3deg);}
+}
+@keyframes swing2-2 {
+    0% { transform: rotate(5deg); }
+    50% { transform: rotate(-5deg);}
+    100% { transform: rotate(5deg);}
+}
+@keyframes swing2-3 {
+    0% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg);}
+    100% { transform: rotate(-5deg);}
+}
+```
+
+``` html
+<div class="animate-3">
+    <!--运动模块1-->
+    <div class="s-1">
+        <div class="item-1"></div>
+        <!--运动模块2-->
+        <div class="s-2">
+            <div class="item-2"></div>
+            <!--运动模块3-->
+            <div class="s-3">
+                <div class="item-3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+``` css
+.animate-3 .s-1 {
+    animation: swing3-1 1s ease-in-out infinite;
+    transform: rotate(-3deg);
+    transform-origin: top center;
+}
+.animate-3 .s-2 {
+    animation: swing3-2 1s ease-in-out infinite;
+    transform: rotate(-5deg);
+    transform-origin: top center;
+}
+.animate-3 .s-3 {
+    animation: swing3-3 1s ease-in-out infinite;
+    transform: rotate(-5deg);
+    transform-origin: top center;
+}
+@keyframes swing3-1 {
+    0% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg);}
+    100% { transform: rotate(-3deg);}
+}
+@keyframes swing3-2 {
+    0% { transform: rotate(5deg); }
+    50% { transform: rotate(-5deg);}
+    100% { transform: rotate(5deg);}
+}
+@keyframes swing3-3 {
+    0% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg);}
+    100% { transform: rotate(-5deg);}
+}
+```
+最终效果
+``` css
+.animate-4 .s-1 {
+    animation: swing4-1 5s ease-in-out infinite;
+    transform: rotate(-2deg);
+    transform-origin: top center;
+}
+.animate-4 .s-2 {
+    animation: swing4-2 8s ease-in-out infinite;
+    transform: rotate3d(0, 1, 0, 20deg);
+    transform-origin: top center;
+}
+.animate-4 .s-3 {
+    animation: swing4-3 8s ease-in-out infinite;
+    transform: rotate(3deg);
+    transform-origin: top center;
+}
+@keyframes swing4-1 {
+    0% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg);}
+    100% { transform: rotate(-2deg);}
+}
+@keyframes swing4-2 {
+    0% { transform: rotate3d(0, 1, 0, 20deg); }
+    50% { transform: rotate3d(0, 1, 0, -20deg);}
+    100% { transform: rotate3d(0, 1, 0, 20deg);}
+}
+@keyframes swing4-3 {
+    0% { transform: rotate(3deg); }
+    50% { transform: rotate(-3deg);}
+    100% { transform: rotate(3deg);}
+}
+```
+
 
 ## [水平居中](https://louiszhai.github.io/2016/03/12/css-center/)
 
