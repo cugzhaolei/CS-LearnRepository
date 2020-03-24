@@ -1,7 +1,9 @@
 # Array
 
 [1.MDN Array](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array)
+
 ## 数组扁平化
+
 ``` js
 var inputArr = [1,2,3,[4,5,[6,7,[8,9,[10,11,[12]]]]]];
 
@@ -160,6 +162,7 @@ console.log(unique11([1,2,1,3,4,1,2,5,3,7,8]))//[1, 2, 3, 4, 5, 7, 8]
 ```
 
 ### 对象数组去重
+
 ``` js
 const resourceList = [
     {id:1,a:1},
@@ -177,6 +180,7 @@ console.log(result);
 ```
 
 ### 数组去重
+
 ``` js
 function unique(arr){
     var temp = arr.sort();
@@ -209,9 +213,75 @@ Array.prototype.flat = function(){
 ```
 
 ### 数组乱序
+
 ``` js
 var arr = [1,2,3,4,5,6,7,8,9,10];
 arr.sort(function(){
     return Math.random()-0.5;
 })
 ```
+
+## 判断数组方法
+
+### Object.prototype.toString.call()
+
+每一个继承Object的对象都有toString()方法，如果没有被重写，都会返回[Object type]，其实type为对象的类型，但是当除了Object类型的对象外。其他的类型可以直接使用toString方法。都返回内容的字符串。所以需要执行call apply方法改变toString方法的上下文
+
+``` js
+const newArr = ['hello','world'];
+newArr.toString(); // hello world
+Object.prototype.toString.call(newArr); //[object Array]
+```
+
+判断其他类型
+
+``` js
+Object.prototype.toString.call(newArr); //[object Array]
+Object.prototype.toString.call(1); //[object Number]
+Object.prototype.toString.call(Symbol(1)); //[object Symbol]
+Object.prototype.toString.call(null); //[object Null]
+Object.prototype.toString.call(undefined); //[object Undefined]
+Object.prototype.toString.call(function(){}); //[object Function]
+Object.prototype.toString.call({foo:'bar'}); //[object Object]
+```
+
+### instanceof
+
+instanceof是通过判断对象的原型链中能否找到prototype。使用instanceof判断一个对象是否为数组，instanceof会判断这个对象的原型链上是否会找到对应的array原型，否则返回false。
+
+``` js
+[] instanceof Array; //true
+```
+
+instanceof 只能用来判断对象类型，不能用作原始类型的判断，所有对象的instanceof Object都为true
+
+``` js
+[] instanceof Object; //true
+```
+
+### Array.isArray
+
+* 判断对象是否为数组 ES5新增
+* instanceof和Array.isArray
+  Array.isArray()可以检测出iframes
+
+``` js
+var iframe = document.createElement('iframe');
+docuement.body.appendChild(iframe);
+ArrayX = window.frames[windows.frames.length-1].Array;
+var arr = new ArrayX(1,2,3); //[1.2.3]
+
+Array.isArray(arr); //true
+
+Object.prototype.toString.call(arr); //true
+
+arr instanceof Array ; //false
+
+//polify
+if(Array.isArray){
+    Array.isArray = function(arg){
+        return Object.prototype.toString.call(arg)
+    };
+}
+```
+

@@ -1,7 +1,8 @@
 # async/await
 
 ES2017 提出的async 函数，终于让 JavaScript 对于异步操作有了终极解决方案。No more callback hell。
-*async 函数是 Generator 函数的语法糖。使用 关键字 async 来表示，在函数内部使用 await 来表示异步。
+
+* async 函数是 Generator 函数的语法糖。使用 关键字 async 来表示，在函数内部使用 await 来表示异步。
 想较于 Generator，Async 函数的改进在于下面四点：
 
 * 内置执行器。Generator 函数的执行必须依靠执行器，而 Aysnc 函数自带执行器，调用方式跟普通函数的调用一样；
@@ -41,9 +42,10 @@ const makeRequest = async()=>{
 }
 ```
 
-### [阮一峰大神的ES6入门](http://es6.ruanyifeng.com/#docs/async)
+## [阮一峰大神的ES6入门](http://es6.ruanyifeng.com/#docs/async)
 
 返回thenable对象
+
 ``` js
 class sleep{
     constructor(timeout){
@@ -64,6 +66,7 @@ class sleep{
 ```
 
 javascript 休眠
+
 ``` js
 function sleep(interval) {
   return new Promise(resolve => {
@@ -81,7 +84,9 @@ async function one2FiveInAsync() {
 
 one2FiveInAsync();
 ```
+
 任何一个await语句后面的 Promise 对象变为reject状态，那么整个async函数都会中断执行。
+
 ``` js
 async function f() {
   await Promise.reject('出错了');
@@ -89,7 +94,7 @@ async function f() {
 }
 ```
 
-### 错误处理
+## 错误处理
 
 如果await后面的异步操作出错，那么等同于async函数返回的 Promise 对象被reject。
 
@@ -104,7 +109,9 @@ f()
 .catch(e=>console.log(e))
 //Error 出错了
 ```
+
 防止出错的方法，也是将其放在try...catch代码块之中。
+
 ``` js
 async function f(){
     try{
@@ -118,13 +125,14 @@ async function f(){
 }
 ```
 
-### 实现原理
-将Generator函数和自动执行器包装在一个函数中
-``` js
-async function fm(args){
-    //something to do 
-}
+## 实现原理
 
+将Generator函数和自动执行器包装在一个函数中
+
+``` js
+async function fn(args){
+    //something to do
+}
 
 function fn(args){
     return spawn(function* (){
@@ -132,7 +140,9 @@ function fn(args){
     });
 }
 ```
+
 spawn 是自动执行器 简单实现如下：
+
 ``` js
 function spawn(genF) {
   return new Promise(function(resolve, reject) {

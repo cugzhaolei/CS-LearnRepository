@@ -1,53 +1,65 @@
 # JavaScript 相关面试题
 
-
 ## [webworker](./webworker/)
+
 ## [vue 相关](./vue/)
+
 ## [防抖与节流](https://www.jianshu.com/p/566c66aafa22)
 
 ## array 相关
+
 ::: tip
+
 - map() 方法创建一个新数组，其结果是该数组中的每个元素都调用一个提供的函数后返回的结果。
 
 ``` js
 //["1","2","3"].map(parseInt)
 
 //
-var ary = [0,1,2];																
+var ary = [0,1,2];
 ary[10]=10; 
 ary.filter(function(x){return x===undefined;});
 
 console.log(ary);
 
-//3-9都没有初始化 
+//3-9都没有初始化
 [0,1,2,empty*7,10];
 
 ```
+
 :::
 
 ### IIFE 自执行函数
+
 ::: tip
+
 ``` js
 function foo(){}()
+
 ```
 IIFE 代表立即调用的函数表达式。JS解析器读取函数foo(){}();作为函数foo(){}和();，前者是一个函数声明，后者(一对括号)是尝试调用一个函数，但没有指定名称，因此它抛出Uncaught SyntaxError: Unexpected token 异常。
 
 * 常见两种方式
+
 ``` js
 1.(function(){...})()
   (function(x){
       console.log(x);
   })(12345)
+
 2.(function(){...}())
   (function(x){
       console.log(x);
   }(12345))
+
 作用 不破坏污染全局的命名空间，若需要使用，将其用变量传入如
 （function(window){...}(window)）
 ```
+
 :::
 
 ## async/await
+
 ::: tip
 
 ES7 提出的async 函数，终于让 JavaScript 对于异步操作有了终极解决方案。No more callback hell。
@@ -63,6 +75,7 @@ async 函数是 Generator 函数的语法糖。使用 关键字 async 来表示�
 链接：https://juejin.im/post/5bee888fe51d4557fe34e356
 来源：掘金
 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
 ``` js
 //作用：异步代码的新方式
 //promise示例
@@ -95,6 +108,7 @@ const makeRequest = async () => {
 }
 
 ```
+
 :::
 
 ## [Js Mixin](https://www.jianshu.com/p/7c1471ec4c50)
@@ -133,9 +147,11 @@ class Point extends Serialization {
 s = new Serialization(); // 构造Serialization失败
 p = new Point(4,5); // 构造子类对象时，调用父类构造器执行也会失
 ```
+
 父类构造函数中，要求具有属性是stringify的序列化函数，如果没有则抛出异常。
 
 以下是完整继承的代码
+
 ``` js
 class Serialization {
     constructor() {
@@ -188,9 +204,11 @@ Serialization construtor ~~~~~~
 ```
 
 ### compose函数
+
 组合的思想就是把小函数组合成大函数
 
 * 组合单个函数
+
 ```  js
 const compose = (a,b)=>(c)=>a(b(c));
 
@@ -200,7 +218,9 @@ let count = (array)=>array.length;
 const countWords = compose(count,splitIntoSpace);
 countWords("Hello your reading about composition"); //5
 ```
+
 * 组合多个函数
+
 ``` js
 const compose = (...fns)=>
 (value)=>reduce(fns.reduce(),(acc,fn)=>fn(acc),value);
@@ -210,8 +230,11 @@ let oddOrEven = (ip)=>ip%2==0?"even":"odd";
 const oddOrEvenWords = compose(oddOrEven,count,splitIntoSpaces);
 oddOrEvenWords("Hello  your reading about composition");//odd
 ```
+
 ### 管道/序列
+
 compose的数据流是从右到左，因为最右侧的函数首先执行，将数据传递给下一个函数，最左侧的最后执行。pipe函数就是从左到右处理数据流的过程称为管道(pipeline)或者序列(sequence)
+
 ``` js
 const pipe = (...fns)=>
 (value)=>reduce(fns,(acc,fn)=>fn(acc),value);//fns没有使用reverse
@@ -220,8 +243,11 @@ const pipe = (...fns)=>
 const oddOrEvenWords = pipe(splitIntoSpace,count,oddOrEven);
 oddOrEvenWords("Hello  your reading about composition");//odd
 ```
+
 ### 组合的优势
+
 * 组合满足结合律
+
 ``` js
 compose(f,compose(g,h)) == compose(compose(f,g),h);
 //compose(compose(f,g),h)
@@ -234,10 +260,14 @@ let oddOrEvenWords("Hello  your reading about composition");//odd
 ```
 
 ### 函子
+
 用一种纯函数式的方式帮助我们处理错误
+
 ::: tip
+
 * 函子是什么：函子是一个普通对象(在其他语言中，可能是一个类)，他实现了map函数，在遍历每个对象值的时候生成一个新对象。
 :::
+
 ``` js
 const Container = function(val){
     this.val = val;
@@ -271,6 +301,7 @@ Container{
     }
 }
 ```
+
 #### 函子实现map
 
 ``` js
@@ -284,17 +315,20 @@ Container.of(3).map(double) //Container(value:6)
 //container链式调用
 Container.of(3).map(double).map(double).map(double) //Container{value:24}
 ```
+
 ::: tip
 函子是一个普通对象（在其他语言中，可能是一个类）它实现了map函数，在遍历每个对象值的时候生成了一个新对象-函子是实现了map契约的对象
 :::
 
 ### MayBe函子
+
 处理函数中的代码
+
 ``` js
 //MayBe定义
 const MayBe = function(val){
     this.val = val;
-} 
+}
 MayBe.of = function(val){
     return new MayBe(val);
 }
@@ -659,6 +693,7 @@ console.log(a); //2
 ```
 
 ### 临时死区
+
 ``` js
 //console.log(aLet)  // would throw ReferenceError
 
@@ -668,7 +703,32 @@ aLet = 10;
 console.log(aLet); // 10
 ```
 
+### 箭头函数与普通函数
+
+两者的差异
+
+1. 函数体内的this对象，就是定义时所在的对象，而不是使用时所在的对象
+2. 不可以使用arguments对象，该对象在函数体内不存在，如果要用可以用rest代替
+3. 不可以使用yield命令，因此箭头函数不能用作Generator函数
+4. 不可以使用new命令，因为
+
+* 没有自己的this，无法调用call apply
+* 没有prototype属性，而new命令在执行时需要将构造函数的prototype赋值给新的对象的_proto_
+
+``` js
+function newFun(father,...rest){
+    var result = {};
+    result._proto_ = father.prototype;
+    var result2 = father.apply(result,rest);
+    if((typeof result2 === 'object'||typeof result2=='function')&&rsult2!==null){
+        return result2;
+    }
+    return result;
+}
+```
+
 ### [不用箭头函数](https://juejin.im/post/5dc8a231f265da4d40712f8a)
+
 不应该使用箭头函数一些情况：
 
 * 当想要函数被提升时(箭头函数是匿名的)
@@ -678,6 +738,7 @@ console.log(aLet); // 10
 * 当想在对象字面是以将函数作为属性添加并在其中使用对象时，因为咱们无法访问 this 即对象本身。
 
 ### ES6 map weakmap
+
 WeakMaps 提供了一种从外部扩展对象而不影响垃圾收集的方法。当咱们想要扩展一个对象，但是因为它是封闭的或者来自外部源而不能扩展时，可以应用WeakMap。
 WeakMap只适用于 ES6 或以上版本。WeakMap是键和值对的集合，其中键必须是对象。
 
@@ -695,6 +756,7 @@ map.set(pavloHero,"This is Hero");
 map.set(gabrielFranco,'This is Franco');
 console.log(map.get(pavloHero)); //This is hero
 ```
+
 WeakMaps的有趣之处在于，它包含了对map内部键的弱引用。弱引用意味着如果对象被销毁，垃圾收集器将从WeakMap中删除整个条目，从而释放内存。
 
 ``` js
@@ -712,27 +774,32 @@ var weakmap = new WeakMap();
     weakmap.set(b,2)
 })
 ```
+
 执行上面的 IIFE，就无法再引用{x：12}和{y：12}。垃圾收集器继续运行，并从 WeakMa中删除键b指针，还从内存中删除了{y：12}。
 但在使用 Map的情况下，垃圾收集器不会从Map中删除指针，也不会从内存中删除{x：12}。
 WeakMap 允许垃圾收集器执行其回收任务，但Map不允许。对于手动编写的 Map，数组将保留对键对象的引用，以防止被垃圾回收。但在WeakMap中，对键对象的引用被“弱”保留，这意味着在没有其他对象引用的情况下，它们不会阻止垃圾回收
 
-
 ### 节点的CRUD操作
 
 * 创建新节点
+
 ``` js
 createDocumentFragment  //创建新DOM片段
 createElement //创建一个元素
 createTextNode //创建一个文本节点
 ```
+
 * 添加 移除 替换 插入
+
 ``` js
 appendChild() //添加
 removeChild //移除
 replaceChild //替换
 insertBofore //插入
 ```
+
 * 查找
+
 ``` js
 getElementsByTagName() //通过标签名查找
 getElementsByName() //通过元素的name属性查找
@@ -744,6 +811,7 @@ getElementById() //通过元素的id查找
 定义和用法：
 一个父函数里面包含了一个子函数，子函数调用了父函数内部的变量，如果子函数在外部被调用，就产生了闭包。简单的说，闭包就是能够读取其他函数内部变量的函数。
 闭包的作用：
+
 1. 读取其他函数内部的变量
 2. 变量保存在内存中
 注意：
@@ -751,15 +819,15 @@ getElementById() //通过元素的id查找
 
 ### 浏览器存储
 
-- 数据存储大小
+* 数据存储大小
 * cookie：4kb
 * webStorge：5mb
-- 数据存储有效期限
+* 数据存储有效期限
 * cookie：根据自己的设置时间
 * sessionStorage：关闭窗口后失效
 * localStorage：永久有效除非js删除或者浏览器删除
-- 作用域
-- cookie和localStorage是在同源窗口，同一个浏览器共享的，sessionStorage只在同一个标签页共享。
+* 作用域
+* cookie和localStorage是在同源窗口，同一个浏览器共享的，sessionStorage只在同一个标签页共享。
 
 ### document load & ready
 
@@ -767,12 +835,13 @@ getElementById() //通过元素的id查找
 * load：所有页面元素都加载完成 ready的速度比load快
 
 ### 输入url到显示页面
+
 涉及的主要流程或步骤有：
 * ①浏览器根据请求的URL，交给DNS域名解析，找到真实的ip，交给域名解析。
 * ②服务器交给后端处理完成后返回的数据，浏览器接收文件HTML,CSS,JS图片等。
 * ③浏览器对加载的资源进行语法解析，建立相应的数据内部结构。
 * ④解析html，创建dom树，自上而下的顺序
-* ⑤解析css，优先级：浏览器默认设置<用户设置<外部样式<内联样式<HTML中的style样式；
+* ⑤解析css，优先级：浏览器默认设置<用户设置<外部样式<内联样式< HTML中的style样式；
 * ⑥将css与dom合并，构建渲染树
 * ⑦布局重绘重排，页面完成渲染。
 
@@ -784,11 +853,11 @@ getElementById() //通过元素的id查找
 * 新的技术：webworker, websocket, Geolocation
 
 ### Iframe
+
 * ①iframe会阻塞页面的 onload事件
 * ②搜索引擎不能够解读 iframe 页面，不利于 seo
 * ③iframe和主页面共享连接池，然而浏览器对相同域的链接是有限制的，所以这会影响页面的并行加载。
 * ④如果想要绕开以上的2个问题，可以考虑通过js动态复职给 iframe添加src值。
-
 
 ### web标准以及w3c标准
 
@@ -808,6 +877,7 @@ getElementById() //通过元素的id查找
 3. 父级div定义overflow:hidden 
 4. 父级div也浮动，需要定义宽度 
 5. 结尾处加br标签clear:both
+
 ``` js
 .clearfix:after{visibility:hidden;display:block;font-size:0;content:" ";clear:both;height:0}
 .clearfix{display:inline-table}

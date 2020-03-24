@@ -831,7 +831,7 @@ public class combinationSum_39 {
         LinkedList<Integer> track = new LinkedList<>();
         //排序后剪枝更容易
         Arrays.sort(candidates);
-        //套用公式，canditates是指选择列表。targete用来判断是否结束和用于剪枝
+        //套用公式，candidates是指选择列表。target用来判断是否结束和用于剪枝
         //track是路径 已经做出的选择
         backtrack(candidates, 0, target, track);
         return res;
@@ -855,7 +855,6 @@ public class combinationSum_39 {
     }
 }
 ```
-
 
 
 
@@ -1533,7 +1532,7 @@ public class Solution {
 ```
 
 ``` java
-public List<List<Integer>> combinationSum(int[] canditates,int target){
+public List<List<Integer>> combinationSum(int[] candidates,int target){
     List<List<Integer>> combinations = new ArrayList<>();
     backtracking(new ArrayList<>(),combinations,0,target,candidates);
     return combinations;
@@ -1544,9 +1543,9 @@ private void backtracking(List<Integer> tempCombination,List<List<Integer>> comb
         return;
     }
 
-    for(int i=start;i<canditates.length;i++){
+    for(int i=start;i<candidates.length;i++){
         if(candidates[i]<=target){
-            tempConbination.add(canditates[i]);
+            tempConbination.add(candidates[i]);
             backtracking(tempCombination,combinations,i,target-candidates[i]);
             tempCombination.remove(tempCombination.size()-1);
         }
@@ -1579,7 +1578,151 @@ candidates 中的每个数字在每个组合中只能使用一次。
 ``` java
 class Solution {
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        
+        int len = candidates.length;
+        List<List<Integer>> res = new ArrayList<>();
+        if(len == 0){
+            return  res;
+        }
+
+        //先将数组排序，这一步很关键
+        Arrays.sort(candidates);
+        Deque<Integer> path = new ArrayDeque<>(len);
+        dfs(candidates,len,0,target,path,res);
+        return res;
     }
+    /**
+     * @param candidates 候选数组
+     * @param len
+     * @param begin      从候选数组的 begin 位置开始搜索
+     * @param residue    表示剩余，这个值一开始等于 target，基于题目中说明的"所有数字（包括目标数）都是正整数"这个条件
+     * @param path       从根结点到叶子结点的路径
+     * @param res
+     */
+    private void dfs(int[] candidates,int len,int begin,int residue,Deque<Integer> path,List<List<Integer>> res){
+        if(residue==0){
+            res.add(new ArrayList<>(path));
+            return;
+        }
+        for(int i=begin;i<len;i++){
+            //大剪枝
+            if(residue-candidates[i]<0){
+                break;
+            }
+            //小剪枝
+            if(i>begin&&candidates[i]==candidates[i-1]){
+                continue;
+            }
+            path.addLast(candidates[i]);
+
+            //因为元素不可重复使用，这传递下去的是i+1而不是i
+            dfs(candidates,len,i+1,residue-candidates[i],path,res);
+            path.removeLast();
+        }
+    }
+}
+```
+
+### [10.1-9数字组合](https://leetcode-cn.com/problems/combination-sum-iii/)
+找出所有相加之和为 n 的 k 个数的组合。组合中只允许含有 1 - 9 的正整数，并且每种组合中不存在重复的数字。
+
+说明：
+
+所有数字都是正整数。
+解集不能包含重复的组合。 
+示例 1:
+
+输入: k = 3, n = 7
+输出: [[1,2,4]]
+示例 2:
+
+输入: k = 3, n = 9
+输出: [[1,2,6], [1,3,5], [2,3,4]
+
+[回溯+剪枝](https://leetcode-cn.com/problems/combination-sum-iii/solution/hui-su-jian-zhi-by-liweiwei1419/)
+``` java
+public List<List<Integer>> combinationSum3(int k,int n){
+    List<List<Integer>> res = new ArrayList<>();
+    //开始做一些特殊判断
+    if(k<=0||n<=0||k>=n){
+        return res;
+    }
+    //寻找n的上限：[9,8,7,...(9k+1)]，他们的和为(19-k)*k/2
+    //大于上限，结束搜索
+    if(n>(19-k)*k/2){
+        return res;
+    }
+
+    // 用deque代替stack
+    Deque<Integer> path = new ArrayDeque<>();
+    dfs(k,n,1,path,res);
+    return res;
+}
+
+private void dfs(int k,int residue,int start,Deque<Integer> path,List<List<Integer>> res){
+    //剪枝：[start,9] 区间里面的数不够k个，不用继续向下搜索
+    if(10-start<k){
+        return;
+    }
+    if(k==0){
+        if(residue==0){
+            res.add(new ArrayList<>(path));
+            return;
+        }
+    }
+
+    //枚举起点值[...,7,8,9]
+    //找3个数，起点最多到7
+    //找2个数，起点最多到8
+    //规律是，起点上界+k=10,故起点上界=10-k
+
+    for(int i=start;i<=10-k;i++){
+        if(residue-i<0){
+            break;
+        }
+        path.addLast(i);
+        dfs(k-1,residue-i,i+1,path,res);
+        path.removeLast();
+    }
+}
+```
+
+### [78. 子集](https://leetcode-cn.com/problems/subsets/)
+
+给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
+[1](https://leetcode-cn.com/problems/subsets/solution/hui-su-suan-fa-by-powcai-5/)
+[2](https://leetcode-cn.com/problems/subsets/solution/er-jin-zhi-wei-zhu-ge-mei-ju-dfssan-chong-si-lu-9c/)
+
+``` js
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        backtrace(0,nums,res,new ArrayList<Integer>());
+        return res;
+    }
+
+    private void backtrace(int i,int[] nums,List<List<Integer>> res,ArrayList<Integer> tmp){
+        res.add(new ArrayList<>(tmp));
+        for(int j=i;j<nums.length;j++){
+            tmp.add(nums[j]);
+            backtrace(j+1,nums,res,tmp);
+            tmp.remove(tmp.size()-1);
+        }
+    }
+}
+```
+
+* 二进制和位运算
+
+``` java
+public static List<List<Integer>> binaryBit(int[] nums){
+    List<List<Integer>> res = newArrayList<List<Integer>>();
+    for(int i=0;i<(1<<nums.length);i++){
+        List<Integer> sub = new ArrayList<Integer>();
+        for(int j=0;j<nums.length;i++){
+            if(((i>>j)&1)==1)sub.add(nums[j]);
+        }
+        res.add(sub);
+    }
+    return res;
 }
 ```

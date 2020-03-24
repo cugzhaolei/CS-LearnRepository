@@ -16,8 +16,8 @@ ECMAScript 中的一切（变量、函数名和操作符）都区分大小写
 
 #### 3.1.2 标识符
 所谓标识符，就是指变量、函数、属性的名字，或者函数的参数。
- 第一个字符必须是一个字母、下划线（ _）或一个美元符号（ $）；
- 其他字符可以是字母、下划线、美元符号或数字。
+* 第一个字符必须是一个字母、下划线（ _）或一个美元符号（ $）；
+* 其他字符可以是字母、下划线、美元符号或数字。
 标识符中的字母也可以包含扩展的 ASCII 或 Unicode 字母字符，按照惯例， ECMAScript 标识符采用驼峰大小写格式，也就是第一个字母小写，剩下的每个单词的首字母大写
 
 ::: tip
@@ -105,7 +105,1036 @@ function test(){
 }
 test();
 alert(message) // Uncaught ReferenceError: message is not defined
+
+//将message修改为全局变量
+function test(){
+    message = "hi"
+}
+test()
+alert(message) // hi
 ```
+
+### 3.4 数据类型
+ECMAScript 5 中有 5 种简单数据类型（也称为基本数据类型）： Undefined、 Null、 Boolean、 Number 和 String。 ES6中新增 symbol和bigint 还有 1 种复杂数据类型——Object， Object 本质上是由一组无序的名值对组成的。 
+
+#### 3.4.1 typeof操作符
+对一个值使用 typeof 操作符可能返回下列某个字符串：
+* "undefined"——如果这个值未定义；
+* "boolean"——如果这个值是布尔值；
+* "string"——如果这个值是字符串；
+* "number"——如果这个值是数值；
+* "object"——如果这个值是对象或 null；
+* "function"——如果这个值是函数；
+
+``` js
+typeof Symbol //"function"
+```
+调用 typeof null
+会返回"object"，因为特殊值 null 被认为是一个空的对象引用。
+
+#### 3.4.2 undefined类型
+Undefined 类型只有一个值，即特殊的 undefined
+``` js
+var message; //声明未赋值
+alert(message == undefined); //true
+```
+对未初始化的变量执行 typeof 操作符会返回 undefined 值，而对未声明的变量执行 typeof 操作符同样也会返回 undefined 值
+
+``` js
+var message; // 这个变量声明之后默认取得了 undefined 值
+// 下面这个变量并没有声明
+// var age
+alert(typeof message); // "undefined"
+alert(typeof age); // "undefined"
+```
+
+#### 3.4.3 Null类型
+Null 类型是第二个只有一个值的数据类型，这个特殊的值是 null。
+``` js
+var car = null;
+alert(typeof car); // "object"
+```
+如果定义的变量准备在将来用于保存对象，那么最好将该变量初始化为 null 而不是其他值
+``` js
+if( car!=null){
+    //something to do
+}
+```
+undefined 值是派生自 null 值的，因此 ECMA-262 规定对它们的相等性测试要返回 true：
+``` js
+console.log(null==undefined) //true
+```
+
+#### 3.4.4 Boolean 类型
+Boolean 类型是 ECMAScript 中使用得最多的一种类型，该类型只有两个字面值： true 和 false。这两个值与数字值不是一回事，因此 true 不一定等于 1，而 false 也不一定等于 0。
+``` js
+var found = true;
+var lost = false;
+```
+虽然 Boolean 类型的字面值只有两个，但 ECMAScript 中所有类型的值都有与这两个 Boolean 值等价的值。要将一个值转换为其对应的 Boolean 值，可以调用转型函数 Boolean()
+``` js
+var message = "Hello world!";
+var messageAsBoolean = Boolean(message);
+```
+数据类型 |转换为true的值 |转换为false的值
+--:|:--:|:--
+Boolean |true |false
+String |任何非空字符串 |""（空字符串）
+Number |任何非零数字值（包括无穷大） |0和NaN（参见本章后面有关NaN的内容）
+Object |任何对象null
+Undefined |n/a| undefined
+
+#### 3.4.5 Number类型
+使用 IEEE754 格式来表示整数和浮点数值（浮点数值在某些语言中也被称为双精度数值）
+``` js
+var intNum = 55; // 整数
+```
+整数还可以通过八进制（以 8 为基数）或十六进制（以 16 为基数）的字面值来表示。其中，八进制字面值的第一位必须是零（ 0），然后是八进制数字序列（ 0～ 7）。如果字面值中的数值超出了范围，那么前导零将被忽略，后面的数值将被当作十进制数值解析
+``` js
+var octalNum1 = 070; // 八进制的 56
+var octalNum2 = 079; // 无效的八进制数值——解析为 79
+var octalNum3 = 08; // 无效的八进制数值——解析为 8
+```
+十六进制字面值的前两位必须是 0x，后跟任何十六进制数字（ 0～ 9 及 A～ F）。
+``` js
+var hexNum1 = 0xA;   //十六进制的10
+var hexNum2 = 0x1f;  //十六进制的31
+```
+::: tip
+鉴于 JavaScript 中保存数值的方式，可以保存正零（+0）和负零（-0）。正零和负零被认为相等
+:::
+1. 浮点数值
+所谓浮点数值，就是该数值中必须包含一个小数点，并且小数点后面必须至少有一位数字
+``` js
+var floatNum1 = 1.1;
+var floatNum2 = 0.1;
+var floatNum3 = .1; // 有效，但不推荐
+
+var floatNum1 = 1.; // 小数点后面没有数字——解析为 1
+var floatNum2 = 10.0; // 整数——解析为 10
+```
+浮点数值需要的内存空间是保存整数值的两倍,用 e 表示法（即科学计数法）表示的浮点数值表示
+``` js
+var floatNum = 3.125e7; // 等于 31250000
+// 0.0000003 会被转换成 3e7
+if (a + b == 0.3){ // 不要做这样的测试！
+    alert("You got 0.3.");
+}
+```
+2. 数值范围
+ECMAScript 能够表示的最小数值保
+存在 Number.MIN_VALUE 中——在大多数浏览器中，这个值是 5e-324；能够表示的最大数值保存在Number.MAX_VALUE 中——在大多数浏览器中，这个值是 1.7976931348623157e+308。如果某次计算的结果得到了一个超出 JavaScript 数值范围的值，那么这个数值将被自动转换成特殊的 Infinity 值。如果这个数值是负数，则会被转换成-Infinity（负无穷），如果这个数值是正数，则会被转换成 Infinity（正无穷）。
+``` js
+var result = Number.MAX_VALUE + Number.MAX_VALUE;
+alert(isFinite(result)); //false
+```
+3. NaN
+NaN，即非数值（ Not a Number）是一个特殊的数值，这个数值用于表示一个本来要返回数值的操作数未返回数值的情况（这样就不会抛出错误了）。在 ECMAScript 中，任何数值除以 0 会返回 NaN，因此不会影响其他代码的执行
+``` js
+alert(isNaN(NaN)); //true
+alert(isNaN(10)); //false（ 10 是一个数值）
+alert(isNaN("10")); //false（可以被转换成数值 10）
+alert(isNaN("blue")); //true（不能转换成数值）
+alert(isNaN(true)); //false（可以被转换成数值 1）
+```
+isNaN()确实也适用于对象。在基于对象调用 isNaN()函数时，会首先调用对象的 valueOf()方法，然后确定该方法返回的值是否可以转换为数值。如果不能，则基于这个返回值再调用 toString()方法，再测试返回值。而这个过程也是 ECMAScript 中内置函数和操作符的一般执行流程，
+
+4. 数值转换
+有 3 个函数可以把非数值转换为数值： Number()、 parseInt()和 parseFloat()。第一个函数，即转型函数 Number()可以用于任何数据类型，而另两个函数则专门用于把字符串转换成数值。
+Number()函数的转换规则如下。
+* 如果是 Boolean 值， true 和 false 将分别被转换为 1 和 0。
+* 如果是数字值，只是简单的传入和返回。
+* 如果是 null 值，返回 0。
+* 如果是 undefined，返回 NaN。
+* 如果是字符串，遵循下列规则：
+     如果字符串中只包含数字（包括前面带正号或负号的情况），则将其转换为十进制数值，即"1"会变成 1， "123"会变成 123，而"011"会变成 11（注意：前导的零被忽略了）；
+     如果字符串中包含有效的浮点格式，如"1.1"，则将其转换为对应的浮点数值（同样，也会忽略前导零）；
+     如果字符串中包含有效的十六进制格式，例如"0xf"，则将其转换为相同大小的十进制整数值；
+     如果字符串是空的（不包含任何字符），则将其转换为 0；
+     如果字符串中包含除上述格式之外的字符，则将其转换为 NaN。
+* 如果是对象，则调用对象的 valueOf()方法，然后依照前面的规则转换返回的值。如果转换的结果是 NaN，则调用对象的 toString()方法，然后再次依照前面的规则转换返回的字符串值
+``` js
+var num1 = Number("Hello world!"); //NaN
+var num2 = Number(""); //0
+var num3 = Number("000011"); //11
+var num4 = Number(true); //1
+```
+parseInt()函数在转换字符串时，更多的是看其是否符合数值模式。它会忽略字符串前面的空格，直至找到第一个非空格字符。如果第一个字符不是数字字符或者负号， parseInt()就会返回 NaN；也就是说，用 parseInt()转换空字符串会返回 NaN（ Number()对空字符返回 0）。如果第一个字符是数字字符， parseInt()会继续解析第二个字符，直到解析完所有后续字符或者遇到了一个非数字字符。例如， "1234blue"会被转换为 1234，因为"blue"会被完全忽略.
+``` js
+var num1 = parseInt("1234blue"); // 1234
+var num2 = parseInt(""); // NaN
+var num3 = parseInt("0xA"); // 10（十六进制数）
+var num4 = parseInt(22.5); // 22
+var num5 = parseInt("070"); // 56（八进制数）
+var num6 = parseInt("70"); // 70（十进制数）
+var num7 = parseInt("0xf"); // 15（十六进制数）
+//ECMAScript 3 认为是 56（八进制）， ECMAScript 5 认为是 70（十进制）
+var num = parseInt("070");
+```
+在 ECMAScript 5 JavaScript 引擎中， parseInt()已经不具有解析八进制值的能力
+
+``` js
+var num1 = parseInt("10", 2); //2 （按二进制解析）
+var num2 = parseInt("10", 8); //8 （按八进制解析）
+var num3 = parseInt("10", 10); //10 （按十进制解析）
+var num4 = parseInt("10", 16); //16 （按十六进制解析）
+```
+* parseFloat()也是从第一个字符（位置 0）开始解析每个字符。而且也是一直解析到字符串末尾，或者解析到遇见一个无效的浮点数字字符为止.
+* parseFloat()与 parseInt()的第二个区别在于它始终都会忽略前导的零。 parseFloat()可以识别前面讨论过的所有浮点数值格式，也包括十进制整数格式。但十六进制格式的字符串则始终会被转换成 0, parseFloat()只解析十进制值，因此它没有用第二个参数指定基数
+``` js
+var num1 = parseFloat("1234blue"); //1234 （整数）
+var num2 = parseFloat("0xA"); //0
+var num3 = parseFloat("22.5"); //22.5
+var num4 = parseFloat("22.34.5"); //22.34
+var num5 = parseFloat("0908.5"); //908.5
+var num6 = parseFloat("3.125e7"); //31250000
+```
+
+#### 3.4.6 String类型
+
+String 类型用于表示由零或多个 16 位 Unicode 字符组成的字符序列，即字符串。字符串可以由双引号（ "）或单引号（ '）表示
+1. 字符字面量
+String 数据类型包含一些特殊的字符字面量，也叫转义序列，用于表示非打印字符，或者具有其他用途的字符。
+
+字 面 量 |含 义
+--:|:--
+\n| 换行
+\t |制表
+\b |空格
+\r |回车
+\f |进纸
+\\ |斜杠
+\' |单引号（ '），在用单引号表示的字符串中使用。例如： 'He said, \'hey.\''
+\" |双引号（ "），在用双引号表示的字符串中使用。例如： "He said, \"hey.\""
+\xnn| 以十六进制代码nn表示的一个字符（其中n为0～ F）。例如， \x41表示"A"
+\unnnn| 以十六进制代码nnnn表示的一个Unicode字符（其中n为0～ F）。例如， \u03a3表示希腊字符Σ
+
+2. 字符串的特点
+ECMAScript 中的字符串是不可变的，也就是说，字符串一旦创建，它们的值就不能改变。要改变某个变量保存的字符串，首先要销毁原来的字符串，然后再用另一个包含新值的字符串填充该变量
+``` js
+var lang = "Java";
+lang = lang + "Script";
+```
+
+3. 转换为字符串
+要把一个值转换为一个字符串有两种方式。第一种是使用几乎每个值都有的 toString()方法
+``` js
+var age = 11;
+var ageAsString = age.toString(); // 字符串"11"
+var found = true;
+var foundAsString = found.toString(); // 字符串"true"
+```
+ toString()可以输出以二进制、八进制、十六进制，乃至其他任意有效进制格式表示的字符串值。
+```  js
+var num = 10;
+alert(num.toString()); // "10"
+alert(num.toString(2)); // "1010"
+alert(num.toString(8)); // "12"
+alert(num.toString(10)); // "10"
+alert(num.toString(16)); // "a"
+```
+String()函数遵循下列转换规则：
+* 如果值有 toString()方法，则调用该方法（没有参数）并返回相应的结果；
+* 如果值是 null，则返回"null"；
+* 如果值是 undefined，则返回"undefined"。
+``` js
+var value1 = 10;
+var value2 = true;
+var value3 = null;
+var value4;
+alert(String(value1)); // "10"
+alert(String(value2)); // "true"
+alert(String(value3)); // "null"
+alert(String(value4)); // "undefined"
+```
+#### 3.4.7 Object类型
+ECMAScript 中的对象其实就是一组数据和功能的集合。对象可以通过执行 new 操作符后跟要创建的对象类型的名称来创建。而创建 Object 类型的实例并为其添加属性和（或）方法，就可以创建自定义对象
+``` js
+var o = new Object();
+```
+在 ECMAScript 中，
+（就像 Java 中的 java.lang.Object 对象一样） Object 类型是所有它的实例的基础。换句话说，Object 类型所具有的任何属性和方法也同样存在于更具体的对象中。
+
+Object 的每个实例都具有下列属性和方法。
+* constructor：保存着用于创建当前对象的函数。对于前面的例子而言，构造函数（ constructor）就是 Object()。
+* hasOwnProperty(propertyName)：用于检查给定的属性在当前对象实例中（而不是在实例
+的原型中）是否存在。其中，作为参数的属性名（ propertyName）必须以字符串形式指定（例如： o.hasOwnProperty("name")）。
+* isPrototypeOf(object)：用于检查传入的对象是否是传入对象的原型
+* propertyIsEnumerable(propertyName)：用于检查给定的属性是否能够使用 for-in 语句（本章后面将会讨论）来枚举。与 hasOwnProperty()方法一样，作为参数的属性名必须字符串形式指定。
+* toLocaleString()：返回对象的字符串表示，该字符串与执行环境的地区对应。
+* toString()：返回对象的字符串表示。
+* valueOf()：返回对象的字符串、数值或布尔值表示。通常与 toString()方法的返回值相同。
+
+### 3.5 操作符
+ECMA-262 描述了一组用于操作数据值的操作符，包括算术操作符（如加号和减号）、位操作符、关系操作符和相等操作符。
+
+#### 3.5.1 一元操作符
+只能操作一个值的操作符叫做一元操作符。
+1. 递增和递减操作符
+递增和递减操作符直接借鉴自 C，而且各有两个版本：前置型和后置型。
+``` js
+var age = 29;
+++age;
+
+var age = 29;
+age = age + 1;
+```
+执行前置递增和递减操作时，变量的值都是在语句被求值以前改变的。（在计算机科学领域，这种情况通常被称作副效应。）
+``` js
+var age = 29;
+var anotherAge = --age + 2;
+alert(age); // 输出 28
+alert(anotherAge); // 输出 30
+```
+由于前置递增和递减操作与执行语句的优先级相等，因此整个语句会从左至右被求值
+``` js
+var num1 = 2;
+var num2 = 20;
+var num3 = --num1 + num2; // 等于 21
+var num4 = num1 + num2; // 等于 21
+```
+递增和递减操作符遵循下列规则。
+* 在应用于一个包含有效数字字符的字符串时，先将其转换为数字值，再执行加减 1 的操作。字符串变量变成数值变量。
+* 在应用于一个不包含有效数字字符的字符串时，将变量的值设置为 NaN,字符串变量变成数值变量。
+* 在应用于布尔值 false 时，先将其转换为 0 再执行加减 1 的操作。布尔值变量变成数值变量。
+* 在应用于布尔值 true 时，先将其转换为 1 再执行加减 1 的操作。布尔值变量变成数值变量。
+* 在应用于浮点数值时，执行加减 1 的操作。
+* 在应用于对象时，先调用对象的 valueOf()方法（第 5 章将详细讨论）以取得一个可供操作的值。然后对该值应用前述规则。如果结果是 NaN，则在调用 toString()方法后再应用前述规则。对象变量变成数值变量。
+``` js
+var a1 = "2"
+var a2 = "z"
+var b = false
+var f = 1.1
+var o = {
+    valueOf:function(){
+        return -1
+    }
+};
+
+s1++; // 值变成数值 3
+s2++; // 值变成 NaN
+b++;  // 值变成数值 1
+f--;  // 值变成 0.10000000000000009（由于浮点舍入错误所致）
+o--;  // 值变成数值-2
+```
+2. 一元加和减操作符
+一元加操作符以一个加号（ +）表示
+``` js
+var num = 25;
+num = +num; // 仍然是 25
+```
+对非数值应用一元加操作符时，该操作符会像 Number()转型函数一样对这个值执行转换。布尔值 false 和 true 将被转换为 0 和 1，字符串值会被按照一组特殊的规则进行解析，而对象是先调用它们的 valueOf()和（或） toString()方法，再转换得到的值
+``` js
+var s1 = "01";
+var s2 = "1.1";
+var s3 = "z";
+var b = false;
+var f = 1.1;
+var o = {
+    valueOf: function() {
+        return -1;
+    }
+};
+
+s1 = +s1; // 值变成数值 1
+s2 = +s2; // 值变成数值 1.1
+s3 = +s3; // 值变成 NaN
+b = +b; // 值变成数值 0
+f = +f; // 值未变，仍然是 1.1
+o = +o; // 值变成数值-1
+```
+一元减操作符主要用于表示负数,应用于非数值时，一元减操作符遵循与一元加操作符相同的规则，最后再将得到的数值转换为负数
+``` js
+var s1 = "01";
+var s2 = "1.1";
+var s3 = "z";
+var b = false;
+var f = 1.1;
+var o = {
+    valueOf: function() {
+        return -1;
+    }
+};
+
+s1 = -s1; // 值变成了数值-1
+s2 = -s2; // 值变成了数值-1.1
+s3 = -s3; // 值变成了 NaN
+b = -b; // 值变成了数值 0
+f = -f; // 变成了-1.1
+o = -o; // 值变成了数值 1
+```
+
+#### 3.5.2 位操作符
+位操作符用于在最基本的层次上，即按内存中表示数值的位来操作数值。 ECMAScript 中的所有数值都以 IEEE-754 64 位格式存储，但位操作符并不直接操作 64 位的值。而是先将 64 位的值转换成 32 位的整数，然后执行操作，最后再将结果转换回 64 位。
+
+对于有符号的整数，32 位中的前31 位用于表示整数的值。第 32 位用于表示数值的符号：0 表示正数，1 表示负数。这个表示符号的位叫做符号位，符号位的值决定了其他位数值的格式。其中，正数以纯二进制格式存储，31 位中的每一位都表示 2 的幂。
+
+负数同样以二进制码存储，但使用的格式是二进制补码，步骤如下：
+(1) 求这个数值绝对值的二进制码（例如，要求-18 的二进制补码，先求 18 的二进制码）；
+(2) 求二进制反码，即将 0 替换为 1，将 1 替换为 0；
+(3) 得到的二进制反码加 1。
+``` js
+//1. -18的二进制码18
+0000 0000 0000 0000 0000 0000 0001 0010
+//取反 0和1互换
+1111 1111 1111 1111 1111 1111 1110 1101
+//反码加1
+                                      1
+---------------------------------------
+1111 1111 1111 1111 1111 1111 1110 1110
+```
+
+::: tip
+默认情况下，ECMAScript 中的所有整数都是有符号整数。不过，当然也存在无符号整数。对于无符号整数来说，第32位不再表示符号，因为无符号整数只能是正数。而且，无符号整数的值可以更大，因为多出的一位不再表示符号，可以用来表示数值。
+:::
+
+在 ECMAScript 中：64 位的数值被转换成32位数值，然后执行位操作，最后再将32 位的结果转换回 64 位数值。这样，表面上看起来就好像是在操作32位数值，就跟在其他语言中以类似方式执行二进制操作一样。在对特殊的 NaN 和 Infinity 值应用位操作时，这两个值都会被当成 0 来处理,对非数值应用位操作符，会先使用Number()函数将该值转换为一个数值
+
+1. 按位非（NOT）
+按位非操作符由一个波浪线（ ~）表示，执行按位非的结果就是返回数值的反码
+``` js
+var num1 = 25; // 二进制 00000000000000000000000000011001
+var num2 = ~num1; // 二进制 11111111111111111111111111100110
+alert(num2); // -26
+```
+按位非操作的本质：操作数的负值减 1
+``` js
+var num1 = 25;
+var num2 = -num1 - 1;
+alert(num2); // "-26"
+```
+
+2. 按位与（ AND）
+按位与操作符由一个和号字符（ &）表示，它有两个操作符数
+
+第一个数值的位 |第二个数值的位 |结 果
+
+--:|:--:|:--
+1 |1| 1
+1 |0| 0
+0 |1| 0
+0 |0| 0
+
+``` js
+var result = 25 & 3;
+alert(result); //1
+
+ 25 = 0000 0000 0000 0000 0000 0000 0001 1001
+  3 = 0000 0000 0000 0000 0000 0000 0000 0011
+---------------------------------------------
+AND = 0000 0000 0000 0000 0000 0000 0000 0001
+```
+3. 按位或（OR）
+按位或操作符由一个竖线符号（|）表示
+
+第一个数值的位 |第二个数值的位 |结 果
+--:|:--:|:--
+1 |1| 1
+1 |0| 1
+0 |1| 1
+0 |0| 0
+``` js
+var result = 25 | 3;
+alert(result); //27
+
+25 = 0000 0000 0000 0000 0000 0000 0001 1001
+ 3 = 0000 0000 0000 0000 0000 0000 0000 0011
+--------------------------------------------
+OR = 0000 0000 0000 0000 0000 0000 0001 1011
+```
+4. 按位异或（XOR）
+按位异或操作符由一个插入符号（^）表示
+
+第一个数值的位 |第二个数值的位 |结 果
+--:|:--:|:--
+1 |1| 0
+1 |0| 1
+0 |1| 1
+0 |0| 1
+
+``` js
+var result = 25 ^ 3;
+alert(result); //26
+
+ 25 = 0000 0000 0000 0000 0000 0000 0001 1001
+  3 = 0000 0000 0000 0000 0000 0000 0000 0011
+---------------------------------------------
+XOR = 0000 0000 0000 0000 0000 0000 0001 1010
+```
+
+5. 左移
+左移操作符由两个小于号（ <<）表示，这个操作符会将数值的所有位向左移动指定的位数
+``` js
+var oldValue = 2; // 等于二进制的 10
+var newValue = oldValue << 5; // 等于二进制的 1000000，十进制的 64
+
+0000 0000 0000 0000 0000 0000 0000 0010
+0000 0000 0000 0000 0000 0000 0100 0000
+```
+
+6. 有符号的右移
+有符号的右移操作符由两个大于号（>>）表示，这个操作符会将数值向右移动，但保留符号位
+``` js
+var oldValue = 64; // 等于二进制的 1000000
+var newValue = oldValue >> 5; // 等于二进制的 10 ，即十进制的 2
+
+0000 0000 0000 0000 0000 0000 0100 0000
+0000 0000 0000 0000 0000 0000 0000 0010
+```
+7. 无符号右移
+无符号右移操作符由 3 个大于号（ >>>）表示，这个操作符会将数值的所有 32 位都向右移动。对正数来说，无符号右移的结果与有符号右移相同
+``` js
+var oldValue = 64; // 等于二进制的 1000000
+var newValue = oldValue >>> 5; // 等于二进制的 10 ，即十进制的 2
+```
+无符号右移操作符会把负数的二进制码当成正数的二进制码。而且，由于负数以其绝对值的二进制补码形式表示，因此就会导致无符号右移后的结果非常之大.
+``` js
+var oldValue = -64; // 等于二进制的 11111111111111111111111111000000
+var newValue = oldValue >>> 5; // 等于十进制的 134217726
+```
+
+#### 3.5.3 布尔操作符
+布尔操作符一共有 3 个：非（NOT）、与（AND）和或（OR）
+
+* 如果操作数是一个对象，返回 false；
+* 如果操作数是一个空字符串，返回 true；
+* 如果操作数是一个非空字符串，返回 false；
+* 如果操作数是数值 0，返回 true；
+* 如果操作数是任意非 0 数值（包括 Infinity），返回 false；
+* 如果操作数是 null，返回 true；
+* 如果操作数是 NaN，返回 true；
+* 如果操作数是 undefined，返回 true。
+``` js
+alert(!false); // true
+alert(!"blue"); // false
+alert(!0); // true
+alert(!NaN); // true
+alert(!""); // true
+alert(!12345); // false
+
+alert(!!"blue"); //true
+alert(!!0); //false
+alert(!!NaN); //false
+alert(!!""); //false
+alert(!!12345); //true
+```
+
+2. 逻辑与
+逻辑与操作符由两个和号（ &&）表示
+``` js
+var result = true && false;
+```
+第一个操作数 |第二个操作数 |结 果
+--:|:--:|:--
+true |true |true
+true |false |false
+false |true |false
+false |false |false
+
+在有一个操作数不是布尔值的情况下，逻辑与操作就不一定返回布尔值；
+* 如果第一个操作数是对象，则返回第二个操作数；
+* 如果第二个操作数是对象，则只有在第一个操作数的求值结果为 true 的情况下才会返回该对象；
+* 如果两个操作数都是对象，则返回第二个操作数；
+* 如果有一个操作数是 null，则返回 null；
+* 如果有一个操作数是 NaN，则返回 NaN；
+* 如果有一个操作数是 undefined，则返回 undefined。
+
+逻辑与操作属于短路操作，即如果第一个操作数能够决定结果，那么就不会再对第二个操作数求值。
+``` js
+var found = true;
+var result = (found && someUndefinedVariable); // 这里会发生错误
+alert(result); // 这一行不会执行
+
+//将 found 的值设置为 false
+var found = false;
+var result = (found && someUndefinedVariable); // 不会发生错误
+alert(result); // 会执行（ "false"）
+```
+3. 逻辑或
+逻辑或操作符由两个竖线符号（ ||）表示，有两个操作数
+``` js
+var result = true || false;
+```
+第一个操作数 |第二个操作数 |结 果
+--:|:--:|:--
+True |true| true
+True |false| true
+false |true |true
+false |false| false
+
+与逻辑与操作相似，如果有一个操作数不是布尔值，逻辑或也不一定返回布尔值；
+* 如果第一个操作数是对象，则返回第一个操作数；
+* 如果第一个操作数的求值结果为 false，则返回第二个操作数；
+* 如果两个操作数都是对象，则返回第一个操作数；
+* 如果两个操作数都是 null，则返回 null；
+* 如果两个操作数都是 NaN，则返回 NaN；
+* 如果两个操作数都是 undefined，则返回 undefined。
+与逻辑与操作符相似，逻辑或操作符也是短路操作符。如果第一个操作数的求值结果为true，就不会对第二个操作数求值
+``` js
+var found = true;
+var result = (found || someUndefinedVariable); // 不会发生错误
+alert(result); // 会执行（ "true"）
+
+var found = false;
+var result = (found || someUndefinedVariable); // 这里会发生错误
+alert(result); // 这一行不会执行
+```
+利用逻辑或的这一行为来避免为变量赋 null 或 undefined 值
+``` js
+var myObject = preferredObject || backupObject;
+```
+3.5.4 乘性操作符
+ECMAScript 定义了 3 个乘性操作符：乘法、除法和求模,在操作数为非数值的情况下会执行自动的类型转换。参与乘性计算的某个操作数不是数值，后台会先使用 Number()转型函数将其转换为数值。也就是说，空字符串将被当作0，布尔值 true 将被当作 1。
+
+1. 乘法
+乘法操作符由一个星号（ *）表示，用于计算两个数值的乘积。
+``` js
+var result = 34 * 56;
+```
+在处理特殊值的情况下，乘法操作符遵循下列特殊的规则：
+* 如果操作数都是数值，执行常规的乘法计算，即两个正数或两个负数相乘的结果还是正数，而如果只有一个操作数有符号，那么结果就是负数。如果乘积超过了 ECMAScript 数值的表示范围，则返回 Infinity 或-Infinity；
+* 如果有一个操作数是 NaN，则结果是 NaN；
+* 如果是 Infinity 与 0 相乘，则结果是 NaN；
+* 如果是 Infinity 与非 0 数值相乘，则结果是 Infinity 或-Infinity，取决于有符号操作数的符号；
+* 如果是 Infinity 与 Infinity 相乘，则结果是 Infinity；
+* 如果有一个操作数不是数值，则在后台调用 Number()将其转换为数值，然后再应用上面的
+规则。
+
+2. 除法
+除法操作符由一个斜线符号（ /）表示，执行第二个操作数除第一个操作数的计算
+与乘法操作符类似，除法操作符对特殊的值也有特殊的处理规则。这些规则如下：
+* 如果操作数都是数值，执行常规的除法计算，即两个正数或两个负数相除的结果还是正数，而如果只有一个操作数有符号，那么结果就是负数。如果商超过了 ECMAScript 数值的表示范围，则返回 Infinity 或-Infinity；
+* 如果有一个操作数是 NaN，则结果是 NaN；
+* 如果是 Infinity 被 Infinity 除，则结果是 NaN；
+* 如果是零被零除，则结果是 NaN；
+* 如果是非零的有限数被零除，则结果是 Infinity 或-Infinity，取决于有符号操作数的符号；
+* 如果是 Infinity 被任何非零数值除，则结果是 Infinity 或-Infinity，取决于有符号操作数的符号；
+* 如果有一个操作数不是数值，则在后台调用 Number()将其转换为数值，然后再应用上面的规则。
+
+3. 求模
+求模（余数）操作符由一个百分号（ %）表示：
+``` js
+var result = 26 % 5; // 等于 1
+```
+
+#### 3.5.5 加性操作符
+
+* 如果有一个操作数是 NaN，则结果是 NaN；
+* 如果是 Infinity 加 Infinity，则结果是 Infinity；
+* 如果是-Infinity 加-Infinity，则结果是-Infinity；
+* 如果是 Infinity 加-Infinity，则结果是 NaN；
+* 如果是+0 加+0，则结果是+0；
+* 如果是0 加0，则结果是0；
+* 如果是+0 加0，则结果是+0。
+不过，如果有一个操作数是字符串，那么就要应用如下规则：
+* 如果两个操作数都是字符串，则将第二个操作数与第一个操作数拼接起来；
+* 如果只有一个操作数是字符串，则将另一个操作数转换为字符串，然后再将两个字符串拼接起来。
+如果有一个操作数是对象、数值或布尔值，则调用它们的 toString()方法取得相应的字符串值，然后再应用前面关于字符串的规则。对于 undefined 和 null，则分别调用 String()函数并取得字符串"undefined"和"null"。
+``` js
+var result1 = 5 + 5; // 两个数值相加
+alert(result1); // 10
+var result2 = 5 + "5"; // 一个数值和一个字符串相加
+alert(result2); // "55"
+
+var num1 = 5;
+var num2 = 10;
+var message = "The sum of 5 and 10 is " + num1 + num2;
+alert(message); // "The sum of 5 and 10 is 510"
+
+var num1 = 5;
+var num2 = 10;
+var message = "The sum of 5 and 10 is " + (num1 + num2);
+alert(message); //"The sum of 5 and 10 is 15"
+```
+2. 减法
+* 如果两个操作符都是数值，则执行常规的算术减法操作并返回结果；
+* 如果有一个操作数是 NaN，则结果是 NaN；
+* 如果是 Infinity 减 Infinity，则结果是 NaN；
+* 如果是-Infinity 减-Infinity，则结果是 NaN；
+* 如果是 Infinity 减-Infinity，则结果是 Infinity；
+* 如果是-Infinity 减 Infinity，则结果是-Infinity；
+* 如果是+0 减+0，则结果是+0；
+* 如果是+0 减0，则结果是0；
+* 如果是0 减0，则结果是+0；
+* 如果有一个操作数是字符串、布尔值、 null 或 undefined，则先在后台调用 Number()函数将其转换为数值，然后再根据前面的规则执行减法计算。如果转换的结果是 NaN，则减法的结果就是 NaN；
+* 如果有一个操作数是对象，则调用对象的 valueOf()方法以取得表示该对象的数值。如果得到的值是 NaN，则减法的结果就是 NaN。如果对象没有 valueOf()方法，则调用其 toString()方法并将得到的字符串转换为数值。
+``` js
+var result1 = 5 - true; // 4，因为 true 被转换成了 1
+var result2 = NaN - 1; // NaN
+var result3 = 5 - 3; // 2
+var result4 = 5 - ""; // 5，因为"" 被转换成了 0
+var result5 = 5 - "2"; // 3，因为"2"被转换成了 2
+var result6 = 5 - null; // 5，因为 null 被转换成了 0
+
+```
+#### 3.5.6 关系操作符
+
+小于（ <）、大于（ >）、小于等于（ <=）和大于等于（ >=）这几个关系操作符用于对两个值进行比较，比较的规则与我们在数学课上所学的一样。这几个操作符都返回一个布尔值
+``` js
+var result1 = 5 > 3; //true
+var result2 = 5 < 3; //false
+```
+* 如果两个操作数都是数值，则执行数值比较。
+* 如果两个操作数都是字符串，则比较两个字符串对应的字符编码值。
+* 如果一个操作数是数值，则将另一个操作数转换为一个数值，然后执行数值比较。
+* 如果一个操作数是对象，则调用这个对象的 valueOf()方法，用得到的结果按照前面的规则执行比较。如果对象没有 valueOf()方法，则调用 toString()方法，并用得到的结果根据前面的规则执行比较。
+* 如果一个操作数是布尔值，则先将其转换为数值，然后再执行比较。
+
+比较字符串时，实际比较的是两个字符串中对应位置的每个字符的字符编码值.由于大写字母的字符编码全部小于小写字母的字符编码
+``` js
+var result = "Brick" < "alphabet"; //true
+
+var result = "Brick".toLowerCase() < "alphabet".toLowerCase(); //false
+
+var result = "23" < "3"; //true
+var result = "23" < 3; //false
+var result = "a" < 3; // false，因为"a"被转换成了 NaN
+var result1 = NaN < 3; //false
+var result2 = NaN >= 3; //false
+```
+字母 B 的字符编码为 66，字母 a 的字符编码是 97
+
+#### 3.5.7 相等操作符
+
+ECMAScript 的解决方案就是提供两组操作符： 相等和不相等——先转换再比较， 全等和不全等——仅比较而不转换。
+
+1. 相等和不相等
+ECMAScript 中的相等操作符由两个等于号（ ==）表示，如果两个操作数相等，则返回 true。而不相等操作符由叹号后跟等于号（ !=）表示，如果两个操作数不相等，则返回 true。这两个操作符都会先转换操作数（通常称为强制转型），然后再比较它们的相等性。
+
+* 如果有一个操作数是布尔值，则在比较相等性之前先将其转换为数值——false 转换为 0，而true 转换为 1；
+* 如果一个操作数是字符串，另一个操作数是数值，在比较相等性之前先将字符串转换为数值；
+* 如果一个操作数是对象，另一个操作数不是，则调用对象的 valueOf()方法，用得到的基本类型值按照前面的规则进行比较；
+
+这两个操作符在进行比较时则要遵循下列规则。
+* null 和 undefined 是相等的。
+* 要比较相等性之前，不能将 null 和 undefined 转换成其他任何值。
+* 如果有一个操作数是 NaN，则相等操作符返回 false，而不相等操作符返回 true。重要提示：即使两个操作数都是 NaN，相等操作符也返回 false；因为按照规则， NaN 不等于 NaN。
+* 如果两个操作数都是对象，则比较它们是不是同一个对象。如果两个操作数都指向同一个对象，则相等操作符返回 true；否则，返回 false。
+
+表 达 式 |值 |表 达 式 |值
+--:|:--:|:--:|:--
+null == undefined |true| true == 1 |true
+"NaN" == NaN |false |true == 2 |false
+5 == NaN |false |undefined == 0 |false
+NaN == NaN |false| null == 0 |false
+NaN != NaN |true |"5"==5 |true
+false == 0 |true
+
+2. 全等和不全等
+全等操作符由 3 个等于号（ ===）表示，它只在两个操作数未经转换就相等的情况下返回 true
+``` js
+var result1 = ("55" == 55); //true，因为转换后相等
+var result2 = ("55" === 55); //false，因为不同的数据类型不相等
+```
+
+不全等操作符由一个叹号后跟两个等于号（ !==）表示，它在两个操作数未经转换就不相等的情况下返回 true
+
+``` js
+var result1 = ("55" != 55); //false，因为转换后相等
+var result2 = ("55" !== 55); //true，因为不同的数据类型不相等
+```
+null == undefined 会返回 true，因为它们是类似的值；但 null === undefined 会返回 false
+
+#### 3.5.8 条件操作符
+
+``` js
+variable = boolean_expression ? true_value : false_value;
+```
+这行代码的含义就是基于对 boolean_expression 求值的结果，决定给变量 variable赋什么值。如果求值结果为 true，则给变量 variable 赋 true_value 值；如果求值结果为 false，则给变量 variable 赋 false_value 值.
+``` js
+var max = (num1 > num2) ? num1 : num2;
+```
+
+#### 3.5.9 赋值操作符
+简单的赋值操作符由等于号（ =）表示，其作用就是把右侧的值赋给左侧的变量
+```   js
+var num = 10;
+num = num + 10;
+```
+
+每个主要算术操作符（以及个别的其他操作符）都有对应的复合赋值操作符
+* 乘/赋值（ *=）；
+* 除/赋值（ /=）；
+* 模/赋值（ %=）；
+* 加/赋值（ +=）；
+* 减/赋值（ =）；
+* 左移/赋值（ <<=）；
+* 有符号右移/赋值（ >>=）；
+* 无符号右移/赋值（ >>>=）
+
+#### 3.5.10 逗号操作符
+使用逗号操作符可以在一条语句中执行多个操作
+``` js
+var num1=1, num2=2, num3=3;
+```
+
+### 3.6 语句
+ECMA-262 规定了一组语句（也称为流控制语句）
+
+#### 3.6.1 if语句
+大多数编程语言中最为常用的一个语句就是 if 语句
+``` js
+if (condition) statement1 else statement2
+```
+
+condition（条件）可以是任意表达式；而且对这个表达式求值的结果不一定是布尔值。ECMAScript 会自动调用 Boolean()转换函数将这个表达式的结果转换为一个布尔值。如果对 condition求值的结果是 true，则执行 statement1（语句 1），如果对 condition 求值的结果是 false，则执行 statement2（语句 2）。
+
+``` js
+if (i > 25)
+    alert("Greater than 25."); // 单行语句
+else {
+    alert("Less than or equal to 25."); // 代码块中的语句
+}
+```
+
+#### 3.6.2 do-while语句
+do-while 语句是一种后测试循环语句，即只有在循环体中的代码执行之后，才会测试出口条件
+``` js
+do {
+    statement
+} while (expression);
+```
+
+#### 3.6.3 while语句
+while 语句属于前测试循环语句，在循环体内的代码被执行之前，就会对出口条件求值
+``` js
+while(expression) statement
+
+var i = 0;
+while(i<10){
+    i+=2;
+}
+```
+#### 3.6.4 for语句
+for 语句也是一种前测试循环语句，但它具有在执行循环之前初始化变量和定义循环后要执行的代码的能力。
+``` js
+for (initialization; expression; post-loop-expression) statement
+
+var count = 10;
+for(var i=10;i<count;i++)
+{
+    alert(i);
+}
+
+for (;;) { // 无限循环
+    doSomething();
+}
+```
+
+#### 3.6.5 for-in语句
+for-in 语句是一种精准的迭代语句，可以用来枚举对象的属性
+``` js
+for (property in expression) statement
+
+for (var propName in window) {
+    document.write(propName);
+}
+```
+
+#### 3.6.6 label语句
+使用 label 语句可以在代码中添加标签，以便将来使用
+``` js
+label: statement
+
+start: for (var i=0; i < count; i++) {
+    alert(i);
+}
+```
+
+#### 3.6.7 break和continue语句
+
+break 和 continue 语句用于在循环中精确地控制代码的执行。其中， break 语句会立即退出循环，强制继续执行循环后面的语句。而 continue 语句虽然也是立即退出循环，但退出循环后会从循环的顶部继续执行。
+``` js
+var num = 0;
+for(var  i=1;i<10;i++){
+    if(i%5==0){
+        break;
+    }
+    num++;
+}
+alert(num);  //4
+
+// continue
+var num=0;
+for(var i=1;i<10;i++){
+    if(i%5==0){
+        continue;
+    }
+    num++;
+}
+alert(num);  //8
+```
+
+#### 3.6.8 with语句
+with 语句的作用是将代码的作用域设置到一个特定的对象中
+``` js
+with (expression) statement;
+```
+定义 with 语句的目的主要是为了简化多次编写同一个对象的工作
+``` js
+var qs = location.search.substring(1);
+var hostName = location.hostname;
+var url = location.href;
+
+//使用with
+with(location){
+    var qs = search.substring(1);
+    var hostName = hostname;
+    var url = href;
+}
+```
+使用 with 语句关联了 location 对象。这意味着在 with 语句的代码块内部，每个变量首先被认为是一个局部变量，而如果在局部环境中找不到该变量的定义，就会查询location 对象中是否有同名的属性。如果发现了同名属性， 则以 location 对象属性的值作为变量的值。
+
+严格模式下不允许使用 with 语句，否则将视为语法错误
+
+####  3.6.9 switch语句
+switch 语句与 if 语句的关系最为密切，而且也是在其他语言中普遍使用的一种流控制语句
+``` js
+switch(expression){
+    case value:statement
+        break;
+    case value:statement
+        break;
+    case value:statement
+        break;
+    case value:statement
+        break;
+    defalut:statement
+}
+```
+ break 关键字会导致代码执行流跳出 switch 语句,可以在
+switch 语句中使用任何数据类型（在很多其他语言中只能使用数值），字符串，对象,每个 case 的值不一定是常量，可以是变量，甚至是表达式。
+``` js
+switch("hello world"){
+    case "hello world":
+        console.log("Greeting was found");
+        break;
+    case "goodbye":
+        console.log("Closing was found");
+        break;
+    default:
+        console.log("Unexpected message was found.")
+}
+```
+使用表达式
+``` js
+var num = 25;
+switch(true){
+    case num<0:
+        console.log("Less than 0");
+        break;
+    case num>=0&&<=10:
+        console.log("Between 0 and 10");
+        break;
+    case num>10&&num<=20:
+        console.log("Between 10 and 20");
+        break;
+    default:
+        alert("More  than 20")
+}
+```
+这个例子首先在 switch 语句外面声明了变量 num。而之所以给 switch 语句传递表达式 true，是因为每个 case 值都可以返回一个布尔值。这样，每个 case 按照顺序被求值，直到找到匹配的值或者遇到 default 语句为止
+
+### 函数
+ECMAScript 中的函数使用 function 关键字来声明，后跟一组参数以及函数体。
+``` js
+function functionName(arg0,arg1,...,argN){
+    statements
+}
+
+function sayHi(name,message){
+    console.log("Hello"+name+","+message);
+}
+```
+ECMAScript 中的函数在定义时不必指定是否返回值
+``` js
+function sum(num1, num2) {
+    return num1 + num2;
+}
+```
+函数会在执行完 return 语句之后停止并立即退出
+``` js
+function sum(num1, num2) {
+    return num1 + num2;
+    alert("Hello world"); // 永远不会执行
+}
+```
+严格模式对函数有一些限制：
+* 不能把函数命名为 eval 或 arguments；
+* 不能把参数命名为 eval 或 arguments；
+* 不能出现两个命名参数同名的情况。
+
+#### 3.7.1 理解参数
+ECMAScript 函数的参数与大多数其他语言中函数的参数有所不同。 ECMAScript 函数不介意传递进来多少个参数，也不在乎传进来参数是什么数据类型。
+
+ECMAScript 中的参数在内部是用一个数组来表示的。函数接收到的始终都是这个数组，而不关心数组中包含哪些参数,在函数体内可以通过 arguments 对象来访问这个参数数组，从而获取传递给函数的每一个参数,arguments 对象只是与数组类似（它并不是 Array 的实例）
+
+ECMAScript 函数的一个重要特点：命名的参数只提供便利，但不是必需的,通过访问 arguments 对象的 length 属性可以获知有多少个参数传递给了函数。
+``` js
+function howManyArgs(){
+    console.log(arguments.length);
+}
+
+howManyArgs("string", 45); //2
+howManyArgs(); //0
+howManyArgs(12); //1
+
+function doAdd(){
+    if(arguments.length == 1){
+        console.log(arguments[0]+10);
+    }else if(arguments.length==2){
+        console.log(arguments[0]+arguments[1]);
+    }
+}
+doAdd(10); //20
+doAdd(30, 20); //50
+```
+没有传递值的命名参数将自动被赋予 undefined 值。这就跟定义了变量但又没有初始化一样。
+
+#### 3.7.2 没有重载
+ECMAScript 函数不能像传统意义上那样实现重载。
+``` js
+function addSomeNumber(num){
+    return num + 100;
+}
+function addSomeNumber(num) {
+    return num + 200;
+}
+var result = addSomeNumber(100); //300
+```
+
+### 3.8 小结
+JavaScript 的核心语言特性在 ECMA-262 中是以名为 ECMAScript 的伪语言的形式来定义的。
+ECMAScript 中包含了所有基本的语法、操作符、数据类型以及完成基本的计算任务所必需的对象，但没有对取得输入和产生输出的机制作出规定。理解 ECMAScript 及其纷繁复杂的各种细节，是理解其在Web 浏览器中的实现——JavaScript 的关键。目前大多数实现所遵循的都是 ECMA-262 第 3 版，但很多也已经着手开始实现第 5 版了。以下简要总结了 ECMAScript 中基本的要素。
+* ECMAScript 中的基本数据类型包括 Undefined、 Null、 Boolean、 Number 和 String,Symbol、Bigint(ES6)。
+* 与其他语言不同， ECMScript 没有为整数和浮点数值分别定义不同的数据类型， Number 类型可用于表示所有数值。
+* ECMAScript 中也有一种复杂的数据类型，即 Object 类型，该类型是这门语言中所有对象的基
+础类型。
+* 严格模式为这门语言中容易出错的地方施加了限制。
+* ECMAScript 提供了很多与 C 及其他类 C 语言中相同的基本操作符，包括算术操作符、布尔操作
+符、关系操作符、相等操作符及赋值操作符等。
+* ECMAScript 从其他语言中借鉴了很多流控制语句，例如 if 语句、for 语句和switch 语句等。
+ECMAScript 中的函数与其他语言中的函数有诸多不同之处。
+* 无须指定函数的返回值，因为任何 ECMAScript 函数都可以在任何时候返回任何值。
+* 实际上，未指定返回值的函数返回的是一个特殊的 undefined 值。
+* ECMAScript 中也没有函数签名的概念，因为其函数参数是以一个包含零或多个值的数组的形式
+传递的。
+* 可以向 ECMAScript 函数传递任意数量的参数，并且可以通过 arguments 对象来访问这些参数。
+* 由于不存在函数签名的特性， ECMAScript 函数不能重载。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -5,6 +5,7 @@
 ## [Promise all() race() allSettled()](https://juejin.im/post/5d534ff16fb9a06b1027209c)
 
 ## 1.基本结构
+
 ::: tip
 
 ``` js
@@ -17,9 +18,11 @@ new Promise((resolve,reject)=>{
 
 - 构造函数Promise必须接受一个函数作为参数，我们称该函数为handle，handle又包含resolve和reject两个参数，它们是两个函数。
 - 定义一个判断变量是否为函数的方法
+
 ``` js
 const isFunction = variable=>typeof variable==='function';
 ```
+
 - 新建一个MyPromise的Class，接受一个handle作为参数
 
 ``` js
@@ -31,17 +34,21 @@ class MyPromise{
     }
 }
 ```
+
 :::
 
 ## 2.Promise状态和值
-::: tip 
+
+::: tip
 <b>Promise</b>存在以下三种状态
+
 - Pending(进行中)
 - Fullfilled(已成功)
 - Rejected(已失败)
 
 - Promise的值是指状态改变时传递给回调函数的值
 - 上文中handle函数包含 resolve 和 reject 两个参数，它们是两个函数，可以用于改变 Promise 的状态和传入 Promise 的值
+
 ``` js
 new Promise((resolve,reject)=>{
     setTimeout(()=>{
@@ -49,18 +56,24 @@ new Promise((resolve,reject)=>{
     },1000)
 })
 ```
+
 这里 resolve 传入的 "FULFILLED" 就是 Promise 的值
+
 - resolve : 将Promise对象的状态从 Pending(进行中) 变为 Fulfilled(已成功)
 - reject : 将Promise对象的状态从 Pending(进行中) 变为 Rejected(已失败)
 - resolve 和 reject 都可以传入任意类型的值作为实参，表示 Promise 对象成功（Fulfilled）和失败（Rejected）的值
 了解了 Promise 的状态和值，接下来，我们为 MyPromise 添加状态属性和值
 :::
+
 ::: danger
 有限状态：
-- Pending->Fullfilled 
+
+- Pending->Fullfilled
 - Pending->Rejected
 :::
+
 ::: tip
+
 ``` js
 //定义三个常量 用于标记Promise对象的三种状态
 const PENDIND = 'PENDING';
@@ -101,33 +114,41 @@ Class MyPromise{
 }
 
 ```
+
 :::
 
 ## 3.Promise的then方法
+
 ::: tip
 Promise 对象的 then 方法接受两个参数：
+
 ``` js
 promise.then(onFulfilled,onRejected)
 ```
+
 参数可选
 onFulfilled和onRejected都是可选参数
-- 如果 onFulfilled 或 onRejected 不是函数，其必须被忽略
-* onFulfilled 特性
-如果 onFulfilled 是函数：
-   - 当 promise 状态变为成功时必须被调用，其第一个参数为 promise 成功状态传入的值（resolve 执行时传入的值）
-   - 在 promise 状态改变前其不可被调用
-   - 其调用次数不可超过一次
 
-* onRejected 特性 
+- 如果 onFulfilled 或 onRejected 不是函数，其必须被忽略
+
+* onFulfilled 特性
+
+如果 onFulfilled 是函数：
+
+- 当 promise 状态变为成功时必须被调用，其第一个参数为 promise 成功状态传入的值（resolve 执行时传入的值）
+- 在 promise 状态改变前其不可被调用
+- 其调用次数不可超过一次
+
+* onRejected 特性
 如果 onRejected 是函数：
-   - 当 promise 状态变为失败时必须被调用，其第一个参数为 promise 失败状态传入的值（reject 执行时传入的值）
-   - 在 promise 状态改变前其不可被调用
-   - 其调用次数不可超过一次
+  - 当 promise 状态变为失败时必须被调用，其第一个参数为 promise 失败状态传入的值（reject 执行时传入的值）
+  - 在 promise 状态改变前其不可被调用
+  - 其调用次数不可超过一次
 
 * 多次调用
 then 方法可以被同一个 promise 对象调用多次
-   - 当 promise 成功状态时，所有 onFulfilled 需按照其注册顺序依次回调
-   - 当 promise 失败状态时，所有 onRejected 需按照其注册顺序依次回调
+  - 当 promise 成功状态时，所有 onFulfilled 需按照其注册顺序依次回调
+  - 当 promise 失败状态时，所有 onRejected 需按照其注册顺序依次回调
 * 返回
 then 方法必须返回一个新的 promise 对象
 
@@ -136,9 +157,11 @@ promise2 = promise1.then(onFulfilled,onRejected);
 ```
 
 promise支持链式调用
+
 ``` js
 promise1.then(onFulfilled1,onRejected1).then(onFulfilled2,onRejected2);
 ```
+
 这里涉及到 Promise 的执行规则，包括“值的传递”和“错误捕获”机制：
 
 1. 如果 onFulfilled 或者 onRejected 返回一个值 x ，则运行下面的 Promise 解决过程：[[Resolve]](promise2, x)
@@ -181,13 +204,14 @@ let promise2 = promise.then(res=>{
 promise2.then(res=>{
     console.log(res)//3s 后打印出 this is a promise
 })
-
 ```
+
 2. 如果 onFulfilled 或者onRejected 抛出一个异常 e ，则 promise2 必须变为失败（Rejected），并返回失败的值 e，例如：
+
 ``` js
 let promise1 = new Promise((resolve,reject)=>{
     setTimeout(()=>{
-        resolve('success)
+        resolve('success')
     },1000)
 })
 let promise2 = promise1.then(res=>{
@@ -202,12 +226,13 @@ promise2.then(res=>{
     console.log(err)  //1秒后打印出: 这里抛出一个异常e
 })
 ```
+
 3. 如果onFulfilled 不是函数且 promise1 状态为成功（Fulfilled）， promise2 必须变为成功（Fulfilled）并返回 promise1 成功的值，例如：
 
 ``` js
 let promise1 = new Promise((resolve,reject)=>{
     setTimeout(()=>{
-        resolve('success)
+        resolve('success')
     },1000)
 })
 promise2 = promise1.then('这里的onFulfilled本来就是一个函数，但现在不是')
@@ -217,7 +242,9 @@ promise2.then(res=>{
     console.log(err)
 })
 ```
+
 4. 如果 onRejected 不是函数且 promise1 状态为失败（Rejected），promise2必须变为失败（Rejected） 并返回 promise1 失败的值，例如：
+
 ``` js
 let promise1 = new Promise((resolve,reject)=>{
     setTimeout(()=>{
@@ -231,6 +258,7 @@ promise2.then(res=>{
     console.log(err) //1s后打印出: fail
 })
 ```
+
 根据上面的规则，我们来为 完善 MyPromise
 
 修改 constructor : 增加执行队列
@@ -259,9 +287,10 @@ constructor(handle){
 
 }
 ```
+
 * 添加then方法
 
-   - 首先，then 返回一个新的 Promise 对象，并且需要将回调函数加入到执行队列中
+  - 首先，then 返回一个新的 Promise 对象，并且需要将回调函数加入到执行队列中
 
 ``` js
 //添加then方法
@@ -288,11 +317,13 @@ then(onFulfilled,onRejected){
 }
 
 ```
+
 那返回的新的 Promise 对象什么时候改变状态？改变为哪种状态呢？
 
 根据上文中 then 方法的规则，我们知道返回的新的 Promise 对象的状态依赖于当前 then 方法回调函数执行的情况以及返回值，例如 then 的参数是否为一个函数、回调函数执行是否出错、返回值是否为 Promise 对象。
 
-   - 进一步完善then方法
+- 进一步完善then方法
+
 ``` js
 //添加then方法
 then(onFulfilled,onRejected){
@@ -358,6 +389,7 @@ then(onFulfilled,onRejected){
 }
 
 ```
+
 * 接着修改 _resolve 和 _reject ：依次执行队列中的函数
 
 当 resolve 或 reject 方法执行时，我们依次提取成功或失败任务队列当中的函数开始执行，并清空队列，从而实现 then 方法的多次调用，实现的代码如下：
@@ -395,6 +427,7 @@ _rejected(err){
 }
 
 ```
+
 这里还有一种特殊的情况，就是当 resolve 方法传入的参数为一个 Promise 对象时，则该 Promise 对象状态决定当前 Promise 对象的状态。
 
 ``` js
@@ -507,7 +540,9 @@ static all(list){
 }
 
 ```
+
 * 静态race方法
+
 ``` js
 static race(list){
     return new MyPromise((resovle,reject)=>{
@@ -522,8 +557,11 @@ static race(list){
     })
 }
 ```
+
 * finally方法
+
 - finally 方法用于指定不管 Promise 对象最后状态如何，都会执行的操作
+
 ``` js
 finally(cb){
     return this.then(value=>MyPromise.resolve(cb()).then(()=>value),reason=>MyPromise.resolve(cb().then(()=>{throw reason})))
@@ -535,7 +573,9 @@ finally(cb){
 :::
 
 ## 4.完整Promise代码
+
 ::: tip
+
 ``` js
 const isFunction=variable=>typeof variable==='function';
 //定义Promise的三种状态
@@ -740,7 +780,9 @@ class MyPromise{
 ## [ES5实现Promise](https://juejin.im/post/5db556376fb9a0207a6ddce7)
 
 ## Promose 实现Ajax请求
+
 ::: tip
+
 ``` js
 const getJson = function(url){
     const promise = new Promise(function(resolve,reject){
@@ -771,55 +813,62 @@ getJson("you-url/method").then(dunction(json){
     console.log("error:"+erros)
 })
 ```
+
 ## [异常捕获](https://www.cnblogs.com/fundebug/p/7655106.html)
+
 浏览器中未处理的Promise错误
 
 一些浏览器(例如Chrome)能够捕获未处理的Promise错误。
-
 unhandledrejection
-
 监听unhandledrejection事件，即可捕获到未处理的Promise错误：
+
 ``` js
 window.addEventListener('unhandledrejection', event => ···);
 ```
+
 promise: reject的Promise这个事件是PromiseRejectionEvent实例，它有2个最重要的属性：
+
 * reason: Promise的reject值
+
 ``` js
 window.addEventListener('unhandledrejection', event =>
 {
     console.log(event.reason); // 打印"Hello, Fundebug!"
 });
- 
+
 function foo()
 {
     Promise.reject('Hello, Fundebug!');
 }
- 
 foo();
 ```
+
 当一个Promise错误最初未被处理，但是稍后又得到了处理，则会触发rejectionhandled事件：
+
 ``` js
 window.addEventListener('rejectionhandled', event => ···);
 ```
+
 示例代码：这个事件是PromiseRejectionEvent实例。
+
 ``` js
 window.addEventListener('unhandledrejection', event =>
 {
     console.log(event.reason); // 打印"Hello, Fundebug!"
 });
- 
+
 window.addEventListener('rejectionhandled', event =>
 {
     console.log('rejection handled'); // 1秒后打印"rejection handled"
 });
- 
+
 function foo()
 {
     return Promise.reject('Hello, Fundebug!');
 }
- 
+
 var r = foo();
- 
+
 setTimeout(() =>
 {
     r.catch(e =>{});
@@ -829,30 +878,35 @@ setTimeout(() =>
 ### Node.js中未处理的Promise错误
 
 监听unhandledRejection事件，即可捕获到未处理的Promise错误：
+
 ``` js
 process.on('unhandledRejection', reason =>
 {
     console.log(reason); // 打印"Hello, Fundebug!"
 });
- 
+
 function foo()
 {
     Promise.reject('Hello, Fundebug!');
 }
- 
+
 foo();
 ```
+
 :::
 
-
 ### promise.finally()
+
 ES2018引入，不管Promise对象最后状态如何，都会执行操作
+
 ``` js
 promise.then(resolve=>{...})
        .catch(error=>{...})
        .finally(()=>{...})
 ```
+
 无论promise状态如何，执行完then和catch指定的回调函数都会执行finally指定的回调函数
+
 ``` js
 promise.finally(()=>{
     //执行函数
@@ -870,7 +924,9 @@ promise.then(
     }
 )
 ```
+
 不用finally实现，需要为成功和失败情况各写一次，有了finally方法只需要写一次
+
 ``` js
 Promise.prototype,finally = function(callback){
     let p = this.constructor;
@@ -882,13 +938,16 @@ Promise.prototype,finally = function(callback){
 ```
 
 ### promise.all()
+
 Promise.all()方法用于将多个 Promise 实例，包装成一个新的 Promise 实例。
+
 ``` js
 const promiseAll = Promise.all([p1,p2,p3]);
 ```
-* promiseAll的状态由p1,p2,p3决定，分为两者情况 
-   * p1,p2,p3全部为fullfilled，promiseAll变为fullfilled,返回一个数组，传递给p的回调函数
-   * 其中一个变为rejected,promiseAll的状态就变为rejected，第一个返回的reject的值，返回给promiseALl
+
+* promiseAll的状态由p1,p2,p3决定，分为两者情况
+  * p1,p2,p3全部为fullfilled，promiseAll变为fullfilled,返回一个数组，传递给p的回调函数
+  * 其中一个变为rejected,promiseAll的状态就变为rejected，第一个返回的reject的值，返回给promiseALl
 
 ``` js
 //eg1
@@ -915,6 +974,7 @@ Promise.all([
 ]).then(([books,user])=>pickTopRecommendations(books,user));
 //上面代码中，booksPromise和userPromise是两个异步操作，只有等到它们的结果都返回了，才会触发pickTopRecommendations这个回调函数。
 ```
+
 ::: danger
 如果作为参数的 Promise 实例，自己定义了catch方法，那么它一旦被rejected，并不会触发Promise.all()的catch方法。
 :::
@@ -941,11 +1001,13 @@ Promise.all([p1, p2])
 ```
 
 ### promise.race()
+
 Promise.race()同样是将多个Promise实例包装成新的Promise实例
 
 ``` js
 const p = Promise.all([p1,p2,p3]);
 ```
+
 Promise.race()方法的参数与Promise.all()方法一样，如果不是 Promise 实例，就会先调用下面讲到的Promise.resolve()方法，将参数转为 Promise 实例，再进一步处理。
 
 ``` js
@@ -960,7 +1022,9 @@ p.then(console.log)
 ```
 
 ### promise.allSettled()
+
 本标准由ES2020引入。接收一组Promise实例作为参数，包装成新的Promise实例,所有的参数实例都返回结果，包装实例才结束
+
 ``` js
 const promises = [
     fetch('/api-1'),
@@ -970,7 +1034,9 @@ const promises = [
 await Promise.allSettled(promises);//3分请求结束后 加载图标都消失
 removeLoadingIndicator();
 ```
+
 promise实例在函数监听结束后，返回数组
+
 ``` js
 const resolved = Promise.resolve(42);
 const rejected = Promise.reject(-1);

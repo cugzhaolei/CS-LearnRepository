@@ -285,7 +285,7 @@ valueOf()	|返回 Math 对象的原始值
 
 ## [浏览器多页面通信](https://blog.csdn.net/scottsu11/article/details/88357990)
 
-###  1：websocket通讯
+### 1：websocket通讯
 
 全双工(full-duplex)通信自然可以实现多个标签页之间的通信
 
@@ -361,7 +361,9 @@ webworker端会进行判断，传递的数据为'get'时，就把变量data的�
       window.worker = worker
     }
 ``` 
+
 // 获取和发送消息都是调用postMessage方法，我这里约定的是传递'get'表示获取数据。
+
 ``` js
 window.worker.port.postMessage('get')
 window.worker.port.postMessage('发送信息给worker')
@@ -970,6 +972,7 @@ runPromiseInSequence(promiseArr,10)
 ```
 
 #### 检测数值出现次数
+
 ``` js
 const countOccurrences = (arr,val)=>{
   arr.reduce((a,v)=>(v===val?a+1:a),0)
@@ -978,7 +981,9 @@ countOccurrences([1,1,2,1,3],1)
 ```
 
 #### 数组对象排序
+
 1. 单个属性排序
+
 ``` js
 function compare(property){
   return funtion(a,b){
@@ -988,7 +993,9 @@ function compare(property){
   }
 }
 ```
+
 2. 多个属性排序
+
 ``` js
 function compare(name,minor){
   return function(o,p){
@@ -1008,4 +1015,42 @@ function compare(name,minor){
     }
   }
 }
+```
+
+## let const变量
+
+const 和 let 会生成块级作用域
+
+``` js
+let a = 10;
+const b = 20;
+
+//等于
+(function(){
+  var a = 10;
+  var b = 20;
+})
+
+var b = 10;
+(function b(){
+  b = 20;
+  console.log(b);  //[Function b]
+  console.log(window.b); //10
+})();
+
+var b = 10;
+(function(c){
+  b = 20;
+  console.log(b);//20
+  console.log(c);//10
+})(b);
+
+var a = {n:1};
+var b = a;
+a.x = a = {n:2};
+
+console.log(a.x);  //undefined
+consoel.log(b.x);  //{n:2}
+
+//. 优先级高于 =
 ```

@@ -1,11 +1,13 @@
-:::tip
+
 # CSS操作相关
 
 ## 盒模型
 
-![](/images/html-box-mode.webp)
+::: tip
+![html-box-model](/images/html-box-mode.webp)
 
 ie盒模型算上border、padding及自身（不算margin），标准的只算上自身窗体的大小 css设置方法如下：
+
 ``` css
 /* 标准模型 */
 box-sizing:content-box;
@@ -13,7 +15,6 @@ width:content+border+padding;
 
  /*IE模型*/
 box-sizing:border-box;
-
 ```
 
 ## 获取宽高
@@ -41,124 +42,132 @@ box-sizing:border-box;
 * 前者中含有大段的继承链；
 * 后者模块化，文档较前者来说丰富；
 
-
 ## [清除浮动](https://juejin.im/post/5d6f2b845188250587727971)
+
 不清除浮动会发生高度塌陷：
 浮动元素父元素高度自适应（父元素不写高度时，子元素写了浮动后，父元素会发生高度塌陷）
 
 * clear清除浮动（添加空div法）在浮动元素下方添加空div,并给该元素写css样式：{clear:both;height:0;overflow:hidden;}
 * 给浮动元素父级设置高度；
+
 ``` css
-<style type="text/css"> 
-    .div1{background:#000080;border:1px solid red;/*解决代码*/height:200px;} 
-    .div2{background:#800080;border:1px solid red;height:100px;margin-top:10px;} 
-    .left{float:left;width:20%;height:200px;background:#DDD;} 
-    .right{float:right;width:30%;height:80px;background:#DDD;} 
-</style> 
-    <div class="div1"> 
-        <div class="left">Left</div> 
-        <div class="right">Right</div> 
-    </div> 
-    <div class="div2"> 
-        div2 
+<style type="text/css">
+    .div1{background:#000080;border:1px solid red;/*解决代码*/height:200px;}
+    .div2{background:#800080;border:1px solid red;height:100px;margin-top:10px;}
+    .left{float:left;width:20%;height:200px;background:#DDD;}
+    .right{float:right;width:30%;height:80px;background:#DDD;}
+</style>
+    <div class="div1">
+        <div class="left">Left</div>
+        <div class="right">Right</div>
     </div>
-    
-    原理：父级div手动定义height，就解决了父级div无法自动获取到高度的问题。 
-    优点：简单、代码少、容易掌握 
-    缺点：只适合高度固定的布局，要给出精确的高度，如果高度和父级div不一样时，会产生问题 
-    建议：不推荐使用，只建议高度固定的布局时使用 
+    <div class="div2">
+        div2
+    </div>
+    原理：父级div手动定义height，就解决了父级div无法自动获取到高度的问题。
+    优点：简单、代码少、容易掌握
+    缺点：只适合高度固定的布局，要给出精确的高度，如果高度和父级div不一样时，会产生问题
+    建议：不推荐使用，只建议高度固定的布局时使用
 ```
+
 * 父级同时浮动（需要给父级同级元素添加浮动）；
 * 父级设置成inline-block，其margin: 0 auto居中方式失效；
 * 利用br标签的clear属性；
-``` js
-    style type="text/css"> 
-        .div1{background:#000080;border:1px solid red;margin-bottom:10px;zoom:1} 
-        .div2{background:#800080;border:1px solid red;height:100px} 
-        .left{float:left;width:20%;height:200px;background:#DDD} 
-        .right{float:right;width:30%;height:80px;background:#DDD} 
-        .clearfloat{clear:both} 
-    </style> 
-        <div class="div1"> 
-            <div class="left">Left</div> 
-            <div class="right">Right</div> 
-            <br class="clearfloat" /> 
-        </div> 
-        <div class="div2"> 
-             div2 
+
+``` html
+    <style type="text/css">
+       .div1{background:#000080;border:1px solid red;margin-bottom:10px;zoom:1}
+        .div2{background:#800080;border:1px solid red;height:100px}
+        .left{float:left;width:20%;height:200px;background:#DDD}
+        .right{float:right;width:30%;height:80px;background:#DDD}
+        .clearfloat{clear:both}
+    </style>
+        <div class="div1">
+            <div class="left">Left</div>
+            <div class="right">Right</div>
+            <br class="clearfloat" />
         </div>
-        
-    原理：父级div定义zoom:1来解决IE浮动问题，结尾处加 br标签 clear:both 
+        <div class="div2">
+             div2
+        </div>
+    原理：父级div定义zoom:1来解决IE浮动问题，结尾处加 br标签 clear:both
     建议：不推荐使用，只作了解。
 ```
+
 * 给父级添加overflow:hidden 清除浮动方法；
-``` js
-    <style type="text/css"> 
-        .div1{background:#000080;border:1px solid red;/*解决代码*/width:98%;overflow:hidden} 
-        .div2{background:#800080;border:1px solid red;height:100px;margin-top:10px;width:98%} 
-        .left{float:left;width:20%;height:200px;background:#DDD} 
-        .right{float:right;width:30%;height:80px;background:#DDD} 
-    </style> 
-        <div class="div1"> 
-            <div class="left">Left</div> 
-            <div class="right">Right</div> 
-        </div> 
-        <div class="div2"> 
-             div2 
+
+``` html
+    <style type="text/css">
+        .div1{background:#000080;border:1px solid red;/*解决代码*/width:98%;overflow:hidden}
+        .div2{background:#800080;border:1px solid red;height:100px;margin-top:10px;width:98%}
+        .left{float:left;width:20%;height:200px;background:#DDD}
+        .right{float:right;width:30%;height:80px;background:#DDD}
+    </style>
+        <div class="div1">
+            <div class="left">Left</div>
+            <div class="right">Right</div>
         </div>
-        
-        原理：必须定义width或zoom:1，同时不能定义height，使用overflow:hidden时，浏览器会自动检查浮动区域的高度 
-        优点：简单、代码少、浏览器支持好 
-        缺点：不能和position配合使用，因为超出的尺寸的会被隐藏。 
+        <div class="div2">
+             div2
+        </div>
+        原理：必须定义width或zoom:1，同时不能定义height，使用overflow:hidden时，浏览器会自动检查浮动区域的高度
+        优点：简单、代码少、浏览器支持好
+        缺点：不能和position配合使用，因为超出的尺寸的会被隐藏。
         建议：只推荐没有使用position或对overflow:hidden理解比较深的朋友使用。
 ```
+
 * 父级定义overflow：auto display:table
-``` css
-    <style type="text/css"> 
-        .div1{background:#000080;border:1px solid red;/*解决代码*/width:98%;overflow:auto} 
-        .div2{background:#800080;border:1px solid red;height:100px;margin-top:10px;width:98%} 
-        .left{float:left;width:20%;height:200px;background:#DDD} 
-        .right{float:right;width:30%;height:80px;background:#DDD} 
-    </style> 
-        <div class="div1"> 
-            <div class="left">Left</div> 
-            <div class="right">Right</div> 
-        </div> 
-        <div class="div2"> 
-            div2 
+
+``` html
+    <style type="text/css">
+        .div1{background:#000080;border:1px solid red;/*解决代码*/width:98%;overflow:auto}
+        .div2{background:#800080;border:1px solid red;height:100px;margin-top:10px;width:98%}
+        .left{float:left;width:20%;height:200px;background:#DDD}
+        .right{float:right;width:30%;height:80px;background:#DDD}
+    </style>
+        <div class="div1">
+            <div class="left">Left</div>
+            <div class="right">Right</div>
         </div>
-        
-    原理：必须定义width或zoom:1，同时不能定义height，使用overflow:auto时，浏览器会自动检查浮动区域的高度 
-    优点：简单、代码少、浏览器支持好 
-    缺点：内部宽高超过父级div时，会出现滚动条。 
-    建议：不推荐使用，如果你需要出现滚动条或者确保你的代码不会出现滚动条就使用吧。 
-```
-* 父级div定义 伪类:after 和 zoom
-``` css
-    <style type="text/css"> 
-        .div1{background:#000080;border:1px solid red;} 
-        .div2{background:#800080;border:1px solid red;height:100px;margin-top:10px} 
-        .left{float:left;width:20%;height:200px;background:#DDD} 
-        .right{float:right;width:30%;height:80px;background:#DDD} 
-        /*清除浮动代码*/ 
-        .clearfloat:after{display:block;clear:both;content:"";visibility:hidden;height:0;overflow:hidden;} 
-        /*IE6下不支持after属性*/
-        .clearfloat{zoom:1} 
-    </style> 
-        <div class="div1 clearfloat"> 
-            <div class="left">Left</div> 
-            <div class="right">Right</div> 
-        </div> 
         <div class="div2">
-            div2 
-        </div> 
-        
-    原理：IE8以上和非IE浏览器才支持:after，原理和方法1有点类似，zoom(IE转有属性)可解决ie6,ie7浮动问题 
-    优点：浏览器支持好、不容易出现怪问题（目前：大型网站都有使用，如：腾迅，网易，新浪等等） 
-    缺点：代码多、不少初学者不理解原理，要两句代码结合使用才能让主流浏览器都支持。 
-    建议：推荐使用，建议定义公共类，以减少CSS代码。 
+            div2
+        </div>
+
+    原理：必须定义width或zoom:1，同时不能定义height，使用overflow:auto时，浏览器会自动检查浮动区域的高度
+    优点：简单、代码少、浏览器支持好
+    缺点：内部宽高超过父级div时，会出现滚动条。
+    建议：不推荐使用，如果你需要出现滚动条或者确保你的代码不会出现滚动条就使用吧。
 ```
+
+* 父级div定义 伪类:after 和 zoom
+
+``` css
+    <style type="text/css">
+        .div1{background:#000080;border:1px solid red;}
+        .div2{background:#800080;border:1px solid red;height:100px;margin-top:10px}
+        .left{float:left;width:20%;height:200px;background:#DDD}
+        .right{float:right;width:30%;height:80px;background:#DDD}
+        /*清除浮动代码*/
+        .clearfloat:after{display:block;clear:both;content:"";visibility:hidden;height:0;overflow:hidden;}
+        /*IE6下不支持after属性*/
+        .clearfloat{zoom:1}
+    </style>
+        <div class="div1 clearfloat">
+            <div class="left">Left</div>
+            <div class="right">Right</div>
+        </div>
+        <div class="div2">
+            div2
+        </div>
+
+    原理：IE8以上和非IE浏览器才支持:after，原理和方法1有点类似，zoom(IE转有属性)可解决ie6,ie7浮动问题
+    优点：浏览器支持好、不容易出现怪问题（目前：大型网站都有使用，如：腾迅，网易，新浪等等）
+    缺点：代码多、不少初学者不理解原理，要两句代码结合使用才能让主流浏览器都支持。
+    建议：推荐使用，建议定义公共类，以减少CSS代码。
+```
+
 * 万能清除法 after伪类 清浮动（现在主流方法，推荐使用）；
+
 ``` css
 .float_div:after{
     content:".";
@@ -173,7 +182,6 @@ box-sizing:border-box;
 }
 
 ```
-
 
 ## 画三角形
 
@@ -204,11 +212,13 @@ box-sizing:border-box;
 ## [SVG CSS3D Canvas绘图](https://juejin.im/post/5b690a66f265da0f820254bd)
 
 ### 星球环绕旋转图
+
 * SVG animationMotion + animateTransform
+
 ``` js
 /*举例一个星球的动画  轨迹动画*/
 <animateMotion dur="6s" begin="0" repeatCount="indefinite">
-  <mpath xlinkHref="#Path-12" /> 
+  <mpath xlinkHref="#Path-12" />
 </animateMotion>
 <animateTransform /*自身动画，靠近我的时候星球变大，远离我时变小*/
   id="first"
@@ -235,6 +245,7 @@ box-sizing:border-box;
 ```
 
 * [CSS 3D](https://www.jianshu.com/p/2b85973ad1ed)
+
 ``` html
  <!-- 轨道 -->
 <div class="orbit">
@@ -247,6 +258,7 @@ box-sizing:border-box;
   </div>
 </div>
 ```
+
 ``` css
 .orbit { /*轨道旋转，公转*/
     border:5px solid red;
@@ -300,7 +312,9 @@ box-sizing:border-box;
 }
 
 ```
+
 改进版
+
 ``` js
 const orbitStyle = {
   transform: `rotateX(70deg) rotateZ(${activeCircle * -72}deg) translateZ(0)`,
@@ -320,12 +334,14 @@ const planetStyle = (index, l) => {
 ### CSS 动画
 
 - animation 关键帧动画
+
 (1) transition-property：属性名称
 (2) transition-duration: 间隔时间
 (3) transition-timing-function: 动画曲线
 (4) transition-delay: 延迟
 
 - transform 过渡动画
+
 (1) animation-name：动画名称
 (2) animation-duration: 间隔时间
 (3) animation-timing-function: 动画曲线
@@ -336,6 +352,7 @@ const planetStyle = (index, l) => {
 
 * [CSS骨骼动画](https://juejin.im/post/5deb49a251882512302daa92)
 简单摆动
+
 ``` css
 .animation_1{
     animation:swing 1s ease-in-out infinite;
@@ -348,7 +365,9 @@ const planetStyle = (index, l) => {
     100% {transform:rotate(-5deg);}
 }
 ```
+
 改进
+
 ``` html
 <div class="animate-2">
     <!--元素1-->
@@ -359,7 +378,9 @@ const planetStyle = (index, l) => {
     <div class="item-3"></div>
 </div>
 ```
+
 ``` css
+
 .animate-2 .item-1 {
     /* 设置margin是为了定位，使其部分重叠在一起 */
     margin-bottom: -8px;
@@ -449,7 +470,9 @@ const planetStyle = (index, l) => {
     100% { transform: rotate(-5deg);}
 }
 ```
+
 最终效果
+
 ``` css
 .animate-4 .s-1 {
     animation: swing4-1 5s ease-in-out infinite;
@@ -483,11 +506,11 @@ const planetStyle = (index, l) => {
 }
 ```
 
-
 ## [水平居中](https://louiszhai.github.io/2016/03/12/css-center/)
 
 1. 行内元素使用text-align:center 实现行内元素水平居中
 2. 块级元素，设置margin:0 auto;
+
 ``` csss
 .parent {
     width: -webkit-fit-content;
@@ -496,7 +519,9 @@ const planetStyle = (index, l) => {
     margin: 0 auto;
 }
 ```
+
 3. flex布局 display：flex; justify-content:center;
+
 ``` css
 // flex 2012年版本写法
 .parent {
@@ -512,7 +537,9 @@ const planetStyle = (index, l) => {
     box-pack: center;
 }
 ```
+
 4. transform属性 position:absolute;left:50%;transform；translate(-50%,0)
+
 ``` css
 .child {
     position: absolute;
@@ -520,7 +547,9 @@ const planetStyle = (index, l) => {
     transform: translate(-50%, 0);
 }
 ```
+
 5. 绝对定位 position:absolute;width:200px;left:50%;margin-left:-100px;(需要固定宽度)
+
 ```  css
 .child {
     position: absolute;
@@ -529,7 +558,9 @@ const planetStyle = (index, l) => {
     margin-left: -100px; // 负值的绝对值为宽度的一半
 }
 ```
+
 6. 绝对定位 position:absolute;left:0;right:0;margin:0 auto;(需要固定宽度)
+
 ``` css
 .child {
     position: absolute;
@@ -540,11 +571,12 @@ const planetStyle = (index, l) => {
 }
 ```
 
-
 ## 垂直居中
 
 1. 单行文本设置line-height:父元素高度
+
 2. 行内块级元素 display:inline-block、vertical-align:middle和伪元素让内容居中
+
 ``` css
 .parent::after .son{
     display:inline-block;
@@ -555,7 +587,9 @@ const planetStyle = (index, l) => {
     height：100%;
 }
 ```
+
 3. transform 设置父元素相对定位(position:relative),子元素如下：
+
 ``` css
 .son {
     position:absolute;
@@ -563,7 +597,9 @@ const planetStyle = (index, l) => {
     transform:(-50%,-50%);
 }
 ```
+
 4. 设置父元素相对定位 position：relative,子元素CSS样式如下：
+
 ``` css
 .son{
     position:absolute;
@@ -573,7 +609,9 @@ const planetStyle = (index, l) => {
     margin:auto 0;
 }
 ```
+
 5. 设置父元素相对定位 position：relative,子元素CSS样式如下：
+
 ``` css
 .son {
     position:absolute;
@@ -583,7 +621,9 @@ const planetStyle = (index, l) => {
     margin:auto 0;
 }
 ```
+
 6. 使用vertical-align属性并且配合使用display:table和display:table-cell来让内容块居中
+
 ``` css
 .parent {
     display: table;
@@ -596,6 +636,7 @@ const planetStyle = (index, l) => {
 ```
 
 7. 使用flex布局的方式，可以轻松实现垂直居中，即使子元素中存在浮动元素也同样适用
+
 ``` css
 // flex 2012年版本写法
 .parent {
@@ -614,6 +655,7 @@ const planetStyle = (index, l) => {
 ### 水平垂直居中
 
 1. 使用flex布局的方式同样可以轻松实现水平垂直居中
+
 ``` css
 // flex 2012年版本写法
 .parent {
@@ -631,6 +673,7 @@ const planetStyle = (index, l) => {
 ```
 
 2. 使用绝对定位的方式，再配合CSS3新增的transform属性
+
 ``` css
 .child {
     position: absolute;
@@ -639,7 +682,9 @@ const planetStyle = (index, l) => {
     transform: translate(-50%, -50%);
 }
 ```
+
 3. 使用绝对定位的方式，再配合使用负值的margin-top和负值的margin-left(此方法需要同时固定宽度和高度)
+
 ``` css
 .child {
     position: absolute;
@@ -652,23 +697,24 @@ const planetStyle = (index, l) => {
 }
 ```
 
-
-
- # [CSS定位](https://www.w3school.com.cn/cssref/pr_class_position.asp)
+# [CSS定位](https://www.w3school.com.cn/cssref/pr_class_position.asp)
 
 * position: absolute;
-   * 生成绝对定位的元素，相对于 static 定位以外的第一个父元素进行定位。
-   * 元素的位置通过 "left", "top", "right" 以及 "bottom" 属性进行规定。
-* position: fixed;
-   * 生成绝对定位的元素，相对于浏览器窗口进行定位。
-   * 元素的位置通过 "left", "top", "right" 以及 "bottom" 属性进行规定。
-* position: relative;
-   * 生成相对定位的元素，相对于其正常位置进行定位。因此，"left:20" 会向元素的 LEFT 位置添加 20 像素。
-* position: inherit;
-   * 规定应该从父元素继承 position 属性的值。
-* position: static;
-   * 默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明）
+  * 生成绝对定位的元素，相对于 static 定位以外的第一个父元素进行定位。
+  * 元素的位置通过 "left", "top", "right" 以及 "bottom" 属性进行规定。
 
+* position: fixed;
+  * 生成绝对定位的元素，相对于浏览器窗口进行定位。
+  * 元素的位置通过 "left", "top", "right" 以及 "bottom" 属性进行规定。
+
+* position: relative;
+  * 生成相对定位的元素，相对于其正常位置进行定位。因此，"left:20" 会向元素的 LEFT 位置添加 20 像素。
+
+* position: inherit;
+  * 规定应该从父元素继承 position 属性的值。
+
+* position: static;
+  * 默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明）
 
 ## [布局](https://developer.mozilla.org/en-US/docs/Web/CSS/display)
 
@@ -679,6 +725,7 @@ const planetStyle = (index, l) => {
 ### 三栏布局
 
 1. 绝对定位
+
 ``` css
 .container {
     position: relative;
@@ -710,22 +757,25 @@ const planetStyle = (index, l) => {
     width: 100px;
     background: blue;
 }
+```
 
+``` html
 <div class="container">
     <div class="left">左</div>
     <div class="main">中</div>
     <div class="right">右</div>
 </div>
 ```
+
 ::: tip
-优点：方便快捷，简单实用，不容易出现问题，而且还可以将<div class="main"></div>元素放到最前面，使得主要内容被优先加载。
+优点：方便快捷，简单实用，不容易出现问题，而且还可以将 \<div class="main"> </div>元素放到最前面，使得主要内容被优先加载。
 缺点：元素脱离了文档流，可能会造成元素的重叠。
 :::
-
 2. flex布局实现
+
 ``` css
 .container {
-    display: flex;		
+    display: flex;
     height: 200px;
     line-height: 200px;
     text-align: center;
@@ -755,11 +805,11 @@ const planetStyle = (index, l) => {
     <div class="right">右</div>
 </div>
 ```
+
 ::: tip
 优点：简单实用，是现在比较流行的方案，特别是在移动端，大多数布局都采用的这种方式，是目前比较完美的一个。
 缺点：需要考虑到浏览器的兼容性，根据不同的浏览器厂商需要添加相应的前缀。
 :::
-
 3. 双飞翼布局
 
 ``` css
@@ -797,19 +847,23 @@ const planetStyle = (index, l) => {
     width: 100px;
     background: blue;
 }
+```
 
+``` html
 <div class="content">
     <div class="main">中</div>
 </div>
 <div class="left">左</div>
 <div class="right">右</div>
 ```
+
 ::: tip
 优点：比较经典的一种方式，通用性强，没有兼容性问题，而且支持主要内容优先加载。
 缺点：元素脱离了文档流，要注意清除浮动，防止高度塌陷，同时额外增加了一层DOM结构，即增加了渲染树生成的计算量。
 :::
 
 4. 圣杯布局
+
 ``` css
 .container {
     margin-left: 160px;
@@ -823,13 +877,13 @@ const planetStyle = (index, l) => {
     line-height: 200px;
     text-align: center;
     font-size: 20px;
-    color: #fff;	
+    color: #fff;
 }
 
 .main {
     float: left;
     width: 100%;
-    background: green;		
+    background: green;  
 }
 
 .left {
@@ -849,27 +903,33 @@ const planetStyle = (index, l) => {
     width: 100px;
     background: blue;
 }
+```
 
+``` html
 <div class="container">
     <div class="main">中</div>
     <div class="left">左</div>
     <div class="right">右</div>
 </div>
 ```
+
 ::: tip
 优点：相比于双飞翼布局，结构更加简单，没有多余的DOM结构层，同样支持主要内容优先加载。
 缺点：元素同样脱离了文档流，要注意清除浮动，防止高度塌陷。
 :::
 
 ### 等高布局
+
 - 伪登高
+
 * 使用padding-bottom和负的margin-bottom
+
 ``` css
 .container {
     position: relative;
     overflow: hidden;
 }
-    
+
 .left,
 .main,
 .right {
@@ -893,7 +953,8 @@ const planetStyle = (index, l) => {
     width: 20%;
     background: blue;
 }
-``` 
+```
+
 ``` html
 <div class="container">
     <div class="left">左侧内容</div>
@@ -907,6 +968,7 @@ const planetStyle = (index, l) => {
 ```
 
 - 真登高
+
 ``` css
 .container{
     display:flex;
@@ -929,6 +991,7 @@ const planetStyle = (index, l) => {
     background:blue;
 }
 ```
+
 ``` html
 <div>
      <div class="left">左侧内容</div>
@@ -942,6 +1005,7 @@ const planetStyle = (index, l) => {
 ```
 
 * 使用绝对定位的方式
+
 ``` css
 .container {
   position: relative;
@@ -988,7 +1052,9 @@ const planetStyle = (index, l) => {
     <div class="right">右侧内容</div>
 </div>
 ```
+
 * table布局
+
 ``` css
 .container {
     width: 100%;
@@ -1016,7 +1082,6 @@ const planetStyle = (index, l) => {
     width: 20%;
     background: blue;
 }
-
 ```
 
 ``` html
@@ -1031,7 +1096,8 @@ const planetStyle = (index, l) => {
 </div>
 ```
 
-* 使用gridb布局
+* 使用grid布局
+
 ``` css
 .container {
     display: grid;
@@ -1065,14 +1131,13 @@ const planetStyle = (index, l) => {
 </div>
 ```
 
-
-
 ## [CSS可继承](https://www.cnblogs.com/songchunmin/p/7789599.html)
 
 ### 1、无继承性的属性
 
 1. display：规定元素应该生成的框的类型
 2. 文本属性：
+
 * vertical-align：垂直文本对齐
 * text-decoration：规定添加到文本的装饰
 * text-shadow：文本阴影效果
@@ -1093,10 +1158,10 @@ const planetStyle = (index, l) => {
 
 9. 声音样式属性：pause-before、pause-after、pause、cue-before、cue-after、cue、play-during
 
- 
 ### 2、有继承性的属性
 
 1. 字体系列属性
+
 * font：组合字体
 * font-family：规定元素的字体系列
 * font-weight：设置字体的粗细
@@ -1132,7 +1197,6 @@ font-variant：设置小型大写字母的字体显示文本，这意味着所�
 8. 页面样式属性：page、page-break-inside、windows、orphans
 
 9. 声音样式属性：speak、speak-punctuation、speak-numeral、speak-header、speech-rate、volume、voice-family、pitch、pitch-range、stress、richness、、azimuth、elevation
- 
 
 ### 3、所有元素可以继承的属性
 
@@ -1140,7 +1204,6 @@ font-variant：设置小型大写字母的字体显示文本，这意味着所�
 
 2. 光标属性：cursor
 
- 
 ### 4、内联元素可以继承的属性
 
 1. 字体系列属性
@@ -1152,11 +1215,12 @@ font-variant：设置小型大写字母的字体显示文本，这意味着所�
 1. text-indent、text-align
 
 ## [SCSS SASS & LESS](https://www.jianshu.com/p/6489e28e548e)
+
 什么是Sass、Less
 
 Sass和Less都属于Css预处理器，Css预处理器定义了一种新的语言，其基本思想是用一种专门的编程语言，为Css增加一些编程的特性，将Css作为目标生成文件，然后开发者使用这种语言进行Css编码工作(用一种专门的编程语言，进行Web网页样式设计，再通过编译器转化为正常的Css文件，以供项目使用)。
 
-### Less与Sass的共性：
+### Less与Sass的共性
 
 * 混合(Mixins):将一个定义好的classA引入到另一个classB中，从而简单实现classB继承了classA的所有属性；
 * 参数混合(Parametric):可以像函数一样传递参数的class
@@ -1166,7 +1230,8 @@ Sass和Less都属于Css预处理器，Css预处理器定义了一种新的语言
 * 命名空间：样式分组，从而方便被调用
 * 作用域：局部修改样式
 * JavaScript表达式：在css样式中使用javaScript表达式赋值
-### Less与Sass的不同：
+
+### Less与Sass的不同
 
 * Less是基于JavaScript的在客户端处理，很多开发者不会选择Less因为javaScript引擎需要额外的时间来处理代码然后输出修改过的Css到浏览器【解决：只在开发阶段使用Less,一旦开发完成，复制Less输出的到一个压缩器，然后用一个单独的css文件来代替Less文件；另一种方式是使用Less App来编译和压缩你的Less文件；这两种方式都是最小化样式输出】
 Sass是基于ruby在服务器处理
@@ -1177,6 +1242,7 @@ Shadow DOM 为 Web 组件中的 DOM 和 CSS 提供了封装。Shadow DOM 使得�
 为什么要把一些代码和网页上其他的代码分离？原因之一是，大型站点若CSS没有良好的组织，导航的样式可能就『泄露』到本不应该去的地方，如主要内容区域，反之亦然。随着站点、应用的拓展，这样的事难以避免。
 
 可以通过element.createShadowRoot()来创建目标容器（shadow-host）对应deshadow-root。
+
 ``` html
 <!DOCTYPE html>
 <html lang="en">
@@ -1241,18 +1307,22 @@ Shadow DOM 为 Web 组件中的 DOM 和 CSS 提供了封装。Shadow DOM 使得�
 * 要更改shadow-root里面元素的样式，可以直接在template标签内添加style标签像平时写样式一样即可。（content里面指代的元素样式要用::content更改）；
 * shadow-dom 和 主dom的样式互不影响；
 
-## [EM REM PX ](https://www.cnblogs.com/wind-lanyan/p/6978084.html)
+## [EM REM PX](https://www.cnblogs.com/wind-lanyan/p/6978084.html)
+
 在css中单位长度用的最多的是px、em、rem，这三个的区别是：
 
 * px是固定的像素，一旦设置了就无法因为适应页面大小而改变。
 * em和rem相对于px更具有灵活性，他们是相对长度单位，意思是长度不是定死了的，更适用于响应式布局。
 * 对于em和rem的区别一句话概括：em相对于父元素，rem相对于根元素。
 * rem中的r意思是root（根源），这也就不难理解了。
+
 ### em
 
 * 子元素字体大小的em是相对于父元素字体大小
 * 元素的width/height/padding/margin用em的话是相对于该元素的font-size
-``` css
+
+``` html
+<style>
 div {
   font-size: 40px;
   width: 10em; /* 400px */
@@ -1260,7 +1330,7 @@ div {
   border: solid 1px black;
 }
 p {
-  font-size: 0.5em; /* 20px */ 
+  font-size: 0.5em; /* 20px */
   width: 10em; /* 200px */
   height: 10em;
   border: solid 1px red;
@@ -1272,6 +1342,7 @@ span {
   border: solid 1px blue;
   display: block;
 }
+</style>
 
 <div>
     我是父元素div
@@ -1281,6 +1352,7 @@ span {
     </p>
 </div>
 ```
+
 巩固测验：你能说出孙元素span的font-size和width吗？
 
 答案：我猜你会说10px、100px，哈哈，其实逻辑上是正确的，但是如果你是chrome浏览器我不得不告诉你应该是12px、120px。因为chrome设置的最小
@@ -1290,9 +1362,11 @@ span {
 chrome默认的字体大小是12px，也就是1em默认为12px，如果最外层的父元素直接把font-size设为1.5em，那么该元素的字体大小为18px（12*1.5）。
 
 ### rem
+
 rem是全部的长度都相对于根元素，根元素是谁？\<html>元素。通常做法是给html元素设置一个字体大小，然后其他元素的长度单位就为rem。
 
 上代码：（html代码如上，只是把css代码的元素长度单位变了）
+
 ``` css
 html {
     font-size: 10px;
@@ -1319,8 +1393,10 @@ span {
 ```
 
 ### [line-height height](https://mp.weixin.qq.com/s/1E5Ac5_KxzubRobTmokOeA)
+
 当line-height=height单行文本垂直居中
-``` css
+
+``` html
 <!DOCTYPE html>
 <html>
     <head>
@@ -1332,13 +1408,16 @@ span {
   </body>
 </html>
 
+<style>
 p {
   width: 300px; 
   border: 1px solid blue;
   height: 50px;
   line-height: 50px;
 }
+</style>
 ```
+
 line-height=line-height：200%
 
 line-height: 2; 和 line-height: 200%; 都表示行高是字体大小的 2 倍，但是它们是有区别的。
@@ -1347,7 +1426,6 @@ line-height: 2; 和 line-height: 200%; 都表示行高是字体大小的 2 倍�
 * line-height: 2; 写在父容器中，那么子元素的行高都是自身高度的 2 倍，是相对大小。子元素的字体大小不同，行高也会不同。
 * line-height: 200%; 写在父容器中，那么浏览器会立刻计算出行高的具体值，假如父容器的默认字体大小16px，那么计算得到的行高就是 2×16px=32px，子元素的行高都会继承这个 32px，是固定大小。子元素的字体大小不同，行高都是固定某个值。
 
-
 ## CSS选择器
 
 ### [link和@import](https://mp.weixin.qq.com/s/OQL8JVDuJopphXqAEp5AWQ)
@@ -1355,6 +1433,7 @@ line-height: 2; 和 line-height: 200%; 都表示行高是字体大小的 2 倍�
 ### [元素关系](https://mp.weixin.qq.com/s/TjVivhhlOTfDA3Plk0KEPw)
 
 #### 文档树结构
+
 1. 父子关系元素：如果一个元素出现在文档层次结构中另一个元素的上一层，则称前者是后者的“父元素”，后者是前者的“子元素”。
 
 2. 祖孙-后代：如果一个元素在另一个元素的直接上一层，他们是“父子关系”，而如果一个元素到另一个元素的路径要经过两层或多层，这些元素则是“祖孙-后代关系”。
@@ -1362,42 +1441,54 @@ line-height: 2; 和 line-height: 200%; 都表示行高是字体大小的 2 倍�
 3. 根元素：body 元素是浏览器默认显示的所有元素的祖先， html 元素则是整个文档的祖先（因此，html 元素又称“根元素”）。
 
 #### 组合选择器
+
 1. 多元素选择器：为多个元素应用同一个样式
+
 ``` css
 h1,h2 {
     background:yellow;
 }
 ```
+
 2. 后代选择器：使一些样式、规则只在某一些指定的有“祖孙-后代关系”的后代元素上适用，其他非指定的结构中不适用；
+
 ``` css
 ul li{
     text-decoration:line-through;
     background:yellow;
 }
 ```
+
 3. 子元素选择器：使一些样式、规则只在某一些指定的有直接的“父子关系”的子元素上适用，其他非指定的结构中不适用；
+
 ``` css
 p>em{
     text-decoration:line-through;
     background:yellow;
 }
 ```
+
 4. 直接相邻元素选择器：前提，两个元素有共同的父元素，且后一个元素“紧接”在前一个元素后边时，你想对后一个元素添加样式；
+
 ``` css
 h2+p{
     text-decoration:line-through;
     background:yellow;
 }
 ```
+
 5. 普通相邻元素选择器：相对于“直接相邻元素选择器”而言，两个元素也必须有共同的父元素，但后一个元素不需要“紧接”在前一个元素后边，你也可以对后一个元素添加样式;
+
 ``` css
 h2~h2{
     text-decoration:
 }
 ```
+
 #### text属性
 
 text-transform 用于设置要转换的字体
+
 ``` css
 p {
   text-transform: 值;
@@ -1411,26 +1502,29 @@ full-width  将所有字形转换成固定宽度的正方形，类似于等宽�
 ```
 
 text-decoration 设置用于加一些，下划线、上划线、穿过文本的线 
+
 ``` css
 p {
   text-decoration: 值;
 }
 
-none          取消已经存在的任何文本装饰。
-underline     文本下划线。
-overline      文本上划线。
-line-through  穿过文本的线。 
+none          /*取消已经存在的任何文本装饰。*/
+underline     /*文本下划线。*/
+overline      /*文本上划线。*/
+line-through  /*穿过文本的线。*/
 
 注意：text-decoration 是一个缩写形式，它由 text-decoration-line，text-decoration-style 和 text-decoration-color 构成。
 所以，我们在实际工作中可以使用这些属性值的组合来实现一些效果。
 ```
 
 text-shadow 文本加阴影
+
 ``` css
 p {
   text-shadow: 值① 值② 值③ 值④;
 }
 ```
+
 这里的“值”比较特别，它需要 4 个独立的值来定义：
 
 值①，指定阴影的基础“颜色”；
@@ -1439,10 +1533,13 @@ p {
 值④，指定阴影的“模糊半径”。更高的值意味着阴影分散得更广泛。这个值非必须指定，如果不指定此值，则默认为 0，即没有模糊。
 
 6. 首行缩进
+
 text-indent 属性用于指定文本内容的第一行前面应该留出多少的水平空间
 
 7. 本文水平对齐
+
 text-align:用于控制文本如何和它所在的内容盒子水平对齐。
+
 ``` css
 p {
   text-align: 值;
@@ -1462,12 +1559,15 @@ text-align-last:属性用于定义一段文本内容的最后一行在被强制�
 line-height 属性用于设置文本每行之间的高
 
 9. 字母和字间距
+
 word-spacing 属性用于修改“字”与“字”之间的间隔长度；
 
 letter-spacing 属性用于修改“字母、字符”与“字母、字符”之间间隔的长度。
 
 10. 空白字符
+
 white-space:用于处理'字之间'和'文本之间'的空白符显示方式
+
 ``` css
 p {
   white-space: 值;
@@ -1490,8 +1590,8 @@ pre-line   浏览器会保留换行符，并允许自动换行，但是会合并
 3. 浮动元素与文本重叠
 4. 脱离文档流
 脱离普通流是指：他的父容器在去计算宽高的时候，发现不了浮动元素。即，父容器不会被里面的浮动元素撑开；
-
 5. 两栏布局
+
 ``` html
 <div class="aside">侧边栏固定宽度</div>
 <div class="main">内容区块自适应宽度</div>
@@ -1516,11 +1616,13 @@ pre-line   浏览器会保留换行符，并允许自动换行，但是会合并
 ```
 
 6. 三栏布局
+
 ``` html
 <div class="menu">侧边栏固定宽度</div>
 <div class="aside">侧边栏固定宽度</div>
 <div class="main">内容区块自适应宽度</div>
 ```
+
 ``` css
 .menu {
   color: #fff;
@@ -1547,7 +1649,9 @@ pre-line   浏览器会保留换行符，并允许自动换行，但是会合并
 ```
 
 7. 清除“浮动”
+
 * 浮动对后续元素位置产生影响（渲染时，因为块元素看不见，但里边的文字看的见）
+
 ``` html
 <div id="content">
   <div class="menu">侧边栏固定宽度</div>
@@ -1584,7 +1688,9 @@ pre-line   浏览器会保留换行符，并允许自动换行，但是会合并
   background: grey;
 }
 ```
+
 * 父容器高度计算出现问题
+
 ``` css
 <ul class="navbar">
   <li><a href="#">1首页</a></li>
@@ -1612,7 +1718,9 @@ pre-line   浏览器会保留换行符，并允许自动换行，但是会合并
 ```
 
 8. 清除浮动
+
    * clear:both
+
 ``` html
 <ul class="navbar">
   <li><a href="#">1首页</a></li>
@@ -1625,6 +1733,7 @@ pre-line   浏览器会保留换行符，并允许自动换行，但是会合并
 那么就要求这个源文档中要有一个没有被浮动的的元素——普通元素。--> 
 </ul>
 ```
+
 ``` css
 .navbar {
   list-style: none;
@@ -1641,7 +1750,9 @@ pre-line   浏览器会保留换行符，并允许自动换行，但是会合并
 }
 /*🚀通过清除浮动来获得一个普通元素，进而撑开这个父容器*/
 ```
-   * after伪元素
+
+* after伪元素
+
 ``` html
 <ul class="navbar">
   <li><a href="#">1首页</a></li>

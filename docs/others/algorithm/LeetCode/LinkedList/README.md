@@ -1,6 +1,7 @@
 # 链表
 
 ## [链表反转](https://www.cnblogs.com/keeya/p/9218352.html)
+
 ``` java
 public static class Node {
     public int value;
@@ -10,7 +11,7 @@ public static class Node {
         this.value = data;
     }
 }
-
+//递归
 public Node reverse(Node head) {
     if (head == null || head.next == null)
         return head;
@@ -21,7 +22,7 @@ public Node reverse(Node head) {
     return newHead;
 }
 
-public static Node reverseList(Node node) {
+public Node reverseList(Node node) {
   Node pre = null;
   Node next = null;
   while (node != null) {
@@ -33,8 +34,11 @@ public static Node reverseList(Node node) {
   return pre;
 }
 ```
+
 ## [删除链表中倒数第N个节点](https://juejin.im/post/5dd884936fb9a07a9323de6f)
+
 快指针和慢指针，快指针比慢指针快N步，然后快慢指针一起向前移动，那么正好快指针走到Null的时候慢指针所指向的就是我们要删除的节点。
+
 ``` java
 public ListNode removeNthChildFromEnd(ListNode head,int n){
     ListNode dummy = new ListNode(0);

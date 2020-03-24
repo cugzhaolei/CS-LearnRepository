@@ -3,9 +3,9 @@
 ## [二叉树](https://segmentfault.com/a/1190000014743964?utm_source=tag-newest)
 
 ### 二叉树定义
+
 ``` java
 public class BinaryTreeNode {
-    
     private int data;  //数据
     private BinaryTreeNode leftChirld;  //左孩子
     private BinaryTreeNode rightChirld; //右孩子
