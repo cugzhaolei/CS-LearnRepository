@@ -1063,10 +1063,11 @@ const errors = results
   .map(p => p.reason);
 ```
 
-
 ### promise.any()
+
 任何一个为fullfilled则包装实例变为fullfilled，所有的变为rejected，则变为rejected
 Promise.any()跟Promise.race()方法很像，只有一点不同，就是不会因为某个 Promise 变成rejected状态而结束。
+
 ``` js
 const promises = [
   fetch('/endpoint-a').then(() => 'a'),
@@ -1092,6 +1093,7 @@ new Promise(resolve=>resolve('foo'))
 ## 案例应用
 
 ### 加载图片
+
 ``` js
 const preloadImage = function(path){
     return new Promise(function(resolve,reject){

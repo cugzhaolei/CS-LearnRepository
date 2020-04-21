@@ -350,17 +350,22 @@ CREATE TABLE Persons
 MySQL 使用 AUTO_INCREMENT 关键字来执行 auto-increment 任务。
 默认地，AUTO_INCREMENT 的开始值是 1，每条新记录递增 1。
 要让 AUTO_INCREMENT 序列以其他的值起始，请使用下列 SQL 语法：
+
 ``` sql
 ALTER TABLE Persons AUTO_INCREMENT=100
 ```
+
 要在 “Persons” 表中插入新记录，我们不必为 “P_Id” 列规定值（会自动添加一个唯一的值）：
+
 ``` sql
 INSERT INTO Persons (FirstName,LastName)
 VALUES ('Bill','Gates')
 ```
+
 上面的 SQL 语句会在 “Persons” 表中插入一条新记录。”P_Id” 会被赋予一个唯一的值。”FirstName” 会被设置为 “Bill”，”LastName” 列会被设置为 “Gates”。
 
 #### SQL CREATE VIEW 语句
+
 ``` sql
 CREATE VIEW view_name AS
 SELECT column_name(s)
@@ -369,6 +374,7 @@ WHERE condition
 ```
 
 #### SQL CREATE VIEW实例
+
 可以从某个查询内部、某个存储过程内部，或者从另一个视图内部来使用视图。通过向视图添加函数、join 等等，我们可以向用户精确地提交我们希望提交的数据。
 
 样本数据库 Northwind 拥有一些被默认安装的视图。视图 “Current Product List” 会从 Products 表列出所有正在使用的产品。这个视图使用下列 SQL 创建：
@@ -379,7 +385,9 @@ SELECT ProductID,ProductName
 FROM Products
 WHERE Discontinued=No
 ```
+
 查询上面的视图
+
 ``` sql
 SELECT * FROM [Current Product List]
 ```

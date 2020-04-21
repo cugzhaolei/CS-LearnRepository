@@ -4,7 +4,11 @@
 
 ## [vue 相关](./vue/)
 
+## [React相关](./react/)
+
 ## [防抖与节流](https://www.jianshu.com/p/566c66aafa22)
+
+## [装饰器](./decorator/)
 
 ## array 相关
 
@@ -17,7 +21,7 @@
 
 //
 var ary = [0,1,2];
-ary[10]=10; 
+ary[10]=10;
 ary.filter(function(x){return x===undefined;});
 
 console.log(ary);
@@ -37,6 +41,7 @@ console.log(ary);
 function foo(){}()
 
 ```
+
 IIFE 代表立即调用的函数表达式。JS解析器读取函数foo(){}();作为函数foo(){}和();，前者是一个函数声明，后者(一对括号)是尝试调用一个函数，但没有指定名称，因此它抛出Uncaught SyntaxError: Unexpected token 异常。
 
 * 常见两种方式
@@ -52,13 +57,13 @@ IIFE 代表立即调用的函数表达式。JS解析器读取函数foo(){}();作
       console.log(x);
   }(12345))
 
-作用 不破坏污染全局的命名空间，若需要使用，将其用变量传入如
-（function(window){...}(window)）
+//作用 不破坏污染全局的命名空间，若需要使用，将其用变量传入如
+(function(window){...}(window))
 ```
 
 :::
 
-## async/await
+## [async/await](https://juejin.im/post/5bee888fe51d4557fe34e356)
 
 ::: tip
 
@@ -70,11 +75,6 @@ async 函数是 Generator 函数的语法糖。使用 关键字 async 来表示�
 * 更好的语义。async 和 await 相较于 * 和 yield 更加语义化；
 * 更广的适用性。co 模块约定，yield 命令后面只能是 Thunk 函数或 Promise对象。而 async 函数的 await命令后面则可以是 Promise 或者 原始类型的值（Number，string，boolean，但这时等同于同步操作）；
 * 返回值是 Promise。async 函数返回值是 Promise 对象，比 Generator 函数返回的 Iterator对象方便，可以直接使用 then() 方法进行调用。
-
-作者：xiangzhihong
-链接：https://juejin.im/post/5bee888fe51d4557fe34e356
-来源：掘金
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
 ``` js
 //作用：异步代码的新方式
@@ -103,7 +103,7 @@ const makeRequest = async () => {
     return moreData
   } else {
     console.log(data)
-    return data    
+    return data
   }
 }
 
@@ -1042,23 +1042,30 @@ typeof (1+'2')
 ```
 
 ### JSON
+
 json是JavaScript Object Notation的缩写，即JavaScript对象表示法，是一种轻量级的数据交换格式，易于阅读和编写，同时也易于机器解析和生成。json是存储和交换文本信息的语法，类似于XML。json采用完全独立与语言的文本格式，它的语言格式类似于c语言家族。这些特性也使的json成为理想的数据交换语言。
 
 #### parse()
+
 JSON字符串转换为JSON对象
+
 ``` js
 var obj =eval('('+ str +')');
 var obj = str.parseJSON();
 var obj = JSON.parse(str);
 ```
+
 #### stringify()
+
 JSON对象转换为json字符串
+
 ``` js
 var last=obj.toJSONString();
 var last=JSON.stringify(obj);
 ```
 
 ### DOMContentLoaded&Window.onload
+
 DOMContentLoaded事件要在window.onload之前执行，当DOM树构建完成的时候就会执行DOMContentLoaded事件。当window.onload事件触发时，页面上所有的DOM，样式表，脚本，图片，flash都已经加载完成了。
 
 ### attribute和property
@@ -1078,9 +1085,10 @@ DOMContentLoaded事件要在window.onload之前执行，当DOM树构建完成的
 
 优点：易维护、易复用、易扩展，由于面向对象有封装、继承、多态性的特性，可以设计出低耦合的系统，使系统更加灵活、更加易于维护 
 
-缺点：性能比面向过程低 
+缺点：性能比面向过程低
 
 ### [JSONP]
+
 ``` js
 function jsonp(url, jsonpCallback, success) {
   const script = document.createElement('script')
@@ -1098,15 +1106,14 @@ function jsonp(url, jsonpCallback, success) {
 ### json转换
 
 将数组obj格式：
+
 ``` js
 var obj = [
     {id:1, parent: null},
     {id:2, parent: 1},
     {id:3, parent: 2},
 ];
-```
-转换为obj2格式：
-``` js
+//转换为obj2格式：
 var obj2 = {
     obj: {
         id: 1,
@@ -1123,13 +1130,13 @@ var obj2 = {
 ```
 
 ``` js
-var oj2 = {};
-fucntion createObj2(obj,child){
+var obj2 = {};
+function createObj2(obj,child){
     if(child.parent){
         if(obj.obj){
-            createObj2(obj.obj,child);
+            createObj2(obj,obj.child);
         }else{
-            if(obj.id====child.parent){
+            if(obj.id===child.parent){
                 obj.child={
                     id:child.id,
                     parent:child.parent,
@@ -1138,7 +1145,7 @@ fucntion createObj2(obj,child){
                 if(obj.child){
                     createObj2(obj.child,child);
                 }else{
-                    console.log('obj22未匹配到对应的parent关系')
+                    console.log('obj2未匹配到对应的parent关系')
                 }
             }
         }
@@ -1150,17 +1157,20 @@ fucntion createObj2(obj,child){
         }
     }
 }
-obj.forEach(item,item_i=>{
+
+obj.forEach(item=>{
     createObj2(obj2,item)
-})
-console.log('obj2':obj2)
+});
+
+console.log('obj2:'+obj2)
 ```
 
-### [LazyMan]()
+### [LazyMan]
+
 ``` js
 //实现一个LazyMan，可以按照以下方式调用:
 LazyMan("Hank")//输出:
-	//Hi! This is Hank!
+//Hi! This is Hank!
 LazyMan("Hank").sleep(10).eat("dinner")//输出
 //Hi! This is Hank!
 //等待10秒..
@@ -1337,3 +1347,105 @@ function off(msgName){
 [CodePen](https://codepen.io/beyondverage0908/pen/maQpgR/)
 
 :::
+
+### [axios源码](https://github.com/axios/axios/blob/e50a08b2c392c6ce3b5a9dc85ebc860d50414529/lib/core/Axios.js#L60)
+
+``` js
+'use strict';
+
+var utils = require('./../utils');
+var buildURL = require('../helpers/buildURL');
+var InterceptorManager = require('./InterceptorManager');
+var dispatchRequest = require('./dispatchRequest');
+var mergeConfig = require('./mergeConfig');
+
+/**
+ * Create a new instance of Axios
+ *
+ * @param {Object} instanceConfig The default config for the instance
+ */
+function Axios(instanceConfig) {
+  this.defaults = instanceConfig;
+  this.interceptors = {
+    request: new InterceptorManager(),
+    response: new InterceptorManager()
+  };
+}
+
+/**
+ * Dispatch a request
+ *
+ * @param {Object} config The config specific for this request (merged with this.defaults)
+ */
+Axios.prototype.request = function request(config) {
+  /*eslint no-param-reassign:0*/
+  // Allow for axios('example/url'[, config]) a la fetch API
+  if (typeof config === 'string') {
+    config = arguments[1] || {};
+    config.url = arguments[0];
+  } else {
+    config = config || {};
+  }
+
+  config = mergeConfig(this.defaults, config);
+
+  // Set config.method
+  if (config.method) {
+    config.method = config.method.toLowerCase();
+  } else if (this.defaults.method) {
+    config.method = this.defaults.method.toLowerCase();
+  } else {
+    config.method = 'get';
+  }
+
+  // Hook up interceptors middleware
+  var chain = [dispatchRequest, undefined];
+  var promise = Promise.resolve(config);
+
+  this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
+    chain.unshift(interceptor.fulfilled, interceptor.rejected);
+  });
+
+  this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
+    chain.push(interceptor.fulfilled, interceptor.rejected);
+  });
+
+  while (chain.length) {
+    promise = promise.then(chain.shift(), chain.shift());
+  }
+
+  return promise;
+};
+
+Axios.prototype.getUri = function getUri(config) {
+  config = mergeConfig(this.defaults, config);
+  return buildURL(config.url, config.params, config.paramsSerializer).replace(/^\?/, '');
+};
+
+// Provide aliases for supported request methods
+utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
+  /*eslint func-names:0*/
+  Axios.prototype[method] = function(url, config) {
+    return this.request(utils.merge(config || {}, {
+      method: method,
+      url: url
+    }));
+  };
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  /*eslint func-names:0*/
+  Axios.prototype[method] = function(url, data, config) {
+    return this.request(utils.merge(config || {}, {
+      method: method,
+      url: url,
+      data: data
+    }));
+  };
+});
+
+module.exports = Axios;
+```
+
+[1^ ASYNC&AWAIT](https://juejin.im/post/5bee888fe51d4557fe34e356)
+[2^ 24个ES6方法 解决开发中JS问题](https://juejin.im/post/5e5ef2f9f265da57685dc9c1)

@@ -16,6 +16,8 @@
 
 - ### [DOM](./dom/)
 
+- ### [TypeScript](./typescript/)
+
 :::
 
 ## HTTP
@@ -50,6 +52,8 @@
 - ### [webpack](./webpack/)
 
 - ### [node](./node/)
+
+- ### [Angular](./angular/)
 
 :::
 

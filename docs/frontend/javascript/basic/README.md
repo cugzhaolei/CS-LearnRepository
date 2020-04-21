@@ -648,11 +648,13 @@ VM89:2 7
 * 更改property和attribute上的任意值，都会将更新反映到HTML页面中
 
 ## 浏览器相关
+
 [1.开箱即用的JS干货助力金三银四](https://juejin.im/post/5e4365006fb9a07cd248c21d)
 
 ### 浏览器相关
 
 #### 检查是否为浏览器环境
+
 ``` js
 const isBrowser = ()=>![typeof window,typeof document].includes('undefined')
 
@@ -661,6 +663,7 @@ isBrowser() //false(node)
 ```
 
 #### 判断手机类型
+
 ``` js
 let getMobile=function(){
   var u = navigator.userAgent
@@ -676,6 +679,7 @@ let getMobile=function(){
 ```
 
 #### 判断微信/QQ浏览器
+
 ``` js
 let url = navigator.useAgent.toLowerCase()
 //使用tolowercase将字符串全部转为小写，方便我们判断
@@ -692,6 +696,7 @@ if(url.indexOf('15b202')){
 ```
 
 #### 判断手机开屏/息屏
+
 ``` js
 document.addEventListener('visibilitychange',()=>{
   console.log(document.visibilityState);
@@ -704,6 +709,7 @@ document.addEventListener('visibilitychange',()=>{
 ```
 
 #### 监听联网状态
+
 ``` js
 window.addEventListener("offline",function(e){alert('offline');})
 window.addEventListener("online",function(e){alert("online");})
@@ -715,6 +721,7 @@ if(window.navigator.onLine==true){
 ```
 
 #### 检测手机横屏
+
 ``` js
 window.addEventListener('resize',()=>{
   if(window.orientation === 180||window.orientation===0){
@@ -731,24 +738,28 @@ window.addEventListener('resize',()=>{
 ### 字符串有关
 
 #### 首字母大写
+
 ``` js
 const capitalize = ([first,...rest])=>first.toUpperCase()+rest.join('')
 capitalize('fooBar') //FooBar
 ```
 
 #### 单个单词首字母大写
+
 ``` js
 const capitalizeEveryWord = str=>str.replace(/\b[a-z]g,char=>toUpperCase())
 capitalizeEveryWord("Hello World!") //Hello world
 ```
 
 #### 删除字符中的HTML标签
+
 ``` js
 const stringHTMLtag = str=>str.replace(/<[^>]*>/g,"")
 stripHTMLTags('<p><em>Hello</em> <strong>World</strong></p>') // 'Hello World!'
 ```
 
 #### 字符串反转
+
 ``` js
 //方法一
 var arr = str.split('')
@@ -792,6 +803,7 @@ console.log(newStr)
 ```
 
 #### 统计字符串出现最多的字母和次数
+
 ``` js
 var str = 'abcdeddd'
 var n = {}
@@ -819,6 +831,7 @@ console.log('出现次数'+max)    //出现次数4
 ### 数字相关
 
 #### 格式化金钱 毎千分位加逗号
+
 ``` js
 function format(str){
   let s = ''
@@ -839,6 +852,7 @@ function format(str){
 ```
 
 #### 文件单位显示
+
 ``` js
 function bytesToSize(bytes){
   if(bytes===0) return '0 B'
@@ -865,6 +879,7 @@ VM124:14 1.62 EB
 ```
 
 #### 计算两点的距离
+
 ``` js
 const distance = (x0,y0,x1,y1) => Math.hypot(x1-x0,y1-y0)
 distance(1,4,4,8) //5
@@ -873,6 +888,7 @@ distance(1,4,4,8) //5
 ### 数组/对象相关
 
 #### 获取URL参数
+
 ``` js
 function getQueryString(name){
   var reg = new RegExp('(^|&'+name+'=([^&]*)(&|$)','i')
@@ -883,6 +899,7 @@ function getQueryString(name){
 ```
 
 #### 实现对五种JS数据的克隆
+
 ```  js
 function clone(obj){
   var copy
@@ -924,6 +941,7 @@ function clone(obj){
 ```
 
 #### 统计数组中出现的次数的对象
+
 ``` js
 const nums = [1,5,6,7,3,4,1,3,4,1]
 const result = nums.reduce((pre,next)=>{
@@ -935,6 +953,7 @@ console.log(result)//{1: 3, 3: 2, 4: 2, 5: 1, 6: 1, 7: 1}
 ```
 
 #### 顺序运行Promise
+
 ``` js
 function runPromiseInSequence(arr,input){
   return arr.reduce((promiseChain,currentFunction)=>promiseChain.then(currentFunction),Promise.resolve(input)
@@ -1053,4 +1072,128 @@ console.log(a.x);  //undefined
 consoel.log(b.x);  //{n:2}
 
 //. 优先级高于 =
+```
+
+#### 作用域
+
+``` js
+var a = 10;
+(function(){
+  console.log(a);//undefined
+  a = 5;
+  console.log(window.a);//10
+  var a = 20;
+  console.log(a);//20
+})()
+
+//1.函数作用域中可以访问全局作用域
+var a = 123;
+(function(){
+  console.log(a);//123
+  a = 456;
+}());
+console.log(a);//456
+
+var a = undefined;
+a = 123;
+(function(){
+  console.log(a) //123
+  console.log(window.a)  //123
+  window.a = 456
+}());
+console.log(a) //456
+
+
+//2.全局作用域无法访问局部作用域
+(function(){
+  var a = 456
+}());
+console.log(a)  //a is not defined
+
+//3.局部作用域中隐式声明，默认会在全局作用域中声明变量
+(function(){
+  a = 456
+}());
+console.log(a) //456
+
+var window = this;//再次声明此处可忽略
+var a //undefined
+a = 10
+(function(){
+  var a
+  console.log(a) //
+  a = 5 //显式声明 a = 5
+  console.log(window.a)
+  a = 20; //显示声明 a 从5 变为 20
+  console.log(a)
+}()
+```
+
+``` js
+var obj = {
+  '2':3,
+  '3':4,
+  'length':2,
+  'splice':Array.prototype.splice,
+  'push':Array.prototype.push
+}
+obj.push(1)
+obj.push(2)
+console.log(obj)
+
+//考察伪数组
+Object(4) [empty × 2, 1, 2, splice: ƒ, push: ƒ]
+2: 1
+3: 2
+length: 4
+splice: ƒ splice()
+push: ƒ push()
+__proto__: Object
+```
+
+#### call apply
+
+call比apply性能更好，内部少了一次将apply数组解构的操作
+
+#### a.b.c.d和a['b']['c']['d']
+
+AST 下面前者速度更快，不用考虑后者[]中类型
+
+``` js
+const recast = require('recast');
+
+const code1 = a.b.c.d
+const code2 = a['b']['c']['d']
+
+const ast1 = recast.parse(code1)
+const ast2 = recast.parse(code2)
+```
+
+#### for与forEach
+
+``` js
+let arrs = new Array(100000);
+
+console.time('for');
+for(let i = 0;i<arrs.length;i++){
+
+};
+console.timeEnd('for')
+
+console.time('forEach')
+
+arrs.forEach((arr)=>{
+
+});
+console.timeEnd('forEach');
+
+for:2.263ms
+forEach: 0.254ms
+```
+
+* for循环没有任何额外的函数调用栈和上下文
+* forEach函数签名实际上是
+
+``` js
+array.forEach(function(currentValue,index,arr),thisValue)
 ```

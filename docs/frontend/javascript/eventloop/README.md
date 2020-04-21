@@ -1,5 +1,7 @@
 # [Event Loop](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/)
 
+[1^](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/)
+
 在JavaScript中，任务被分为两种，一种宏任务（MacroTask）也叫Task，一种叫微任务（MicroTask）。
 
 ## 事件流
@@ -12,13 +14,13 @@
    阻止冒泡事件event.stopPropagation()
 
 ``` js
-   function stopBubble(e) {
-      if (e && e.stopPropagation) { // 如果提供了事件对象event 这说明不是IE浏览器
-        e.stopPropagation()
-      } else {
-        window.event.cancelBubble = true //IE方式阻止冒泡
-           }
-       }
+function stopBubble(e) {
+  if (e && e.stopPropagation) { // 如果提供了事件对象event 这说明不是IE浏览器
+    e.stopPropagation()
+  } else {
+    window.event.cancelBubble = true //IE方式阻止冒泡
+        }
+    }
 ```
 
    阻止默认行为event.preventDefault()
@@ -88,7 +90,7 @@ console.log('script end');
 
 首先我们划分几个分类：
 
-# 第一次执行
+## 第一次执行
 
 ``` JS
 Tasks：run script、 setTimeout callback
@@ -99,7 +101,7 @@ Log: script start、script end。
 
 执行同步代码，将宏任务（Tasks）和微任务(Microtasks)划分到各自队列中。
 
-# 第二次执行
+## 第二次执行
 
 ``` JS
 Tasks：run script、 setTimeout callback
@@ -110,7 +112,7 @@ Log: script start、script end、promise1、promise2
 
 执行宏任务后，检测到微任务(Microtasks)队列中不为空，执行Promise1，执行完成Promise1后，调用Promise2.then，放入微任务(Microtasks)队列中，再执行Promise2.then。
 
-# 第三次执行：
+## 第三次执行
 
 ``` JS
 Tasks：setTimeout callback
@@ -121,7 +123,7 @@ Log: script start、script end、promise1、promise2、setTimeout
 
 当微任务(Microtasks)队列中为空时，执行宏任务（Tasks），执行setTimeout callback，打印日志。
 
-# 第四次执行
+## 第四次执行
 
 ``` JS
 Tasks：setTimeout callback
@@ -134,7 +136,7 @@ Log: script start、script end、promise1、promise2、setTimeout
 以上执行帧动画可以查看Tasks, microtasks, queues and schedules
 或许这张图也更好理解些。
 
-# 再举个例子
+## 再举个例子
 
 ``` js
 console.log('script start')
@@ -143,7 +145,7 @@ async function async1() {
   console.log('async1 end')
 }
 async function async2() {
-  console.log('async2 end') 
+  console.log('async2 end')
 }
 async1()
 setTimeout(function() {
@@ -160,13 +162,24 @@ new Promise(resolve => {
     console.log('promise2')
   })
 console.log('script end')
+
+
+VM24:1 script start
+VM24:7 async2 end
+VM24:14 Promise
+VM24:23 script end
+VM24:4 async1 end
+VM24:18 promise1
+VM24:21 promise2
+undefined
+VM24:11 setTimeout
 ```
 
-这里需要先理解async/await。
-async/await 在底层转换成了 promise 和 then 回调函数。
-也就是说，这是 promise 的语法糖。
-每次我们使用 await, 解释器都创建一个 promise 对象，然后把剩下的 async 函数中的操作放到 then 回调函数中。
-async/await 的实现，离不开 Promise。从字面意思来理解，async 是“异步”的简写，而 await 是 async wait 的简写可以认为是等待异步方法执行完成。
+这里需要先理解`async/await`。
+`async/await` 在底层转换成了 `promise` 和 `then` 回调函数。
+也就是说，这是 `promise` 的语法糖。
+每次我们使用 `await`, 解释器都创建一个 `promise` 对象，然后把剩下的 `async` 函数中的操作放到 `then` 回调函数中。
+`async/await` 的实现，离不开 `Promise`。从字面意思来理解，`async` 是“异步”的简写，而 `await` 是 `async wait` 的简写可以认为是等待异步方法执行完成。
 
 ## 关于73以下版本和73版本的区别
 
@@ -181,9 +194,9 @@ EventLoop
 Await
 ![await](/images/await-under-the-hood.svg)
 
-# NodeJS-EventLoop
+## NodeJS-EventLoop
 
-Node中的Event Loop是基于libuv实现的，而libuv是 Node 的新跨平台抽象层，libuv使用异步，事件驱动的编程方式，核心是提供i/o的事件循环和异步回调。libuv的API包含有时间，非阻塞的网络，异步文件操作，子进程等等。 Event Loop就是在libuv中实现的。
+Node中的EventLoop是基于libuv实现的，而libuv是 Node 的新跨平台抽象层，libuv使用异步，事件驱动的编程方式，核心是提供i/o的事件循环和异步回调。libuv的API包含有时间，非阻塞的网络，异步文件操作，子进程等等。 Event Loop就是在libuv中实现的。
 
 ## Node的Event loop一共分为6个阶段，每个细节具体如下
 

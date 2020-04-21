@@ -1,14 +1,16 @@
 # vue相关
 
-# [30 道 Vue 面试题](https://juejin.im/post/5d59f2a451882549be53b170)
+## [30 道 Vue 面试题](https://juejin.im/post/5d59f2a451882549be53b170)
 
-# [中高级前端大厂面试秘籍，为你保驾护航金三银四，直通大厂(上)](https://juejin.im/post/5c64d15d6fb9a049d37f9c20)
+## [中高级前端大厂面试秘籍，为你保驾护航金三银四，直通大厂(上)](https://juejin.im/post/5c64d15d6fb9a049d37f9c20)
 
 ## [new Vue](https://github.com/muwoo/blogs/blob/master/src/Vue/1.md)
 
 ## [nexttick](https://www.cnblogs.com/tiedaweishao/p/8967127.html)
+
 ::: tip
 看一段vue中使用的代码
+
 ``` js
 export default {
   data () {
@@ -28,10 +30,13 @@ export default {
   }
 
 ```
+
 这段脚本执行我们猜测会依次打印：1、2、3。但是实际效果中，只会输出一次：3。为什么会出现这样的情况？我们来一探究竟。
+
 ## queueWatcher
   
 定义watch监听msg，实际上会被Vue这样调用vm.$watch(keyOrFn, handler, options)。$watch是我们初始化的时候，为vm绑定的一个函数，用于创建Watcher对象
+
 ``` js
 src/core/observser/watcher.js
 
@@ -52,6 +57,7 @@ this.deep = this.user = this.lazy = this.sync = false
     }
   }
 ```
+
 初始设定this.deep = this.user = this.lazy = this.sync = false，也就是当触发update更新的时候，会去执行queueWatcher方法：
 
 ``` js
