@@ -1,6 +1,7 @@
 # [git](https://git-scm.com/)
 
 ### INSTALL GIT
+
 ``` md
 INSTALL GIT
 GitHub provides desktop clients that include a graphical user
@@ -16,6 +17,7 @@ htp://git-scm.com
 ```
 
 ### CONFIG TOOLING
+
 ``` md
 CONFIGURE TOOLING
 Configure user information for all local repositories
@@ -26,7 +28,9 @@ Sets the email you want atached to your commit transactions
 $ git config --global color.ui auto
 Enables helpful colorization of command line output
 ```
+
 ### CREATE REPOSITORIES
+
 ``` md
 Start a new repository or obtain one from an existing URL
 $ git init [project-name]
@@ -36,6 +40,7 @@ Downloads a project and its entire version history
 ```
 
 ### MAKE CHANGES
+
 ``` md
 Review edits and craf a commit transaction
 $ git status
@@ -53,6 +58,7 @@ Records file snapshots permanently in version history
 ```
 
 ### GROUP CHANGES
+
 ``` md
 GROUP CHANGES
 Name a series of commits and combine completed efforts
@@ -69,6 +75,7 @@ Deletes the specified branch
 ```
 
 ### REFACTOR FILENAMES
+
 ``` md
 Relocate and remove versioned files
 $ git rm [file]
@@ -80,6 +87,7 @@ Changes the file name and prepares it for commit
 ```
 
 ### SUPPRESS TRACKING
+
 ``` md
 Exclude temporary files and paths
 $ git ls-files --other --ignored --exclude-standard
@@ -87,6 +95,7 @@ Lists all ignored files in this project
 ```
 
 ### SAVE FRAGMENTS
+
 ``` md
 Shelve and restore incomplete changes
 $ git stash
@@ -100,6 +109,7 @@ Discards the most recently stashed changeset
 ```
 
 ### REVIEW HISTORY
+
 ``` md
 Browse and inspect the evolution of project files
 $ git log
@@ -113,6 +123,7 @@ Outputs metadata and content changes of the specified commit
 ```
 
 ### REDO COMMITS
+
 ``` md
 Erase mistakes and craf replacement history
 $ git reset [commit]
@@ -122,6 +133,7 @@ Discards all history and changes back to the specified commit
 ```
 
 ### SYNCHRONIZE CHANGES
+
 ``` md
 Register a repository bookmark and exchange version history
 $ git fetch [bookmark]
