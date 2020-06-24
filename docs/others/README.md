@@ -1,4 +1,8 @@
 
+# 其他
+
+## [计算机基础](./cs)
+
 ## [消遣](./leisure/)
 
 ## [系统](./system/)
@@ -16,7 +20,9 @@
 ## [项目](./projects/)
 
 ## [工业](./industrial/)
+
 ::: tip
+
 - Ethernet/IP
 - Modbus
 - EtherCAT
@@ -25,9 +31,8 @@
 
 ## [物联网](./IoT/)
 
-## [设计模式](http://c.biancheng.net/design_pattern/)
+## [设计模式](./DesignPartten/)
 
-
-<div>
+<!-- <div>
 <button style="float:left;" herf="./projects">1</button> <button  style="float:right;">2</button>
-</div>
+</div> -->
