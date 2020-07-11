@@ -309,7 +309,11 @@
 ### HR面
 
 1. 自我介绍
+<<<<<<< HEAD
 2. 
+=======
+2. 有什么区别
+>>>>>>> 72ba494ed66a4d138d7909b5e4b1466446d7ad44
 3. 为什么来杭州，家里情况
 4. 说一下你做的这个项目. 协调沟通
 5. 说一下研究生本科最大的区别(一个词)
@@ -363,6 +367,7 @@
 4. url输入到解析的过程
 5. [es5实现类的继承](https://blog.csdn.net/weixin_42098339/article/details/87900369)
 6. 二叉树子路径(实现 function pathSum(head, num)，返回二叉树中，是否有一条子路径，其和为 num)
+<<<<<<< HEAD
 
 1. CSS中定位有哪些
 2. flex等宽布局
@@ -393,3 +398,5 @@ printOrder(["www.toutiao.com","www.douyin.com","www.js.com"])
 * Facebook的swift了解过吗？
 * 对职业有什么规划
 * 面试官会问得很详细 追根问底
+=======
+>>>>>>> 72ba494ed66a4d138d7909b5e4b1466446d7ad44
