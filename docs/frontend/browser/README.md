@@ -7,7 +7,7 @@
 --：|：--|：--
 Chrome	|Blink（28~） Webkit（Chrome 27）	|V8
 FireFox |Gecko |	SpiderMonkey
-Safari	|Webkit|	JavaScriptCore
+Safari	|Webkit| JavaScriptCore
 Edge	|EdgeHTML	|Chakra(for JavaScript)
 IE	|Trident	|Chakra(for JScript)
 PhantomJS	|Webkit	|JavaScriptCore
@@ -133,6 +133,7 @@ document.body.appendChild(fragment);
 ## 前端及时通信
 
 ### 短轮询
+
 ### [Comet](http://www.52im.net/thread-334-1-1.html)
 
 ### [SSE](https://www.ruanyifeng.com/blog/2017/05/server-sent_events.html)

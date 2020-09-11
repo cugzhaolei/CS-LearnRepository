@@ -1,8 +1,10 @@
 # [git](https://git-scm.com/)
 
+## git command
+
 ### INSTALL GIT
 
-``` md
+```md
 INSTALL GIT
 GitHub provides desktop clients that include a graphical user
 interface for the most common repository actions and an automatically updating command line edition of Git for advanced scenarios.
@@ -18,20 +20,20 @@ htp://git-scm.com
 
 ### CONFIG TOOLING
 
-``` md
+```md
 CONFIGURE TOOLING
 Configure user information for all local repositories
 $ git config --global user.name "[name]"
 Sets the name you want atached to your commit transactions
 $ git config --global user.email "[email address]"
 Sets the email you want atached to your commit transactions
-$ git config --global color.ui auto
+\$ git config --global color.ui auto
 Enables helpful colorization of command line output
 ```
 
 ### CREATE REPOSITORIES
 
-``` md
+```md
 Start a new repository or obtain one from an existing URL
 $ git init [project-name]
 Creates a new local repository with the specified name
@@ -41,7 +43,7 @@ Downloads a project and its entire version history
 
 ### MAKE CHANGES
 
-``` md
+```md
 Review edits and craf a commit transaction
 $ git status
 Lists all new or modified files to be commited
@@ -59,7 +61,7 @@ Records file snapshots permanently in version history
 
 ### GROUP CHANGES
 
-``` md
+```md
 GROUP CHANGES
 Name a series of commits and combine completed efforts
 $ git branch
@@ -70,33 +72,33 @@ $ git checkout [branch-name]
 Switches to the specified branch and updates the working directory
 $ git merge [branch]
 Combines the specified branch’s history into the current branch
-$ git branch -d [branch-name]
+\$ git branch -d [branch-name]
 Deletes the specified branch
 ```
 
 ### REFACTOR FILENAMES
 
-``` md
+```md
 Relocate and remove versioned files
 $ git rm [file]
 Deletes the file from the working directory and stages the deletion
 $ git rm --cached [file]
 Removes the file from version control but preserves the file locally
-$ git mv [file-original] [file-renamed]
+\$ git mv [file-original][file-renamed]
 Changes the file name and prepares it for commit
 ```
 
 ### SUPPRESS TRACKING
 
-``` md
+```md
 Exclude temporary files and paths
-$ git ls-files --other --ignored --exclude-standard
+\$ git ls-files --other --ignored --exclude-standard
 Lists all ignored files in this project
 ```
 
 ### SAVE FRAGMENTS
 
-``` md
+```md
 Shelve and restore incomplete changes
 $ git stash
 Temporarily stores all modified tracked files
@@ -110,7 +112,7 @@ Discards the most recently stashed changeset
 
 ### REVIEW HISTORY
 
-``` md
+```md
 Browse and inspect the evolution of project files
 $ git log
 Lists version history for the current branch
@@ -124,7 +126,7 @@ Outputs metadata and content changes of the specified commit
 
 ### REDO COMMITS
 
-``` md
+```md
 Erase mistakes and craf replacement history
 $ git reset [commit]
 Undoes all commits afer [commit], preserving changes locally
@@ -134,7 +136,7 @@ Discards all history and changes back to the specified commit
 
 ### SYNCHRONIZE CHANGES
 
-``` md
+```md
 Register a repository bookmark and exchange version history
 $ git fetch [bookmark]
 Downloads all history from the repository bookmark
