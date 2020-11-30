@@ -35,6 +35,13 @@ function flatten(arr){
     } 
     return arr;
 }
+
+const res1 = arr.flat(Infinity);
+
+const res2 = JSON.stringify(arr).replace(/\[|\]/g,'').split(','); // 所有数据变成了字符串
+
+const res3 = JSON.parse('['+JSON.stringify(arr).replace(/\[|\])/g,'')+']'); // 改良版
+
 ```
 
 ## 去重
@@ -182,6 +189,8 @@ console.log(result);
 ### 数组去重
 
 ``` js
+const arr = [1, 1, '1', 17, true, true, 17, false, 'true', 'a', {}, {}];
+
 function unique(arr){
     var temp = arr.sort();
     var res = [temp[0]];
@@ -201,6 +210,71 @@ function unique(arr){
         }
     }
     return temp;
+}
+
+// set
+
+const res1 = Array.from(new Set(arr));
+
+//双重嵌套
+
+const unique2 = arr =>{
+    let len = arr.length;
+    for(let i=0;i<len;i++){
+        for(let j = i+1;j<len;j++){
+            if(arr[i]===arr[j]){
+                //删除一个数 j--保证j的值经过自加后保持不变 len-- 减少循环数 提升性能
+                len--;
+                j--;
+            }
+        }
+    }
+}
+
+// 利用indexOf
+
+const unique3 = arr => {
+    const res = [];
+    for(let i = 0; i< arr.length; i++){
+        if(res.indexOf(arr[i])===-1)
+        {
+            res.push(arr[i]);
+        }
+    }
+    return res;
+}
+
+// 使用include
+const unique4 = arr =>{
+    const res =[];
+    for(let i=0; i<arr.length;i++){
+        if(!res.includes(arr[i]))
+        {
+            res.push(arr[i]);
+        }
+    }
+    return res;
+}
+
+// 使用 filter
+const unique5 = arr => {
+    return arr.filter((item,index)=>  {
+        return arr.indexOf(item) === index;
+    });
+}
+
+// 利用map
+const unique6 = arr=》 {
+    const map = new Map();
+    const res = [];
+
+    for(let i=0;i<arr.length;i++){
+        if(!map.has(arr[i])){
+            map.set(arr[i],true)
+            res.push(arr[i]);
+        }
+    }
+    return res;
 }
 ```
 
@@ -289,5 +363,145 @@ if(Array.isArray){
 
 reduce() 方法对数组中的每个元素执行一个由您提供的reducer函数(升序执行)，将其结果汇总为单个返回值。
 
+## 类数组转化为数组
+
+1. Array.from
+
+``` js
+Array.from(documentt.querySelector('div'));
+```
+
+2. Array.prototype.slice.call()
+
+```js
+Array.prototype.slice.call(document.querySelector('div'));
+```
+
+3. 扩展运算符
+
+```js
+[...document.querySelector('div')];
+```
+
+4. 利用concat
+
+```js
+Array.ptototype.concat.apply([],documentt.querySelectorAll('div'));
+```
+
+## API
+
+### Array.prototype.filter
+
+```js
+Array.prototype.filter = function(callback,thisArg){
+    if(this==undefined){
+        throw new TypeError('this is null or undefined');
+    }
+    if(typeof callback!=='function'){
+        throw new TypeError(callback + 'is not a function');
+    }
+
+    const res = [];
+    // 新建一个回调函数的对象(强制转换对象)
+    const O = Object(this);
+
+    //>>>O 保证len为number，且为正整数数
+    const len = O.length>>>0;
+    for(let i=0;i<len;i++){
+        // 检查i是否在0的属性（会检查原型链）
+        if(i in O){
+            // 回调函数调用参数
+            if(callback.call(thisArg,O[i],i,0)){
+                res.push(O[i]);
+            }
+        }
+    }
+    return res;
+}
+```
+
+###  Array.prototype.map()
+
+```js
+Array.prototype.map = function(callback,thisArg){
+    if(this==undefined){
+        throw new TypeError('this is null or undefined');
+    }
+    if(typeof callback!=='function'){
+        throw new TypeError(callback + 'is not a function');
+    }
+    const res = [];
+    const O = Object(this);
+    const len = O.length>>>;
+    for(let i=0;i<len;i++){
+        if(i in O){
+        res[i] = callback.call(thisArg,O[i],i,this);
+        }
+    }
+    return res;
+}
+```
+
+### Array.prototype.forEach()
+
+```js
+Array.prototype.forEach = function(callback,thisArg){
+    if(this==undefined){
+        throw new TypeError('this is null or undefined');
+    }
+    if(typeof callback!=='function'){
+        throw new TypeError(callback + 'is not a function');
+    }
+
+    const O = Object(this);
+    const len = O.length>>>0;
+    let k = 0;
+    while(k<len){
+        if(k in O){
+            callback.call(thisArg,O[k],k,O);
+        }
+        k++;
+    }
+}
+```
+
+### Array.prototype.reduce()
+
+```js
+Array.prototype.reduce = function(callback,initialValue){
+    if(this==undefined){
+        throw new TypeError('this is null or undefined');
+    }
+    if(typeof callback!=='function'){
+        throw new TypeError(callback + 'is not a function');
+    }
+    const O = Object(this);
+    const len = this.length>>>0;
+    let accumulator = initialValue;
+    let k = 0;
+    // 如果第二个参数为undefined的情况下，则数组的第一个有效值做为累加器的 初始值
+    if(accumulator === undefined){
+        while(k<len&&!(k in O)){
+            k++;
+        }
+        // 如果超出数组界限还没有找到累加器的初始值，则TypeError
+        if(k>=len){
+            throw new TypeError('Reduce of empty array with no initial value');
+        }
+        accumulator = callbacl.call(undefined,accumulator,O[k],k,O)
+        accumulator = O[k++];
+    }
+    while(k<len){
+        if(k in O){
+            accumulator = callback.call(undefined,accumulator,O[k],k,O);
+        }
+        k++;
+    }
+    return accumulator;
+}
+```
+
 
 [1^ MDN Array](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)
+[2^ 手写](https://juejin.im/post/6875152247714480136)

@@ -1104,3 +1104,197 @@ const preloadImage = function(path){
     });
 };
 ```
+
+## 手写Promise
+
+```js
+const PENDING = 'PENDING';
+const FULLFILLED = 'FULLFILLED';
+const REJECTED = 'REJECTED';
+
+class Promise{
+    constructor(exector){
+        // initial state
+        this.status = PENDING;
+
+        // initial result
+        this.value = undefined;
+        this.reason = undefined;
+
+        // successful callback array
+        this.onFullfilledCallbacks = [];
+        // rejected callback array
+        this.onRejectedCallbacks = [];
+
+        const resolve = value =>{
+            // only the ongoing promise
+            if(this.status === 'PENDING'){
+                this.status = FULLFILLED;
+                this.value = value;
+                // execute successful callback
+                this.onFullfilledCallbacks.forEach(fn=>fn(this.value));
+            }
+        }
+
+        const reject = reason => {
+            if(this.status === 'PENDING'){
+                this.status = REJECTED;
+                this.reason = reason;
+                this.onRejectedCallback.forEach(fn=>fn(this.reason));
+            }
+        }
+
+        try{
+            exector(resolve,reject);
+        }catch(e){
+            reject(e);
+        }
+
+    }
+}
+then(onFullfilled,OnRejected){
+    onFullfilled = typeof onFullfilled === 'function'?onFullfilled:value=>value;
+    onRejected = typeof onRejected === 'function'?onRejected;
+    reason =>{throw new Error(reason instanceof Error?reason.message:reason)}
+
+    //
+    const self = his;
+    return new Promise((resolve,reject)=>{
+        if(self.status===PENDING){
+            self.onFullfilledCallbacks.push(()=>{
+                try{
+                    setTimeout(()=>{
+                        const result = onFullfilled(self.value);
+
+                        // 1.return promise ,execute then()
+                        // 2.not promise.  call new promise resolve()
+                        return instanceof Promise?result.then(resolve,rejecte):resolve(result);
+                    })
+                }catch(e){
+                    reject(e);
+                }
+            });
+            self.onRejectedCallbacls.push(()=>{
+                try{
+                    setTimeout(()=>{
+                        const result = onRejected(self.reason);
+                        result instanceof Promise?result.then(resolve,reject):reject(result);
+                    })
+                }catch(e){
+                    reject(e);
+                }
+            });
+        }
+        catch(onRejected){
+            return this.then(null,onRejected);
+        }
+        static resolve(value){
+            if(value instanceof Promise){
+                return value;
+            }else{
+                return new Promise((resolve,reject)=> resolve(value));
+            }
+        }
+        static rejecte(reason){
+            return new Promise((resolve,reject)=>{
+                reject(reason);
+            })
+        }
+    });
+}
+```
+
+### Promise.all()
+
+```js
+Promise.all = function(promiseArr){
+    return new Promise((resolve,reject)=>{
+        const ans = [];
+        let index = 0;
+        for(let i = 0;i<promiseArr.length;i++){
+            promiseArr[i].then(res=>{
+                ans[i] = res;
+                index++;
+                if(index === promiseArr.length){
+                    resolve(ans);
+                }
+            })
+            .then(err=>reject(err));
+        }
+    })
+}
+```
+
+### Promise.race()
+
+```js
+Promise.race = function(promiseArr){
+    return new Promise((resolve,rejected)=>{
+        promiseArr.forEach(p=>{
+            Promise.resolve(p).then(
+                val=>resolve(val),
+                err=>reject(err),
+            )
+        })
+    })
+}
+```
+
+### [Promise调度器](https://juejin.im/post/6854573217013563405)
+
+```js
+class Schedular{
+    constructor(){
+        this.queue = [];
+        this.maxCount = 2;
+        this.runCount = 0;
+    }
+
+    add(promiseCreator){
+        this.queue.push(promiseCreator);
+    }
+
+    taskStart(){
+        for(let i=0;i<this.maxCount;i++){
+            this.request();
+        }
+    }
+
+    request(){
+        if(!this.queue||!this.queue.length||this.runCounts>=this.maxCount){
+            return;
+        }
+        this.runCount++;
+
+        this.queue.shift().then(()=>{
+            this.runCounts--;
+            this.request();
+        });
+    }
+}
+
+const timeout = time => new Promise(resolve => {
+  setTimeout(resolve, time);
+})
+  
+const scheduler = new Scheduler();
+  
+const addTask = (time,order) => {
+  scheduler.add(() => timeout(time).then(()=>console.log(order)))
+}
+  
+  
+addTask(1000, '1');
+addTask(500, '2');
+addTask(300, '3');
+addTask(400, '4');
+  
+scheduler.taskStart()
+```
+
+```bash
+VM45:35 2
+VM45:35 3
+VM45:35 1
+VM45:35 4
+```

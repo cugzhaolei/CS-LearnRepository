@@ -511,7 +511,7 @@ const planetStyle = (index, l) => {
 1. 行内元素使用text-align:center 实现行内元素水平居中
 2. 块级元素，设置margin:0 auto;
 
-``` csss
+``` css
 .parent {
     width: -webkit-fit-content;
     width: -moz-fit-content;
@@ -1336,7 +1336,7 @@ p {
   border: solid 1px red;
 }
 span {
-  font-size: 0.5em;  //10px
+  font-size: 0.5em;  /*10px*/
   width: 10em;
   height: 10em;
   border: solid 1px blue;

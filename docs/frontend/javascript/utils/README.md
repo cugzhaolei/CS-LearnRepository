@@ -1,7 +1,9 @@
 # [JS实现原生api](https://juejin.im/post/5cf4c8ce6fb9a07efc4973a6#heading-0)
 
 ::: tip
-##  ES5实现map()方法
+
+## ES5实现map()方法
+
 ``` js
 Array.prototype.MyMap = function(fn,context){
     var arr = Array.prototype.slice.call(this); //es5 不需要用...展开
@@ -13,7 +15,9 @@ Array.prototype.MyMap = function(fn,context){
     return mappedArr;
 }
 ```
-##  ES5实现数组的reduce()方法
+
+## ES5实现数组的reduce()方法
+
 ``` js
 Array.prototype.myReduce = function(fn,initialValue){
     var arr = Array.prototype.slice.call(this);
@@ -26,7 +30,9 @@ Array.prototype.myReduce = function(fn,initialValue){
     return res;
 }
 ```
-##  ES6实现call/apply
+
+## ES6实现call/apply
+
 ``` js
 Function.prototype.myCall = function(context = window,..args){
     let func = this;
@@ -40,6 +46,7 @@ Function.prototype.myCall = function(context = window,..args){
 ```
 
 ## 实现generator
+
 ``` js
 
 // 使用 * 表示这是一个 Generator 函数
@@ -101,7 +108,8 @@ function test() {
 }
 ```
 
-##  实现Object.create方法
+## 实现Object.create方法
+
 ``` js
 function create(proto){
     function F(){};
@@ -111,10 +119,12 @@ function create(proto){
 
 ```
 
-##  实现Bind方法
+## 实现Bind方法
+
 核心要点：
 1、对于普通函数，绑定this指向
 2、对于构造函数，要保证原函数的原型对象上的属性不能丢失
+
 ``` js
 Function.prototype.bind = function(context,...args){
     let self = this; // this表示的调用bind函数
@@ -179,6 +189,7 @@ Function.prototype.call = function(context){
 ```
 
 ## 实现apply
+
 ``` js
 Function.prototype.apply = function(context){
     var context = context||window;
@@ -197,12 +208,14 @@ Function.prototype.apply = function(context){
 }
 ```
 
-##  实现new关键字
+## 实现new关键字
+
 核心要点:
 
 1.创建一个全新的对象，这个对象的__proto__要指向构造函数的原型对象
 2.执行构造函数
 3.返回值为object类型则作为new方法的返回值返回，否则返回上述全新对象
+
 ``` js
 function myNew(fn,...args){
     let instance = Object.create(fn.prototype);
@@ -211,8 +224,10 @@ function myNew(fn,...args){
 }
 ```
 
-##  实现instanceof的作用
+## 实现instanceof的作用
+
 核心要点：原型链的向上查找
+
 ``` js
 function myInstanceOf(left,rigth){
     let proto = Object.getPrototype(left);
@@ -239,8 +254,10 @@ function instance_of(L:Object,R:any){
 }
 ```
 
-##  实现单例模式
+## 实现单例模式
+
 核心要点：使用闭包和proxy拦截
+
 ``` js
 function proxy(fun){
     let instance;
@@ -256,7 +273,8 @@ function proxy(fun){
 }
 ```
 
-##  实现防抖效果
+## 实现防抖效果
+
 核心要点：如果在定时器的时间范围内再次触发，则重新计时
 
 ``` js
@@ -271,8 +289,10 @@ const debounce = (fn,delay)=>{
 };
 ```
 
-##  实现节流功能
+## 实现节流功能
+
 核心要点：如果在定时器时间的范围内再次触发，则不予理睬，等当前定时器完成，才能启动下一个定时器
+
 ``` js
 const throttle = (fn,delay=500)=>{
     let flag = true;
@@ -287,8 +307,10 @@ const throttle = (fn,delay=500)=>{
 };
 ```
 
-##  JS数组扁平化(flat)方法总结
+## JS数组扁平化(flat)方法总结
+
 需求:多维数组=>一维数组
+
 ``` js
 let ary = [1, [2, [3, [4, 5]]], 6];
 let str = JSON.stringify(ary);
@@ -380,6 +402,7 @@ console.log(steamroller4(arr))
 方法一：
 双层循环，外层循环元素，内层循环时比较
 如果有相同的值则跳过，不相同则push进数组
+
 ``` js
 Array.prototype.distinct = function(){
     var arr = this;
@@ -398,12 +421,15 @@ Array.prototype.distinct = function(){
 var array = [1,2,3,4,5,5,4,1,5,2];
 console.log(array.distinct());
 ```
+
 ES6
+
 ``` js
 [...new Set(arr)].sort()
 ```
 
 hash数组去重
+
 ``` js
     var arr=[1,8,5,6,4,2,3,8,6,7,5,3];
     var n={},r=[];  //n为hash表，r为临时数组
@@ -419,6 +445,7 @@ hash数组去重
 ```
 
 利用新数组indexof查找
+
 ``` js
        var arr=[1,8,5,6,4,2,3,8,6,7,5,3];
        var res=[];
@@ -431,8 +458,8 @@ hash数组去重
      console.log(res);
 ```
 
+## reduce模拟map
 
-##  reduce模拟map
 ``` js
 // 别忘了map的第二个参数
 Array.prototype._map = function(fn, context = window) {
@@ -444,7 +471,9 @@ Array.prototype._map = function(fn, context = window) {
   }, []);
 };
 ```
+
 :::
+
 ## [github](https://github.com/wb421768544/dream/blob/master/fe/模拟实现各种东东/数组相关.md)
 
 ``` js
@@ -453,7 +482,7 @@ arr1.flat();
 
 arr1.reduce((acc,val)=>acc.contact(val),[]);  //[1,2,3,4]
 
-//or 
+//or
 const flatSingle = arr=>[].concat(...arr);
 
 // 不使用递归，使用 stack 无限反嵌套多层嵌套数组
@@ -486,6 +515,7 @@ flattenDeep(arr1);
 // [1, 2, 3, 1, 2, 3, 4, 2, 3, 4]
 
 ```
+
 [MDN实现](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/flat)
 
 ## [Immutable.js](https://www.jianshu.com/p/0fa8c7456c15)
