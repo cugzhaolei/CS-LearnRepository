@@ -1,26 +1,33 @@
 # 搜索算法
 
-## BFS 
+## BFS
+
 广度优先搜索一层一层地进行遍历，每层遍历都以上一层遍历的结果作为起点，遍历一个距离能访问到的所有节点。需要注意的是，遍历过的节点不能再次被遍历。
 
-![](/images/algorithm-LeetCode-search-bfs.jpg)
+![bfs](/images/algorithm-LeetCode-search-bfs.jpg)
 
 第一层：
-```
+
+```bash
 - 0 -> {6,2,1,5}
 ```
+
 第二层：
-```
+
+```bash
 - 6 -> {4}
 - 2 -> {}
 - 1 -> {}
 - 5 -> {3}
 ```
+
 第三层：
-```
+
+```bash
 - 4 -> {}
 - 3 -> {}
 ```
+
 每一层遍历的节点都与根节点距离相同。设 d~i~ 表示第 i 个节点与根节点的距离，推导出一个结论：对于先遍历的节点 i 与后遍历的节点 j，有 d~i~ <= d~j~。利用这个结论，可以求解最短路径等 最优解 问题：第一次遍历到目的节点，其所经过的路径为最短路径。应该注意的是，使用 BFS 只能求解无权图的最短路径，无权图是指从一个节点到另一个节点的代价都记为 1。
 
 在程序实现 BFS 时需要考虑以下问题：
@@ -28,10 +35,9 @@
 - 队列：用来存储每一轮遍历得到的节点；
 - 标记：对于遍历过的节点，应该将它标记，防止重复遍历。
 
-
 ### [1091.二进制矩阵中的最短路径](https://leetcode-cn.com/problems/shortest-path-in-binary-matrix/)
 
-```
+```bash
 [[1,1,0,1],
  [1,0,1,0],
  [1,1,1,1],
@@ -40,7 +46,7 @@
 
 题目描述：1 表示可以经过某个位置，求解从 (0, 0) 位置到 (tr, tc) 位置的最短路径长度。
 
-``` java
+```java
 public int minPathLength(int[][] grids, int tr, int tc) {
     final int[][] direction = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     final int m = grids.length, n = grids[0].length;
@@ -69,33 +75,37 @@ public int minPathLength(int[][] grids, int tr, int tc) {
     return -1;
 }
 ```
+
 ### [279.完全平方数](https://leetcode-cn.com/problems/perfect-squares/)
 
 给定正整数 n，找到若干个完全平方数（比如 1, 4, 9, 16, ...）使得它们的和等于 n。你需要让组成和的完全平方数的个数最少。
 
 示例 1:
-``` 
+
+```bash
 输入: n = 12
-输出: 3 
+输出: 3
 解释: 12 = 4 + 4 + 4.
 ```
+
 [动态规划：](https://leetcode-cn.com/problems/perfect-squares/solution/hua-jie-suan-fa-279-wan-quan-ping-fang-shu-by-guan/)
 
-动态转移方程为：dp[i] = MIN(dp[i], dp[i - j * j] + 1)，i表示当前数字，j*j表示平方数
-``` js
-var numSquares = function(n){
-    const dp = [...Array(n+1)].map(_=>0);//数组长度n+1 值均为0
-    for(let i=1;i<=n;i++){
-        dp[i] = i;
-        for(let j=0;i-j*j>=0;j++){
-            dp[i] = Math.min(dp[i],dp[i-j*j]+1);//动态转移方程
-        }
+动态转移方程为：dp[i] = MIN(dp[i], dp[i - j * j] + 1)，i 表示当前数字，j\*j 表示平方数
+
+```js
+var numSquares = function(n) {
+  const dp = [...Array(n + 1)].map((_) => 0); //数组长度n+1 值均为0
+  for (let i = 1; i <= n; i++) {
+    dp[i] = i;
+    for (let j = 0; i - j * j >= 0; j++) {
+      dp[i] = Math.min(dp[i], dp[i - j * j] + 1); //动态转移方程
     }
-    return dp[n];
-}
+  }
+  return dp[n];
+};
 ```
 
-``` java
+```java
 public int numSquares(int n){
     int[] dp = new int[n+1];  //默认初始值为0
     for(int i=0;i<=n;i++){
@@ -107,9 +117,10 @@ public int numSquares(int n){
     return dp[n];
 }
 ```
+
 [BFS](https://leetcode-cn.com/problems/perfect-squares/solution/java-jie-fa-jiang-wen-ti-zhuan-hua-wei-tu-lun-by-b/)
 
-``` java
+```java
 static class Node {
         int val;
         int step;
@@ -155,11 +166,12 @@ static class Node {
 
 ### [127.单词接龙](https://leetcode-cn.com/problems/word-ladder/)
 
-给定两个单词（beginWord 和 endWord）和一个字典，找到从 beginWord 到 endWord 的最短转换序列的长度。转换需遵循如下规则：
+给定两个单词（beginWord  和 endWord）和一个字典，找到从  beginWord 到  endWord 的最短转换序列的长度。转换需遵循如下规则：
 
 每次转换只能改变一个字母。
 转换过程中的中间单词必须是字典中的单词。
-``` 
+
+```
 示例 1:
 
 输入:
@@ -172,9 +184,10 @@ wordList = ["hot","dot","dog","lot","log","cog"]
 解释: 一个最短转换序列是 "hit" -> "hot" -> "dot" -> "dog" -> "cog",
      返回它的长度 5。
 ```
+
 [官方题解](https://leetcode-cn.com/problems/word-ladder/solution/dan-ci-jie-long-by-leetcode/)
 
-``` java
+```java
 import javafx.util.Pair;
 
 class Solution {
@@ -238,13 +251,15 @@ class Solution {
 }
 ```
 
-## DFS 
+## DFS
+
 深度优先搜索算法将会从第一个指定的顶点开始遍历图，沿着路径直到这条路径最后一个顶点被访问了，接着原路回退并探索下一条路径。换句话说，它是先深度后广度地访问顶点.
 
 ![DFS](/images/algorithm-LeetCode-search-dfs.jpg)
 
 ### [695.岛屿的最大面积](https://leetcode-cn.com/problems/max-area-of-island/)
-``` java
+
+```java
 class Solution {
     int [][] grid;
     int rows,columns;
@@ -277,15 +292,16 @@ class Solution {
         findArea(i-1,j);
         findArea(i+1,j);
         findArea(i,j+1);
-        findArea(i,j-1);    
+        findArea(i,j-1);
         }
 }
 ```
+
 ### [200.岛屿数量](https://leetcode-cn.com/problems/number-of-islands/)
 
-给定一个由 '1'（陆地）和 '0'（水）组成的的二维网格，计算岛屿的数量。一个岛被水包围，并且它是通过水平方向或垂直方向上相邻的陆地连接而成的。你可以假设网格的四个边均被水包围。
+给定一个由  '1'（陆地）和 '0'（水）组成的的二维网格，计算岛屿的数量。一个岛被水包围，并且它是通过水平方向或垂直方向上相邻的陆地连接而成的。你可以假设网格的四个边均被水包围。
 
-``` java
+```java
 class Solution {
     public int numIslands(char[][] grid) {
         if(grid==null||grid.length==0){
@@ -321,11 +337,12 @@ class Solution {
 ```
 
 ### [547.朋友圈](https://leetcode-cn.com/problems/friend-circles/)
-班上有 N 名学生。其中有些人是朋友，有些则不是。他们的友谊具有是传递性。如果已知 A 是 B 的朋友，B 是 C 的朋友，那么我们可以认为 A 也是 C 的朋友。所谓的朋友圈，是指所有朋友的集合。
 
-给定一个 N * N 的矩阵 M，表示班级中学生之间的朋友关系。如果M[i][j] = 1，表示已知第 i 个和 j 个学生互为朋友关系，否则为不知道。你必须输出所有学生中的已知的朋友圈总数。
+班上有  N  名学生。其中有些人是朋友，有些则不是。他们的友谊具有是传递性。如果已知 A 是 B  的朋友，B 是 C  的朋友，那么我们可以认为 A 也是 C  的朋友。所谓的朋友圈，是指所有朋友的集合。
 
-``` java
+给定一个  N \* N  的矩阵  M，表示班级中学生之间的朋友关系。如果 M[i][j] = 1，表示已知第 i 个和 j 个学生互为朋友关系，否则为不知道。你必须输出所有学生中的已知的朋友圈总数。
+
+```java
 public class Solution{
     public void dfs(int[][] M,int[] visited,int i){
         for(int j=0;j<M.length;j++){
@@ -352,29 +369,33 @@ public class Solution{
 
 ### [130.被围绕的区域](https://leetcode-cn.com/problems/surrounded-regions/)
 
-给定一个二维的矩阵，包含 'X' 和 'O'（字母 O）。
+给定一个二维的矩阵，包含  'X'  和  'O'（字母 O）。
 
-找到所有被 'X' 围绕的区域，并将这些区域里所有的 'O' 用 'X' 填充。
+找到所有被 'X' 围绕的区域，并将这些区域里所有的  'O' 用 'X' 填充。
 
 示例:
-```
+
+```bash
 X X X X
 X O O X
 X X O X
 X O X X
 ```
+
 运行你的函数后，矩阵变为：
-``` 
+
+```bash
 X X X X
 X X X X
 X X X X
 X O X X
 ```
+
 [解答](https://leetcode-cn.com/problems/surrounded-regions/solution/bfsdi-gui-dfsfei-di-gui-dfsbing-cha-ji-by-ac_pipe/)
 
-
 1. bfs+递归
-``` java
+
+```java
 class Solution {
     public void solve(char[][] board) {
         if (board == null || board.length == 0) return;
@@ -405,7 +426,7 @@ class Solution {
 
     public void dfs(char[][] board, int i, int j) {
         if (i < 0 || j < 0 || i >= board.length  || j >= board[0].length || board[i][j] == 'X' || board[i][j] == '#') {
-            // board[i][j] == '#' 说明已经搜索过了. 
+            // board[i][j] == '#' 说明已经搜索过了.
             return;
         }
         board[i][j] = '#';
@@ -417,42 +438,57 @@ class Solution {
 }
 
 ```
+
 2. [dfs+递归](https://leetcode-cn.com/problems/surrounded-regions/solution/130-bei-wei-rao-de-qu-yu-by-alexer-660/)
 
-``` js
-var solve = function(board){
-    let m = board.length;
-    if(m==0){return};
-    let n = board[0].length;
-    let cannot = {};
-    let dfs = (i,j)=>{
-        //越界 标志过或者非相连O下return
-        if(i<0||j<0||i==m||j==n||board[i][j]!='O'||cannot[i+'-'+j]){
-            return;
-        }
-        cannot[i+'-'+j]=true;
-        dfs(i-1,j);
-        dfs(i+1,j);
-        dfs(i,j-1);
-        dfs(i,j+1);
+```js
+var solve = function(board) {
+  let m = board.length;
+  if (m == 0) {
+    return;
+  }
+  let n = board[0].length;
+  let cannot = {};
+  let dfs = (i, j) => {
+    //越界 标志过或者非相连O下return
+    if (
+      i < 0 ||
+      j < 0 ||
+      i == m ||
+      j == n ||
+      board[i][j] != "O" ||
+      cannot[i + "-" + j]
+    ) {
+      return;
     }
-    for(let i=0;i<m;i++){
-        for(let j=0;j<n;j++){
-            //从边缘O出发寻找其相连接点都标示为不可替换
-            if(i==0||j==0||i==m-1||j==n-1&&board[i][j]=='O'){
-                dfs(i,j);
-            }
-        }
+    cannot[i + "-" + j] = true;
+    dfs(i - 1, j);
+    dfs(i + 1, j);
+    dfs(i, j - 1);
+    dfs(i, j + 1);
+  };
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      //从边缘O出发寻找其相连接点都标示为不可替换
+      if (
+        i == 0 ||
+        j == 0 ||
+        i == m - 1 ||
+        (j == n - 1 && board[i][j] == "O")
+      ) {
+        dfs(i, j);
+      }
     }
-    //规避边界条件去循环 将边界不相互连接的联通到一起
-    for(let i=1;i<m-1;i++){
-        for(let j=1;j<n-1;j++){
-            if(!cannot[i+'-'+j]&&board[i][j]=='O'){
-                board[i][j]='X';
-            }
-        }
+  }
+  //规避边界条件去循环 将边界不相互连接的联通到一起
+  for (let i = 1; i < m - 1; i++) {
+    for (let j = 1; j < n - 1; j++) {
+      if (!cannot[i + "-" + j] && board[i][j] == "O") {
+        board[i][j] = "X";
+      }
     }
-}
+  }
+};
 ```
 
 ### [417.太平洋大西洋水流问题](https://leetcode-cn.com/problems/pacific-atlantic-water-flow/)
@@ -462,7 +498,8 @@ var solve = function(board){
 请找出那些水流既可以流动到“太平洋”，又能流动到“大西洋”的陆地单元的坐标。
 
 [DFS+递归](https://leetcode-cn.com/problems/pacific-atlantic-water-flow/solution/ni-liu-dfs-yu-bfs-by-fibonacciwh/)
-``` java
+
+```java
 public  List<List<Integer>> pacificAtlantic(int[][] matrix){
     List<List<Integer>> result = new ArrayList<>();
     if(matrix.length==0||matrix[0].length==0){
@@ -514,7 +551,8 @@ private void dfs(int[][] matrix,int[][] aux,int i,int j,int pre){
 ```
 
 BFS+递归
-``` java
+
+```java
 public List<List<Integer>>pacificAtlantic(int[][] matrix){
     if(matrix.length==0||matrix[0].length==0){
         return new ArrayList<>();
@@ -582,10 +620,12 @@ private void bfs(int[][] matrix,int[][] aux,Queue<int[]> queue){
 ```
 
 ### [100.相同的树](https://leetcode-cn.com/problems/same-tree/)
+
 给定两个二叉树，编写一个函数来检验它们是否相同。
 
 如果两个树在结构上相同，并且节点具有相同的值，则认为它们是相同的。
-``` java
+
+```java
 public boolean isSameTree(TreeNode p,TreeNode q){
     //左右子树都为空
     if(p==null&&q==null) return true;
@@ -599,25 +639,30 @@ public boolean isSameTree(TreeNode p,TreeNode q){
 ```
 
 ### [101.对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/)
+
 给定一个二叉树，检查它是否是镜像对称的。
 
-例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
-```
+例如，二叉树  [1,2,2,3,4,4,3] 是对称的。
+
+```bash
     1
    / \
   2   2
  / \ / \
 3  4 4  3
 ```
-但是下面这个 [1,2,2,null,3,null,3] 则不是镜像对称的:
-```
+
+但是下面这个  [1,2,2,null,3,null,3] 则不是镜像对称的:
+
+```bash
     1
    / \
   2   2
    \   \
    3    3
 ```
-``` java
+
+```java
 public boolean isSymmetric(TreeNode root){
     if(root==null) return true;
     return judge(root.left,root.right);
@@ -637,23 +682,28 @@ private boolean judge(TreeNode left,TreeNode right){
 
 例如:
 给定二叉树: [3,9,20,null,null,15,7],
-```
+
+```bash
     3
    / \
   9  20
     /  \
    15   7
 ```
+
 返回其层次遍历结果：
-```
+
+```bash
 [
   [3],
   [9,20],
   [15,7]
 ]
 ```
+
 bfs+递归实现
-``` java
+
+```java
 List<List<Integer>> levels = new ArrayList<List<Integer>>();
 
 public void helper(TreeNode node,int level){
@@ -680,8 +730,10 @@ public List<List<Integer>> levelOrder(TreeNode root)
     return levels;
 }
 ```
+
 迭代实现
-``` java
+
+```java
 public List<List<Integer>> levelOrder(TreeNode root){
     List<List<Integer>> levels = new ArrayList<List<Integer>>();
     if(root==null) return levels;
@@ -699,7 +751,7 @@ public List<List<Integer>> levelOrder(TreeNode root){
             //填充当前节点
             levels.get(level).add(node.val);
 
-            //将当前节点的子节点添加到队列中 
+            //将当前节点的子节点添加到队列中
             if(node.left!=null) queue.add(node.left);
             if(node.right!=null)queue.add(node.right);
         }
@@ -709,10 +761,12 @@ public List<List<Integer>> levelOrder(TreeNode root){
     return levels;
 }
 ```
+
 ### [116.填充每个节点的下一个右侧节点指针](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node/)
 
 给定一个完美二叉树，其所有叶子节点都在同一层，每个父节点都有两个子节点。二叉树定义如下：
-```
+
+```bash
 struct Node {
   int val;
   Node *left;
@@ -720,11 +774,12 @@ struct Node {
   Node *next;
 }
 ```
+
 填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL。
 
-初始状态下，所有 next 指针都被设置为 NULL。
+初始状态下，所有  next 指针都被设置为 NULL。
 
-``` java
+```java
 public Node connect(Node root){
     if(root==null) return null;
     Node pre = root;
@@ -755,8 +810,8 @@ public Node connect(Node root){
 }
 ```
 
-
 ## Backtrace
+
 回溯是一种通过穷举所有可能情况来找到所有解的算法。如果一个候选解最后被发现并不是可行解，回溯算法会舍弃它，并在前面的一些步骤做出一些修改，并重新尝试找到可行解。
 
 套用[算法模板](https://leetcode-cn.com/problems/combination-sum/solution/hui-su-suan-fa-tao-mo-ban-ji-ke-by-jeromememory/)
@@ -768,7 +823,7 @@ public Node connect(Node root){
 
 3、结束条件：也就是到达决策树底层，无法再做选择的条件。
 
-``` 
+```bash
 result = []
 def backtrack(路径, 选择列表):
     if 满足结束条件:
@@ -780,8 +835,10 @@ for 选择 in 选择列表:
     backtrack(路径, 选择列表)
     撤销选择
 ```
+
 其核心就是 for 循环里面的递归，在递归调用之前「做选择」，在递归调用之后「撤销选择」，特别简单。
-``` java
+
+```java
 List<List<Integer>> res = new LinkedList<>();
 
 /* 主函数，输入一组不重复的数字，返回它们的全排列 */
@@ -802,7 +859,7 @@ void backtrack(int[] nums, LinkedList<Integer> track) {
         res.add(new LinkedList(track));
         return;
     }
-    
+
     for (int i = 0; i < nums.length; i++) {
         // 排除不合法的选择
         if (track.contains(nums[i]))
@@ -816,8 +873,10 @@ void backtrack(int[] nums, LinkedList<Integer> track) {
     }
 }
 ```
-解决LeetCode 39题的回溯算法
-``` java
+
+解决 LeetCode 39 题的回溯算法
+
+```java
 public class combinationSum_39 {
 
     public static void main(String[] args) {
@@ -856,19 +915,8 @@ public class combinationSum_39 {
 }
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
 ### [17.电话号码的字母组合](https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/)
+
 给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。
 
 给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
@@ -877,7 +925,8 @@ public class combinationSum_39 {
 输入："23"
 输出：["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
 ”
-``` java
+
+```java
 class Solution {
 
     Map<String,String> phone = new HashMap<String,String>(){{
@@ -898,7 +947,7 @@ class Solution {
         if(next_digits.length()==0){
             //组合完成
             output.add(combination);
-            
+
         //如果next_digits不为空
         }else{
             //枚举在map中的所有字母中可用的字符
@@ -923,16 +972,20 @@ class Solution {
 }
 ```
 
-### [复原IP地址](https://leetcode-cn.com/problems/restore-ip-addresses/)
+### [复原 IP 地址](https://leetcode-cn.com/problems/restore-ip-addresses/)
+
 给定一个只包含数字的字符串，复原它并返回所有可能的 IP 地址格式。
 
 示例:
-```
+
+```bash
 输入: "25525511135"
 输出: ["255.255.11.135", "255.255.111.35"]
 ```
+
 [BFS+回溯](https://leetcode.wang/leetCode-93-Restore-IP-Addresses.html)
-``` java
+
+```java
     public List<String> restoreIpAddresses(String s) {
         List<String> ans = new ArrayList<>(); //保存最终的所有结果
         getAns(s,0,new StringBuilder(),ans,0);
@@ -989,13 +1042,16 @@ class Solution {
     }
 
 ```
+
 ### [79.单词搜索](https://leetcode-cn.com/problems/word-search/)
+
 给定一个二维网格和一个单词，找出该单词是否存在于网格中。
 
 单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
 
 示例:
-```
+
+```bash
 board =
 [
   ['A','B','C','E'],
@@ -1007,9 +1063,11 @@ board =
 给定 word = "SEE", 返回 true.
 给定 word = "ABCB", 返回 false.
 ```
+
 [DFS](https://leetcode.wang/leetCode-79-Word-Search.html)
 我们需要做的就是，在深度优先遍历过程中，判断当前遍历元素是否对应 word 元素，如果不匹配就结束当前的遍历，返回上一次的元素，尝试其他路径。当然，和普通的 dfs 一样，我们需要一个 visited 数组标记元素是否访问过。
-``` java
+
+```java
 public boolean exist(char[][] board,String word){
     int rows = board.length;
     if(rows == 0){
@@ -1068,12 +1126,14 @@ private boolean existRecursive(char[][] board,int row,int col,String word,int in
     return false;
 }
 ```
-###  [257.二叉树的所有路径](https://leetcode-cn.com/problems/binary-tree-paths/)
+
+### [257.二叉树的所有路径](https://leetcode-cn.com/problems/binary-tree-paths/)
 
 给定一个二叉树，返回所有从根节点到叶子节点的路径。
-说明: 叶子节点是指没有子节点的节点。
+说明:  叶子节点是指没有子节点的节点。
 示例:
-```
+
+```bash
 输入:
 
    1
@@ -1085,8 +1145,10 @@ private boolean existRecursive(char[][] board,int row,int col,String word,int in
 输出: ["1->2->5", "1->3"]
 解释: 所有根节点到叶子节点的路径为: 1->2->5, 1->3
 ```
-* [递归](https://leetcode-cn.com/problems/binary-tree-paths/solution/er-cha-shu-de-suo-you-lu-jing-by-leetcode/)
-``` java
+
+- [递归](https://leetcode-cn.com/problems/binary-tree-paths/solution/er-cha-shu-de-suo-you-lu-jing-by-leetcode/)
+
+```java
 class Solution {
     public List<String> binaryTreePaths(TreeNode root) {
         LinkedList<String> paths = new LinkedList();
@@ -1114,10 +1176,11 @@ class Solution {
     }
 }
 ```
-* 迭代实现
-迭代（宽度优先搜索）的方法实现。我们维护一个队列，存储节点以及根到该节点的路径。一开始这个队列里只有根节点。在每一步迭代中，我们取出队列中的首节点，如果它是一个叶子节点，则将它对应的路径加入到答案中。如果它不是一个叶子节点，则将它的所有孩子节点加入到队列的末尾。当队列为空时，迭代结束。
 
-``` java
+- 迭代实现
+  迭代（宽度优先搜索）的方法实现。我们维护一个队列，存储节点以及根到该节点的路径。一开始这个队列里只有根节点。在每一步迭代中，我们取出队列中的首节点，如果它是一个叶子节点，则将它对应的路径加入到答案中。如果它不是一个叶子节点，则将它的所有孩子节点加入到队列的末尾。当队列为空时，迭代结束。
+
+```java
 class solution{
     public List<String> binarTreePaths(TreeNode root){
         LinkedList<String> paths = new LinkedList();
@@ -1152,14 +1215,16 @@ class solution{
 }
 ```
 
-### [113.路径总和II](https://leetcode-cn.com/problems/path-sum-ii/)
+### [113.路径总和 II](https://leetcode-cn.com/problems/path-sum-ii/)
+
 给定一个二叉树和一个目标和，找到所有从根节点到叶子节点路径总和等于给定目标和的路径。
 
-说明: 叶子节点是指没有子节点的节点。
+说明:  叶子节点是指没有子节点的节点。
 
 示例:
-给定如下二叉树，以及目标和 sum = 22，
-```
+给定如下二叉树，以及目标和  sum = 22，
+
+```bash
               5
              / \
             4   8
@@ -1168,15 +1233,19 @@ class solution{
          /  \    / \
         7    2  5   1
 ```
+
 返回:
-```
+
+```bash
 [
    [5,4,11,2],
    [5,8,4,5]
 ]
 ```
-解题思路改造一下上面的算法，将sum在每次遍历中减去，实现如下：
-``` java
+
+解题思路改造一下上面的算法，将 sum 在每次遍历中减去，实现如下：
+
+```java
 class Solution{
     private List<List<Integer>> resultList = new ArrayList<>();
     private List<Integer> tempList = new ArrayList<>();
@@ -1208,16 +1277,18 @@ class Solution{
 }
 ```
 
-### [437.路径总和III](https://leetcode-cn.com/problems/path-sum-iii/)
+### [437.路径总和 III](https://leetcode-cn.com/problems/path-sum-iii/)
+
 给定一个二叉树，它的每个结点都存放着一个整数值。
 
 找出路径和等于给定数值的路径总数。
 
 路径不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）。
 
-二叉树不超过1000个节点，且节点数值范围是 [-1000000,1000000] 的整数。
+二叉树不超过 1000 个节点，且节点数值范围是 [-1000000,1000000] 的整数。
 
 示例：
+
 ```
 root = [10,5,-3,3,2,null,11,3,-2,null,1], sum = 8
 
@@ -1235,63 +1306,68 @@ root = [10,5,-3,3,2,null,11,3,-2,null,1], sum = 8
 2.  5 -> 2 -> 1
 3.  -3 -> 11
 ```
-``` java
-public int pathSum(TreeNode root, int sum) {
-		return pathSum(root, sum, new int[1000], 0);
-	}
 
-	public int pathSum(TreeNode root, int sum, int[] array/*保存路径*/, int p/*指向路径终点*/) {
-		if (root == null) {
-			return 0;
-		}
-		int tmp = root.val;
-		int n = root.val == sum ? 1 : 0;
-		for (int i = p - 1; i >= 0; i--) {//从后往前，后面的才是新增的，前面的已经算过了。
-			tmp += array[i];
-			if (tmp == sum) {
-				n++;
-			}
-		}
-		array[p] = root.val;
-		int n1 = pathSum(root.left, sum, array, p + 1);//往左走，往右走
-		int n2 = pathSum(root.right, sum, array, p + 1);
-		return n + n1 + n2;//当前子树、左子树、右子树存在的满足路径的数量
-	}
+```java
+public int pathSum(TreeNode root, int sum) {
+ return pathSum(root, sum, new int[1000], 0);
+ }
+
+ public int pathSum(TreeNode root, int sum, int[] array/*保存路径*/, int p/*指向路径终点*/) {
+  if (root == null) {
+   return 0;
+  }
+    int tmp = root.val;
+    int n = root.val == sum ? 1 : 0;
+    for (int i = p - 1; i >= 0; i--) {//从后往前，后面的才是新增的，前面的已经算过了。
+        tmp += array[i];
+        if (tmp == sum) {
+            n++;
+        }
+    }
+    array[p] = root.val;
+    int n1 = pathSum(root.left, sum, array, p + 1);//往左走，往右走
+    int n2 = pathSum(root.right, sum, array, p + 1);
+    return n + n1 + n2;//当前子树、左子树、右子树存在的满足路径的数量
+}
 ```
-* [递归](https://leetcode-cn.com/problems/path-sum-iii/solution/leetcode-437-path-sum-iii-by-li-xin-lei/)
-``` java
-	 public static class TreeNode {
-	        int val;
-	        TreeNode left;
-	        TreeNode right;
-	        TreeNode(int x) { val = x; }
-	    }
-	 public  int pathSum(TreeNode root,int sum) {
-		 if(root==null) {
-			 return 0;
-		 }
-		 return PathS(root,sum)+PathS(root.left,sum)+PathS(root.right,sum);
-	 }
-	 
-	 private  int PathS(TreeNode root,int sum) {
-		 if(root==null) {
-			 return 0;
-		 }
-		 int res = 0;
-		 if(root.val==sum) {
-			 res +=1;
-		 }
-		 res += PathS(root.left,sum-root.val);
-		 res += PathS(root.right,sum-root.val);
-		 return res;
-	 }
+
+- [递归](https://leetcode-cn.com/problems/path-sum-iii/solution/leetcode-437-path-sum-iii-by-li-xin-lei/)
+
+```java
+    public static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode(int x) { val = x; }
+    }
+    public  int pathSum(TreeNode root,int sum) {
+        if(root==null) {
+            return 0;
+        }
+        return PathS(root,sum)+PathS(root.left,sum)+PathS(root.right,sum);
+    }
+
+    private  int PathS(TreeNode root,int sum) {
+        if(root==null) {
+            return 0;
+        }
+        int res = 0;
+        if(root.val==sum) {
+            res +=1;
+        }
+        res += PathS(root.left,sum-root.val);
+        res += PathS(root.right,sum-root.val);
+        return res;
+    }
 ```
 
 ### [46.全排列](https://leetcode-cn.com/problems/permutations/)
+
 给定一个没有重复数字的序列，返回其所有可能的全排列。
 
 示例:
-```
+
+```bash
 输入: [1,2,3]
 输出:
 [
@@ -1303,8 +1379,10 @@ public int pathSum(TreeNode root, int sum) {
   [3,2,1]
 ]
 ```
-* [回溯法](https://leetcode-cn.com/problems/permutations/solution/quan-pai-lie-by-leetcode/)
-``` java
+
+- [回溯法](https://leetcode-cn.com/problems/permutations/solution/quan-pai-lie-by-leetcode/)
+
+```java
 public List<List<Integer>> permute(int[] nums){
     //初始化
     List<List<Integer>> output = new LinkedList();
@@ -1333,15 +1411,16 @@ private void backtrace(int n,ArrayList<Integer> nums,List<List<Integer>> output,
         }
 }
 ```
-* [回溯2](https://leetcode-cn.com/problems/permutations/solution/hui-su-suan-fa-by-powcai-2/)
 
+- [回溯 2](https://leetcode-cn.com/problems/permutations/solution/hui-su-suan-fa-by-powcai-2/)
 
 ### [47.含有相同元素求排列](https://leetcode-cn.com/problems/permutations-ii/)
 
 给定一个可包含重复数字的序列，返回所有不重复的全排列。
 
 示例:
-```
+
+```bash
 输入: [1,1,2]
 输出:
 [
@@ -1350,10 +1429,12 @@ private void backtrace(int n,ArrayList<Integer> nums,List<List<Integer>> output,
   [2,1,1]
 ]
 ```
-* [回溯+剪枝算法](https://leetcode-cn.com/problems/permutations-ii/solution/hui-su-suan-fa-python-dai-ma-java-dai-ma-by-liwe-2/)
-   * 对数组排序后，发现有重复元素则跳过当前分支，达到剪枝效果。
-   * 在进入一个新的分支之前，看一看这个数是不是和之前的数一样，如果这个数和之前的数一样，并且之前的数还未使用过，那接下来如果走这个分支，就会使用到之前那个和当前一样的数，就会发生重复，此时分支和之前的分支一模一样
-``` java
+
+- [回溯+剪枝算法](https://leetcode-cn.com/problems/permutations-ii/solution/hui-su-suan-fa-python-dai-ma-java-dai-ma-by-liwe-2/)
+  - 对数组排序后，发现有重复元素则跳过当前分支，达到剪枝效果。
+  - 在进入一个新的分支之前，看一看这个数是不是和之前的数一样，如果这个数和之前的数一样，并且之前的数还未使用过，那接下来如果走这个分支，就会使用到之前那个和当前一样的数，就会发生重复，此时分支和之前的分支一模一样
+
+```java
 class Solution{
     private List<List<Integer>> res = new ArrayList<>();
     private boolean[] used;
@@ -1396,10 +1477,12 @@ class Solution{
 ```
 
 ### [77.组合](https://leetcode-cn.com/problems/combinations/)
+
 给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
 
 示例:
-``` 
+
+```
 输入: n = 4, k = 2
 输出:
 [
@@ -1411,25 +1494,26 @@ class Solution{
   [1,4],
 ]
 ```
-* [回溯法](https://leetcode-cn.com/problems/combinations/solution/zu-he-by-leetcode/)
-是一种通过遍历所有可能成员来寻找全部可行解的算法。若候选 不是 可行解 (或者至少不是 最后一个 解)，回溯法会在前一步进行一些修改以舍弃该候选，换而言之， 回溯 并再次尝试。
+
+- [回溯法](https://leetcode-cn.com/problems/combinations/solution/zu-he-by-leetcode/)
+  是一种通过遍历所有可能成员来寻找全部可行解的算法。若候选 不是 可行解 (或者至少不是 最后一个 解)，回溯法会在前一步进行一些修改以舍弃该候选，换而言之， 回溯 并再次尝试。
 
 这是一个回溯法函数，它将第一个添加到组合中的数和现有的组合作为参数。 backtrack(first, curr)
 
 若组合完成- 添加到输出中。
 
-遍历从 first t到 n的所有整数。
+遍历从 first t 到 n 的所有整数。
 
-将整数 i 添加到现有组合 curr中。
+将整数 i 添加到现有组合 curr 中。
 
 继续向组合中添加更多整数 :
 backtrack(i + 1, curr).
 
-将 i 从 curr中移除，实现回溯
+将 i 从 curr 中移除，实现回溯
 
 链接：https://leetcode-cn.com/problems/combinations/solution/zu-he-by-leetcode/
 
-``` java
+```java
 class Solution{
     List<List<Integer>> output = new LinkedList();
     int n;
@@ -1461,16 +1545,18 @@ class Solution{
 ```
 
 ### [39.组合求和](https://leetcode-cn.com/problems/combination-sum/)
-给定一个无重复元素的数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
 
-candidates 中的数字可以无限制重复被选取。
+给定一个无重复元素的数组  candidates  和一个目标数  target ，找出  candidates  中所有可以使数字和为  target  的组合。
+
+candidates  中的数字可以无限制重复被选取。
 
 说明：
 
-所有数字（包括 target）都是正整数。
+所有数字（包括  target）都是正整数。
 解集不能包含重复的组合。 
-示例 1:
-```
+示例  1:
+
+```bash
 输入: candidates = [2,3,6,7], target = 7,
 所求解集为:
 [
@@ -1478,8 +1564,10 @@ candidates 中的数字可以无限制重复被选取。
   [2,2,3]
 ]
 ```
+
 [回溯算法](https://leetcode-cn.com/problems/combination-sum/solution/hui-su-suan-fa-jian-zhi-python-dai-ma-java-dai-m-2/)
-``` java
+
+```java
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -1531,7 +1619,7 @@ public class Solution {
 }
 ```
 
-``` java
+```java
 public List<List<Integer>> combinationSum(int[] candidates,int target){
     List<List<Integer>> combinations = new ArrayList<>();
     backtracking(new ArrayList<>(),combinations,0,target,candidates);
@@ -1555,16 +1643,17 @@ private void backtracking(List<Integer> tempCombination,List<List<Integer>> comb
 
 ### [40.含有相同元素的组合求和](https://leetcode-cn.com/problems/combination-sum-ii/)
 
-给定一个数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+给定一个数组  candidates  和一个目标数  target ，找出  candidates  中所有可以使数字和为  target  的组合。
 
-candidates 中的每个数字在每个组合中只能使用一次。
+candidates  中的每个数字在每个组合中只能使用一次。
 
 说明：
 
 所有数字（包括目标数）都是正整数。
 解集不能包含重复的组合。 
-示例 1:
-``` 
+示例  1:
+
+```
 输入: candidates = [10,1,2,7,6,1,5], target = 8,
 所求解集为:
 [
@@ -1575,7 +1664,7 @@ candidates 中的每个数字在每个组合中只能使用一次。
 ]
 ```
 
-``` java
+```java
 class Solution {
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         int len = candidates.length;
@@ -1622,8 +1711,9 @@ class Solution {
 }
 ```
 
-### [10.1-9数字组合](https://leetcode-cn.com/problems/combination-sum-iii/)
-找出所有相加之和为 n 的 k 个数的组合。组合中只允许含有 1 - 9 的正整数，并且每种组合中不存在重复的数字。
+### [10.1-9 数字组合](https://leetcode-cn.com/problems/combination-sum-iii/)
+
+找出所有相加之和为  n 的  k  个数的组合。组合中只允许含有 1 - 9 的正整数，并且每种组合中不存在重复的数字。
 
 说明：
 
@@ -1639,7 +1729,8 @@ class Solution {
 输出: [[1,2,6], [1,3,5], [2,3,4]
 
 [回溯+剪枝](https://leetcode-cn.com/problems/combination-sum-iii/solution/hui-su-jian-zhi-by-liweiwei1419/)
-``` java
+
+```java
 public List<List<Integer>> combinationSum3(int k,int n){
     List<List<Integer>> res = new ArrayList<>();
     //开始做一些特殊判断
@@ -1692,7 +1783,7 @@ private void dfs(int k,int residue,int start,Deque<Integer> path,List<List<Integ
 [1](https://leetcode-cn.com/problems/subsets/solution/hui-su-suan-fa-by-powcai-5/)
 [2](https://leetcode-cn.com/problems/subsets/solution/er-jin-zhi-wei-zhu-ge-mei-ju-dfssan-chong-si-lu-9c/)
 
-``` js
+```js
 class Solution {
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
@@ -1711,9 +1802,9 @@ class Solution {
 }
 ```
 
-* 二进制和位运算
+- 二进制和位运算
 
-``` java
+```java
 public static List<List<Integer>> binaryBit(int[] nums){
     List<List<Integer>> res = newArrayList<List<Integer>>();
     for(int i=0;i<(1<<nums.length);i++){
@@ -1725,4 +1816,195 @@ public static List<List<Integer>> binaryBit(int[] nums){
     }
     return res;
 }
+```
+
+## [1.两数之和](https://leetcode-cn.com/problems/two-sum/)
+
+给定一个整数数组 nums  和一个目标值 target，请你在该数组中找出和为目标值的那   两个   整数，并返回他们的数组下标。
+
+你可以假设每种输入只会对应一个答案。但是，数组中同一个元素不能使用两遍。
+
+```bash
+给定 nums = [2, 7, 11, 15], target = 9
+
+因为 nums[0] + nums[1] = 2 + 7 = 9
+所以返回 [0, 1]
+```
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+// 1.利用hash 保存数组下标和数字
+var twoSum = function(nums, target) {
+  if (nums.length < 2) {
+    return null;
+  }
+  var map = new Map();
+  var res = [];
+  map.set(nums[0], 0);
+  for (let i = 1; i < nums.length; i++) {
+    var temp = nums[i];
+    if (map.has(target - temp)) {
+      res.push(i);
+      res.push(map.get(target - temp));
+      return res;
+    }
+    map.set(nums[i], i);
+  }
+  return [];
+};
+```
+
+## 【1046.最后一块石头的重量](<https://leetcode-cn.com/problems/last-stone-weight/>)
+
+有一堆石头，每块石头的重量都是正整数。
+
+每一回合，从中选出两块 最重的 石头，然后将它们一起粉碎。假设石头的重量分别为  x 和  y，且  x <= y。那么粉碎的可能结果如下：
+
+如果  x == y，那么两块石头都会被完全粉碎；
+如果  x != y，那么重量为  x  的石头将会完全粉碎，而重量为  y  的石头新重量为  y-x。
+最后，最多只会剩下一块石头。返回此石头的重量。如果没有石头剩下，就返回 0。
+
+```bash
+示例：
+
+输入：[2,7,4,1,8,1]
+输出：1
+解释：
+先选出 7 和 8，得到 1，所以数组转换为 [2,4,1,1,1]，
+再选出 2 和 4，得到 2，所以数组转换为 [2,1,1,1]，
+接着是 2 和 1，得到 1，所以数组转换为 [1,1,1]，
+最后选出 1 和 1，得到 0，最终数组转换为 [1]，这就是最后剩下那块石头的重量。
+
+```
+
+```js
+/**
+ * @param {number[]} stones
+ * @return {number}
+ */
+
+// 大顶堆
+var lastStoneWeight = function(stones) {
+  const pq = new MaxPriorityQueue();
+  for (const stone of stones) {
+    pq.enqueue("x", stone);
+  }
+
+  while (pq.size() > 1) {
+    const a = pq.dequeue()["priority"];
+    const b = pq.dequeue()["priority"];
+    if (a > b) {
+      pq.enqueue("x", a - b);
+    }
+  }
+  return pq.isEmpty() ? 0 : pq.dequeue()["priority"];
+};
+
+// 暴力算法
+var lastStoneWeight = function(stones) {
+  var len = stones.length;
+  if (len < 2) {
+    return stones[0];
+  }
+  stones = stones.sort((a, b) => (a - b > 0 ? -1 : 1));
+  while (stones.length > 1) {
+    var first = stones.shift();
+    var second = stones.shift();
+    if (first == second) {
+    } else {
+      stones.push(first - second);
+    }
+    stones = stones.sort((a, b) => (a - b > 0 ? -1 : 1));
+  }
+  return stones.length < 1 ? 0 : stones[0];
+};
+
+// [大神解法](https://leetcode-cn.com/problems/last-stone-weight/solution/di-gui-die-dai-dui-lie-cha-pai-1xing-dai-70hv/)
+
+var lastStoneWeight = function(stones) {
+  stones = stones.sort((a, b) => a - b);
+  if (stones.length > 1) {
+    const temp = stones.shift() - stones.shift();
+    if (temp) stones.push(temp);
+    return lastStoneWight(stones);
+  }
+  return stones.length ? stones[0] : 0;
+};
+```
+
+### [435.无重叠区间](https://leetcode-cn.com/problems/non-overlapping-intervals/)
+
+给定一个区间的集合，找到需要移除区间的最小数量，使剩余区间互不重叠。
+
+注意:
+可以认为区间的终点总是大于它的起点。
+区间 [1,2] 和 [2,3] 的边界相互“接触”，但没有相互重叠。
+示例 1:
+
+```bash
+输入: [ [1,2], [2,3], [3,4], [1,3] ]
+
+输出: 1
+
+解释: 移除 [1,3] 后，剩下的区间没有重叠。
+
+输入: [ [1,2], [1,2], [1,2] ]
+
+输出: 2
+
+解释: 你需要移除两个 [1,2] 来使剩下的区间没有重叠。
+
+输入: [ [1,2], [2,3] ]
+
+输出: 0
+
+解释: 你不需要移除任何区间，因为它们已经是无重叠的了。
+
+```
+
+[解答](https://leetcode-cn.com/problems/non-overlapping-intervals/solution/wu-zhong-die-qu-jian-by-leetcode-solutio-cpsb/)
+
+```js
+// 1.动态规划
+var eraseOverlapIntervals = function(intervals) {
+    if (!intervals.length) {
+        return 0;
+    }
+
+    intervals.sort((a, b) => a[0] - b[0]);
+    const n = intervals.length;
+    const f = new Array(n).fill(1);
+
+    for (let i = 1; i < n; i++) {
+        for (let j = 0; j < i; j++) {
+            if (intervals[j][1] <= intervals[i][0]) {
+                f[i] = Math.max(f[i], f[j] + 1);
+            }
+        }
+    }
+    return n - Math.max(...f);
+};
+
+var eraseOverlapIntervals = function(intervals) {
+    if (!intervals.length) {
+        return 0;
+    }
+
+    intervals.sort((a, b) => a[0] - b[0]);
+    const n = intervals.length;
+    const f = new Array(n).fill(1);
+
+    for (let i = 1; i < n; i++) {
+        for (let j = 0; j < i; j++) {
+            if (intervals[j][1] <= intervals[i][0]) {
+                f[i] = Math.max(f[i], f[j] + 1);
+            }
+        }
+    }
+    return n - Math.max(...f);
+};
 ```

@@ -2,7 +2,7 @@
 
 ## [链表反转](https://www.cnblogs.com/keeya/p/9218352.html)
 
-``` java
+```java
 public static class Node {
     public int value;
     public Node next;
@@ -35,11 +35,11 @@ public Node reverseList(Node node) {
 }
 ```
 
-## [删除链表中倒数第N个节点](https://juejin.im/post/5dd884936fb9a07a9323de6f)
+## [删除链表中倒数第 N 个节点](https://juejin.im/post/5dd884936fb9a07a9323de6f)
 
-快指针和慢指针，快指针比慢指针快N步，然后快慢指针一起向前移动，那么正好快指针走到Null的时候慢指针所指向的就是我们要删除的节点。
+快指针和慢指针，快指针比慢指针快 N 步，然后快慢指针一起向前移动，那么正好快指针走到 Null 的时候慢指针所指向的就是我们要删除的节点。
 
-``` java
+```java
 public ListNode removeNthChildFromEnd(ListNode head,int n){
     ListNode dummy = new ListNode(0);
     dummy.next = head;
@@ -81,7 +81,7 @@ public ListNode removeNthChildFromEnd(ListNode head,int n){
 
 ## [找出两个链表的交点](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/)
 
-``` java
+```java
 public class Solution {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         ListNode l1 = headA,l2 = headB;
@@ -96,7 +96,7 @@ public class Solution {
 
 ## [合并两个有序链表](https://leetcode-cn.com/problems/merge-two-sorted-lists/)
 
-``` java
+```java
 public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
     if (l1 == null) return l2;
     if (l2 == null) return l1;
@@ -108,4 +108,81 @@ public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         return l2;
     }
 }
+```
+
+### [86.](https://leetcode-cn.com/problems/partition-list/)
+
+给你一个链表和一个特定值 x ，请你对链表进行分隔，使得所有小于 x 的节点都出现在大于或等于 x 的节点之前。
+
+你应当保留两个分区中每个节点的初始相对位置。
+
+示例：
+
+```bash
+输入：head = 1->4->3->2->5->2, x = 3
+输出：1->2->2->4->3->5
+```
+
+[5 种解法](https://leetcode-cn.com/problems/partition-list/solution/lian-tou-shu-zu-shuang-zhi-zhen-7xing-da-baxz/)
+
+```js
+var partition = function(head, x) {
+  let small = new ListNode(0);
+  const smallHead = small;
+  let large = new ListNode(0);
+  const largeHead = large;
+  while (head !== null) {
+    if (head.val < x) {
+      small.next = head;
+      small = small.next;
+    } else {
+      large.next = head;
+      large = large.next;
+    }
+    head = head.next;
+  }
+  large.next = null;
+  small.next = largeHead.next;
+  return smallHead.next;
+};
+
+var partition = function(head, x) {
+  let p = new ListNode(0),
+    pTag = (tag = new ListNode(0));
+  prev.next = head;
+  while (head) {
+    if (head.val >= x) {
+      prev.next = head.next;
+      tag = tag.next = head;
+    } else {
+      prev = head;
+    }
+    head = head.next;
+  }
+  tag.next = null;
+  prev.next = pTag.next;
+  return p.next;
+};
+
+var partition = function(head, x) {
+  let pA = (a = new ListNode(0)),
+    pB = (b = new ListNode(0));
+  while (head) {
+    head.val < x ? (a = a.next = head) : (b = b.next = head);
+    head = head.next;
+  }
+  a.next = pB.next;
+  b.next = null;
+  return pA.next;
+};
+
+let smallHead = (small = new ListNode(0));
+let largeHead = (large = new ListNode(0));
+while (head) {
+  head.val < x ? (small = small.next = head) : (large = large.next = head);
+  head = head.next;
+}
+large.next = null;
+small.next = largeHead.next;
+return smallHead.next;
 ```

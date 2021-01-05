@@ -11,8 +11,10 @@
 ## xx
 
 1. 单例模式
-  + [实例属性](https://blog.csdn.net/a2013126370/article/details/89363365)
-  + 原型属性
+
+- [实例属性](https://blog.csdn.net/a2013126370/article/details/89363365)
+- 原型属性
+
 2. EventLoop
 3. 移动端适配
 4. Array.reduce
@@ -20,60 +22,61 @@
 
 ## CVTE
 
-### 一面 
+### 一面
 
-2019-9-23 30分钟
+2019-9-23 30 分钟
 
-晚上8点在做思科考试题的时候接到了CVTE 前端一面的电话(CISCO题目真难)
+晚上 8 点在做思科考试题的时候接到了 CVTE 前端一面的电话(CISCO 题目真难)
 
 没有自我介绍，直接开始上来问问题；
+
 1. [盒模型了解吗？](https://blog.csdn.net/qq_32862143/article/details/79393987)
-   * IE盒模型 box-sizing:border-box
-   * 标准盒模型 box-sizing:content-box
+   - IE 盒模型 box-sizing:border-box
+   - 标准盒模型 box-sizing:content-box
 2. [了解哪些布局](https://www.jianshu.com/p/926910ca77cd) flex grid table position:relative static absolute
 3. 如何清除浮动
-4. margin设置为负数，如何变化
+4. margin 设置为负数，如何变化
 5. 闭包了解吗
-6. ES6用过哪些 箭头函数(this指向问题)、set、map、proxy、promise、async、await、解构赋值、let、const
+6. ES6 用过哪些 箭头函数(this 指向问题)、set、map、proxy、promise、async、await、解构赋值、let、const
 7. Eventloop 了解吗
-   * microtask
-   * macrotask
-8. UDP和TCP通信的区别
+   - microtask
+   - macrotask
+8. UDP 和 TCP 通信的区别
 9. 浏览器缓存
-   * 强缓存 cache-control expires
-   * 协商缓存 etag last-modified
-10. url从输入到页面加载经历了什么，忘记回答浏览器渲染这部分了
-11. XSS和CSRF的区别 
-12. 如何预防：httponly、字符串转义、还有就是oauth
-13. http和https的区别
+   - 强缓存 cache-control expires
+   - 协商缓存 etag last-modified
+10. url 从输入到页面加载经历了什么，忘记回答浏览器渲染这部分了
+11. XSS 和 CSRF 的区别
+12. 如何预防：httponly、字符串转义、还有就是 oauth
+13. http 和 https 的区别
 14. 前端性能优化 (应该加上防抖和节流)
-15. vue框架 生命周期
-16. vue怎么监听属性 object.defineProperty
-17. [vue自定义指令Vue.directive](https://www.cnblogs.com/zhuhuoxingguang/p/8375944.html)
+15. vue 框架 生命周期
+16. vue 怎么监听属性 object.defineProperty
+17. [vue 自定义指令 Vue.directive](https://www.cnblogs.com/zhuhuoxingguang/p/8375944.html)
 18. [事件冒泡 如何阻止冒泡](http://caibaojian.com/javascript-stoppropagation-preventdefault.html)
-19. Node了解吗？
+19. Node 了解吗？
 
-### CVTE二面
+### CVTE 二面
 
-2019-9-25 （55分钟）
+2019-9-25 （55 分钟）
 
 1. 自我介绍
 2. 做的项目
 3. 项目中使用的技术与模块，前端用了什么技术，后台用了什么技术
-4. 底层数据采集的方式(Ethernet/IP) 为什么不用RS232
+4. 底层数据采集的方式(Ethernet/IP) 为什么不用 RS232
 5. 你做的数据采集是那些内容，数据库如何实现的
 6. 了解过闭包吗
-7. 我的串口转USB出现浪涌，这个时候怎么解决
+7. 我的串口转 USB 出现浪涌，这个时候怎么解决
 8. call apply bind 改变作用域(没有做出来)
 9. 介绍了所在的部门
 10. 我做的东西能够应用到那些方面
 11. 公有云与私有云的信息安全问题
-12. 对CVTE的了解
+12. 对 CVTE 的了解
 
 ### 综合面试
 
 1. 对自己前面的面试做个评价，打分，失误点在哪里？
-2. 手上有哪些offer，offer怎么选择
+2. 手上有哪些 offer，offer 怎么选择
 3. 对待工作时间、工作强度怎么看
 4. 想去什么地方发展，为什么
 5. 介绍一下家庭基本情况
@@ -85,26 +88,26 @@
 
 ### 一面(电话面)
 
-2019-9-27 30分钟
+2019-9-27 30 分钟
 
 1. 首先询问志愿情况
 2. 自我介绍
 3. 项目中与前端相关的内容，遇到的问题，如何去解决的
 4. 项目中用到了那些技术框架
-5. Vue中模型绑定是怎么实现的
-6. 虚拟DOM的内部实现 diff算法
-7. Vue-router的实现形式
+5. Vue 中模型绑定是怎么实现的
+6. 虚拟 DOM 的内部实现 diff 算法
+7. Vue-router 的实现形式
 8. 项目中路由较多的时候提高性能如何实现
 9. 闭包了解过吗？主要解决什么问题
 10. 在你接触的框架中，那些地方用过闭包
 11. 在应用中出现图片很多的时候，怎么提高性能
 12. 图片懒加载的实现原理
-13. 当我显示5张 100px*100px 的图片(页面排布不下)这个时候怎么弄提高性能
+13. 当我显示 5 张 100px\*100px 的图片(页面排布不下)这个时候怎么弄提高性能
 14. 原型链了解过吗?说一下原型继承 构造函数继承的优缺点
 15. 设计模式了解过吗?用过什么设计模式，工厂模式，说说怎么实现，有什么好处
-15. ES6了解吗？
-16. let 和 var 的区别？应用场景
-17. 有什么想问我的吗？(很傻的问了一个你们是在杭州吗？面试官直接 啊了一句，正常应该问问贵公司的技术栈，需要做什么的问题)
+16. ES6 了解吗？
+17. let 和 var 的区别？应用场景
+18. 有什么想问我的吗？(很傻的问了一个你们是在杭州吗？面试官直接 啊了一句，正常应该问问贵公司的技术栈，需要做什么的问题)
 
 ## 中兴
 
@@ -118,7 +121,7 @@
 4. 数据采集怎么采集的，有哪些信息(面试官希望的回答是：字符 数字 图像 数据集这样的)
 5. 你简历上面怎么写的会这么多，把你做的东西拿出来看看(看到我的简历，感觉有些作假)
 6. 这些都是你做的吗？(talk is cheap ,show me your code)
-7. 我们现在做的就是这些内容，工作地点在XX
+7. 我们现在做的就是这些内容，工作地点在 XX
 8. 你可以走了
 
 ### 二面
@@ -126,7 +129,7 @@
 1. 学生证，身份证，成绩单
 2. 解释
 3. 报的什么岗位
-4. 说一下为什么vue这么火
+4. 说一下为什么 vue 这么火
 5. 优点，缺点是什么
 6. 举例说明优点
 7. 项目很着急，项目人手不够怎么处理
@@ -143,32 +146,31 @@
 2. 意向了解
 3. 薪资水平
 
-
 ## 小米
 
 ### 一面
 
 1. 自我介绍
-2. 说说promise
-3. 实现一个promise
-4. 用class实现一个继承
-5. class编译和构造函数编译有什么区别
+2. 说说 promise
+3. 实现一个 promise
+4. 用 class 实现一个继承
+5. class 编译和构造函数编译有什么区别
 6. 浏览器缓存
-       强缓存 expires http1.0 cache-control 1.1
-       协商缓存 etag 1.1 last-modified 1.0
+   强缓存 expires http1.0 cache-control 1.1
+   协商缓存 etag 1.1 last-modified 1.0
 7. 实现一个数组扁平化
-8. XSS和CSRF
-9. 说说BFC
-10. this箭头函数指向
+8. XSS 和 CSRF
+9. 说说 BFC
+10. this 箭头函数指向
 11. 数组乱序
 12. 说说前端性能优化
-13. Three.js怎么使用的
-14. 手写XHR
+13. Three.js 怎么使用的
+14. 手写 XHR
 15. 洗牌算法
 
 ## 博世
 
-### HR面
+### HR 面
 
 1. 中文询问了解投递的岗位
 2. 英语选择介绍一个项目
@@ -177,33 +179,33 @@
 5. 以前接触过与工作相关的内容吗？(英文)
 6. 期望薪资是多少
 7. 对于在苏州工作有什么看法
-8. 询问HR面什么时候出结果
+8. 询问 HR 面什么时候出结果
 
 ### 部门面
 
-1. 首先hr介绍了BOSCH的情况，聊了一些做的东西，后面部门leader来了
+1. 首先 hr 介绍了 BOSCH 的情况，聊了一些做的东西，后面部门 leader 来了
 2. 在旁边说英语自我介绍（中途有些忘词，有些尴尬，所以一定要好好准备）
 3. 英语说一下自己的特长(胡扯了一通)
-4. 英语说一下vue，说一下angular
+4. 英语说一下 vue，说一下 angular
 5. 挑一个项目，说说你在里面做的工作，说的具体一些
-(说直接在黑板上画出来，中间根据介绍提了具体的问题，以及如何解决，主要是了解的软件开发的流程，选择的技术路线，java .net  | mysql sqlserver)
+   (说直接在黑板上画出来，中间根据介绍提了具体的问题，以及如何解决，主要是了解的软件开发的流程，选择的技术路线，java .net | mysql sqlserver)
 6. 说一下依赖注入和控制器反转
 7. 有哪些实现形式(后面引导着我说了接口，基础知识不行)
 8. 高级编程什么时候开始做的
 9. 平时怎么自学的
-10. NB-IOT做了什么
-11. Three.js做了什么
-12. . net core和传统. net的区别，说说具体感受
+10. NB-IOT 做了什么
+11. Three.js 做了什么
+12. . net core 和传统. net 的区别，说说具体感受
 13. 数据采集主要是采集的什么数据
 14. 熟悉那些工业通信协议，用过那些
-15. ROS有了解过吗？
-16. node.js了解过吗 说一说
+15. ROS 有了解过吗？
+16. node.js 了解过吗 说一说
 17. hybrid-app native-app
-17. 面试官补充(说话太快，慢一点，老毛病) 
-18. 有没有什么想问的 职业规划
-19. 去食堂看看博世大食堂
-20. 介绍了atmo部门全球布局与使命
-21. 参观了车间和实验室，介绍了一些做的东西(车间的设备都比较高级的感觉，感觉是做研究的一个部门，做的东西挺深的)
+18. 面试官补充(说话太快，慢一点，老毛病)
+19. 有没有什么想问的 职业规划
+20. 去食堂看看博世大食堂
+21. 介绍了 atmo 部门全球布局与使命
+22. 参观了车间和实验室，介绍了一些做的东西(车间的设备都比较高级的感觉，感觉是做研究的一个部门，做的东西挺深的)
 
 ## 汇顶面试
 
@@ -211,52 +213,51 @@
 
 1. 自我介绍
 2. 为什么做前端
-3. 说一下MVC模式
-4. MVC的好处
-5. OOP的好处
+3. 说一下 MVC 模式
+4. MVC 的好处
+5. OOP 的好处
 6. 设计模式了解多少，用过那些
 7. 判断字符串中重复的字符
 8. 链表反转
 9. 线程和进程的区别
-9. malloc和new 的对象能不能线程共享
-10. 说下堆和栈之间的
-11. 专利和论文、6级成绩
-12. 团队管理怎么做的
-13. 平时怎么学习的
+10. malloc 和 new 的对象能不能线程共享
+11. 说下堆和栈之间的
+12. 专利和论文、6 级成绩
+13. 团队管理怎么做的
+14. 平时怎么学习的
 
 ## 有赞
 
 ## 一面
 
 基础考察
+
 1. 自我介绍
 2. 为什么做前端
-3. CSS样式的权重
-4. JavaScript闭包
+3. CSS 样式的权重
+4. JavaScript 闭包
 5. 垃圾回收机制
-6. URL输入浏览器发生了什么
-7. repaint和reflow区别
-8. 实现vue中的event.on event.off event.emit event.once
+6. URL 输入浏览器发生了什么
+7. repaint 和 reflow 区别
+8. 实现 vue 中的 event.on event.off event.emit event.once
 9. 实现两个对象的比较
-
 
 ## 二面
 
 1. 自我介绍
 2. 平时怎么学习
-3. HashMap实现
-4. DFS&BFS 
-4. 在查找DOM的子节点使用何种方法遍历(类似vue、react的diff算法)
-5. DOM的结构，实现
-6. Stack和Heap的特点(感觉想考查数据结构基础，我只回答了js中简单的应用)
-7. CSS水平垂直居中，多说几种
-8. 栅格布局怎么理解的，怎么实现栅格布局
-9. 有什么想问的
-10. js继承多少种
-11. 组合继承和派生继承区别
+3. HashMap 实现
+4. DFS&BFS
+5. 在查找 DOM 的子节点使用何种方法遍历(类似 vue、react 的 diff 算法)
+6. DOM 的结构，实现
+7. Stack 和 Heap 的特点(感觉想考查数据结构基础，我只回答了 js 中简单的应用)
+8. CSS 水平垂直居中，多说几种
+9. 栅格布局怎么理解的，怎么实现栅格布局
+10. 有什么想问的
+11. js 继承多少种
+12. 组合继承和派生继承区别
 
 感觉自己的基础不好，很多知识点掌握不牢固，还不够具体
-
 
 ## 中国移动
 
@@ -264,32 +265,32 @@
 
 1. 自我介绍
 2. 前端兼容性怎么做
-3. MVC框架
+3. MVC 框架
 4. 前端性能优化
 5. 年纪
 
 ### 中国移动研究院（苏州）
 
 1. 自我介绍
-2. 手上的offer
+2. 手上的 offer
 3. 为什么来苏州
 4. 为什么做前端
 5. 为什么选择中国移动
-6. [CSS实现三角形](http://www.divcss5.com/rumen/r50847.shtml)
-7. [position定位](https://www.jianshu.com/p/4be644cce275)
+6. [CSS 实现三角形](http://www.divcss5.com/rumen/r50847.shtml)
+7. [position 定位](https://www.jianshu.com/p/4be644cce275)
 8. [水平垂直居中](https://www.jianshu.com/p/907f99004c3e)
-9. table布局还有存在的意义吗？
+9. table 布局还有存在的意义吗？
 10. 文字居中 text-align:center
-11. js数据类型
-12. js事件中如何捕获事件函数
-13. js事件委托
-14. object.defineProperty和event.addEventListener
-15. 判断object和function的方法
+11. js 数据类型
+12. js 事件中如何捕获事件函数
+13. js 事件委托
+14. object.defineProperty 和 event.addEventListener
+15. 判断 object 和 function 的方法
 16. 继承的几种方式，有什么区别
-17. removeNode发生了什么
-18. 用过那些打包工具，webpack和gulp的区别
-19. git新建一个分支，并切换到该分支
-20. 在develop分支上，多人协作，如何避免冲突
+17. removeNode 发生了什么
+18. 用过那些打包工具，webpack 和 gulp 的区别
+19. git 新建一个分支，并切换到该分支
+20. 在 develop 分支上，多人协作，如何避免冲突
 21. 你做软件开发有什么优势
 
 ## 海康威视
@@ -298,30 +299,25 @@
 
 1. 自我介绍
 2. 项目中使用技术
-3. bootstrap中布局实现. 最近流行什么布局
-4. 实现一个计数器. 每次调用加1(设计模式)
-5. JS继承方式
-6. nth-child和用js编辑table查找数组某项那个更快(里面有坑)
-7. promise解决什么问题. 场景问题. 在promise里面放置settimeout那个先打印
-8. microTask和macroTask
+3. bootstrap 中布局实现. 最近流行什么布局
+4. 实现一个计数器. 每次调用加 1(设计模式)
+5. JS 继承方式
+6. nth-child 和用 js 编辑 table 查找数组某项那个更快(里面有坑)
+7. promise 解决什么问题. 场景问题. 在 promise 里面放置 settimeout 那个先打印
+8. microTask 和 macroTask
 9. 项目中有没有因为个人的失误，导致项目延期的
 
-### HR面
+### HR 面
 
 1. 自我介绍
-<<<<<<< HEAD
-2. 
-=======
 2. 有什么区别
->>>>>>> 72ba494ed66a4d138d7909b5e4b1466446d7ad44
 3. 为什么来杭州，家里情况
 4. 说一下你做的这个项目. 协调沟通
 5. 说一下研究生本科最大的区别(一个词)
 6. 职业规划
 7. 说一下自己的性格
-8. 手上有哪些offer,期望薪资是多少了？
+8. 手上有哪些 offer,期望薪资是多少了？
 9. 有什么想问的吗？
-
 
 ## 个推
 
@@ -329,74 +325,70 @@
 
 1. 自我介绍
 2. 为什么做前端
-3. 响应式布局，Bootstrap响应式优先
+3. 响应式布局，Bootstrap 响应式优先
 4. 项目中怎么做的响应式布局
-5. vue的数据绑定
-6. oauth，token怎么做的
-7. MVC设计模式
+5. vue 的数据绑定
+6. oauth，token 怎么做的
+7. MVC 设计模式
 8. 水平垂直居中
-9. 其他的布局flex grid
-10. promise做了什么 和async await的区别
+9. 其他的布局 flex grid
+10. promise 做了什么 和 async await 的区别
 11. generator es6
 
 ### 二面
 
 1. 自我介绍
 2. 选一个项目介绍一下
-3. vue的数据绑定2.0 (object.defineProperty)3.0(Proxy)
-3. vue开发的好处，怎么使用的
-4. HTTPS http2.0
-5. 链表和数组
-6. 1000万数据 怎么排序
-7. 什么时候可以去实习
-8. hash实现
-9. 数据加密解密算法 MD5 AES EDS
-10. CSS解析方向
-11. Echart.js canvas svg了解过吗
-12. node.js
-13. 职业规划
-
+3. vue 的数据绑定 2.0 (object.defineProperty)3.0(Proxy)
+4. vue 开发的好处，怎么使用的
+5. HTTPS http2.0
+6. 链表和数组
+7. 1000 万数据 怎么排序
+8. 什么时候可以去实习
+9. hash 实现
+10. 数据加密解密算法 MD5 AES EDS
+11. CSS 解析方向
+12. Echart.js canvas svg 了解过吗
+13. node.js
+14. 职业规划
 
 ## 头条
 
 ### 只有一面
 
 1. 项目中使用的技术
-2. Vue双向绑定
-3. 在model中修改怎么反映到view，view中修改怎么反映到model
-4. url输入到解析的过程
-5. [es5实现类的继承](https://blog.csdn.net/weixin_42098339/article/details/87900369)
+2. Vue 双向绑定
+3. 在 model 中修改怎么反映到 view，view 中修改怎么反映到 model
+4. url 输入到解析的过程
+5. [es5 实现类的继承](https://blog.csdn.net/weixin_42098339/article/details/87900369)
 6. 二叉树子路径(实现 function pathSum(head, num)，返回二叉树中，是否有一条子路径，其和为 num)
-<<<<<<< HEAD
+7. CSS 中定位有哪些
+8. flex 等宽布局
+9. es6 中 module 和 common.js 中 module 的异同
+10. 如何让锚点动画 平滑移动
+11. 使用 JavaScript 的异步编程特性实现
 
-1. CSS中定位有哪些
-2. flex等宽布局
-3. es6中module 和  common.js中module的异同
-4. 如何让锚点动画 平滑移动
-5. 使用JavaScript的异步编程特性实现 
-``` js
-function printOrder(urlArr){
-}
+```js
+function printOrder(urlArr) {}
 //同步执行 有序输出
-printOrder(["www.toutiao.com","www.douyin.com","www.js.com"])
+printOrder(["www.toutiao.com", "www.douyin.com", "www.js.com"]);
 ```
+
 6. 数组扁平化
-7. http状态码 200 304
-8. http缓存请求头
+7. http 状态码 200 304
+8. http 缓存请求头
 
 ## 美团测试开发凉面
 
-* 电梯的验收测试流程
-* [数据库左连接](https://www.cnblogs.com/yyjie/p/7788413.html)
-* [Linux中查看所有Java进程](https://www.cnblogs.com/yjd_hycf_space/p/7730690.html)
-* 数据采集中有用到大数据吗？这么少的数据 没有必要使用
-* 输入一个字符串 怎么去判断数组重复
-   - 暴力解法
-   - 不用库函数如何实现
-   - 哈希表 时间复杂度能不能为1 空间负责度能不能为1
-   - 哈希表实现原理
-* Facebook的swift了解过吗？
-* 对职业有什么规划
-* 面试官会问得很详细 追根问底
-=======
->>>>>>> 72ba494ed66a4d138d7909b5e4b1466446d7ad44
+- 电梯的验收测试流程
+- [数据库左连接](https://www.cnblogs.com/yyjie/p/7788413.html)
+- [Linux 中查看所有 Java 进程](https://www.cnblogs.com/yjd_hycf_space/p/7730690.html)
+- 数据采集中有用到大数据吗？这么少的数据 没有必要使用
+- 输入一个字符串 怎么去判断数组重复
+  - 暴力解法
+  - 不用库函数如何实现
+  - 哈希表 时间复杂度能不能为 1 空间负责度能不能为 1
+  - 哈希表实现原理
+- Facebook 的 swift 了解过吗？
+- 对职业有什么规划
+- # 面试官会问得很详细 追根问底
