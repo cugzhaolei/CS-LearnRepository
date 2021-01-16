@@ -15,7 +15,7 @@
 
 ## [git](./git/)
 
-## [面筋](./interview/)
+<!-- ## [面筋](./interview/) -->
 
 ## [项目](./projects/)
 

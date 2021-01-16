@@ -1,8 +1,8 @@
 ---
 home: true
 heroImage: /images/moto.jpg
-actionText: 个人介绍 →
-actionLink: /profile/
+actionText: 开始学习 →
+actionLink: /frontend/
 features:
 - title: 前端基础
   details: 前端:HTML+CSS+JavaScript

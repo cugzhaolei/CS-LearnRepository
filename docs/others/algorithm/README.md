@@ -244,7 +244,7 @@ var heapify = function(array) {
 
 ### 基础排序算法
 
-![](/images/algorithm-sort.jpg)
+![sort](/images/algorithm-sort.jpg)
 
 - 冒泡排序
 

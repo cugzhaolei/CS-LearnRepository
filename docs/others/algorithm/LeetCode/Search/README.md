@@ -1971,40 +1971,92 @@ var lastStoneWeight = function(stones) {
 ```js
 // 1.动态规划
 var eraseOverlapIntervals = function(intervals) {
-    if (!intervals.length) {
-        return 0;
-    }
+  if (!intervals.length) {
+    return 0;
+  }
 
-    intervals.sort((a, b) => a[0] - b[0]);
-    const n = intervals.length;
-    const f = new Array(n).fill(1);
+  intervals.sort((a, b) => a[0] - b[0]);
+  const n = intervals.length;
+  const f = new Array(n).fill(1);
 
-    for (let i = 1; i < n; i++) {
-        for (let j = 0; j < i; j++) {
-            if (intervals[j][1] <= intervals[i][0]) {
-                f[i] = Math.max(f[i], f[j] + 1);
-            }
-        }
+  for (let i = 1; i < n; i++) {
+    for (let j = 0; j < i; j++) {
+      if (intervals[j][1] <= intervals[i][0]) {
+        f[i] = Math.max(f[i], f[j] + 1);
+      }
     }
-    return n - Math.max(...f);
+  }
+  return n - Math.max(...f);
 };
 
 var eraseOverlapIntervals = function(intervals) {
-    if (!intervals.length) {
-        return 0;
-    }
+  if (!intervals.length) {
+    return 0;
+  }
 
-    intervals.sort((a, b) => a[0] - b[0]);
-    const n = intervals.length;
-    const f = new Array(n).fill(1);
+  intervals.sort((a, b) => a[0] - b[0]);
+  const n = intervals.length;
+  const f = new Array(n).fill(1);
 
-    for (let i = 1; i < n; i++) {
-        for (let j = 0; j < i; j++) {
-            if (intervals[j][1] <= intervals[i][0]) {
-                f[i] = Math.max(f[i], f[j] + 1);
-            }
-        }
+  for (let i = 1; i < n; i++) {
+    for (let j = 0; j < i; j++) {
+      if (intervals[j][1] <= intervals[i][0]) {
+        f[i] = Math.max(f[i], f[j] + 1);
+      }
     }
-    return n - Math.max(...f);
+  }
+  return n - Math.max(...f);
+};
+```
+
+### [547. 省份数量](https://leetcode-cn.com/problems/number-of-provinces/)
+
+有 n 个城市，其中一些彼此相连，另一些没有相连。如果城市 a 与城市 b 直接相连，且城市 b 与城市 c 直接相连，那么城市 a 与城市 c 间接相连。
+
+省份 是一组直接或间接相连的城市，组内不含其他没有相连的城市。
+
+给你一个 n x n 的矩阵 isConnected ，其中 isConnected[i][j] = 1 表示第 i 个城市和第 j 个城市直接相连，而 isConnected[i][j] = 0 表示二者不直接相连。
+
+返回矩阵中 省份 的数量。
+
+```bash
+输入：isConnected = [[1,1,0],[1,1,0],[0,0,1]]
+输出：2
+
+提示：
+
+1 <= n <= 200
+n == isConnected.length
+n == isConnected[i].length
+isConnected[i][j] 为 1 或 0
+isConnected[i][i] == 1
+isConnected[i][j] == isConnected[j][i]
+```
+
+[官方题解](https://leetcode-cn.com/problems/number-of-provinces/solution/sheng-fen-shu-liang-by-leetcode-solution-eyk0/)
+
+```js
+// 1.深度优先搜索 DFS
+
+var findCircleNum = function(isConnected) {
+  var provinces = isConnected.length;
+  var visited = new Set();
+  let circles = 0;
+  for (let i = 0; i < provinces; i++) {
+    if (!visited.has(i)) {
+      dfs(isConnected, visited, provinces, i);
+      circles++;
+    }
+  }
+  return circles;
+};
+
+var dfs = (isConnected, visited, provinces, i) => {
+  for (let j = 0; j < provinces; j++) {
+    if (isConnected[i][j] == 1 && !visited.has(j)) {
+      visited.add(j);
+      dfs(isConnected, visited, provinces, j);
+    }
+  }
 };
 ```

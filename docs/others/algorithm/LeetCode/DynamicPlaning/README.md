@@ -2388,7 +2388,7 @@ dp[i] = dp[i-3]+dp[i-1]
 
 ### [509. 斐波那契数](https://leetcode-cn.com/problems/fibonacci-number/)
 
-斐波那契数，通常用 F(n) 表示，形成的序列称为 斐波那契数列 。该数列由 0 和 1 开始，后面的每一项数字都是前面两项数字的和。也就是：
+斐波那契数，通常用  F(n) 表示，形成的序列称为 斐波那契数列 。该数列由  0 和 1 开始，后面的每一项数字都是前面两项数字的和。也就是：
 
 F(0) = 0，F(1) = 1
 F(n) = F(n - 1) + F(n - 2)，其中 n > 1
@@ -2403,38 +2403,40 @@ F(n) = F(n - 1) + F(n - 2)，其中 n > 1
 ```
 
 ```js
-var fib = function(n){
-  if(n<2){
+var fib = function(n) {
+  if (n < 2) {
     return n;
   }
 
-  let prev = 0, cur = 0, next = 1; 
-  for(let i = 2;i<=n;i++){
+  let prev = 0,
+    cur = 0,
+    next = 1;
+  for (let i = 2; i <= n; i++) {
     prev = cur;
-    cur =  next;
+    cur = next;
     next = prev + cur;
   }
   return next;
-}
+};
 
 var fib = function(n) {
-    if(n<2){
-        return n;
-    }
+  if (n < 2) {
+    return n;
+  }
 
-    let fib = new Map();
-    fib.set(0,0);
-    fib.set(1,1);
-    fib.set(2,1);
-    for(let i=2;i<=n;i++){
-        if(fib.get(i)){
-            fib.get(i);
-        }else{
-            const res = fib.get(i-1)+fib.get(i-2);
-            fib.set(i,res);
-        }
+  let fib = new Map();
+  fib.set(0, 0);
+  fib.set(1, 1);
+  fib.set(2, 1);
+  for (let i = 2; i <= n; i++) {
+    if (fib.get(i)) {
+      fib.get(i);
+    } else {
+      const res = fib.get(i - 1) + fib.get(i - 2);
+      fib.set(i, res);
     }
-    return fib.get(n);
+  }
+  return fib.get(n);
 };
 ```
 
@@ -2442,7 +2444,7 @@ var fib = function(n) {
 
 在一个由小写字母构成的字符串 s 中，包含由一些连续的相同字符所构成的分组。
 
-例如，在字符串 s = "abbxxxxzyy" 中，就含有 "a", "bb", "xxxx", "z" 和 "yy" 这样的一些分组。
+例如，在字符串 s = "abbxxxxzyy"  中，就含有 "a", "bb", "xxxx", "z" 和 "yy" 这样的一些分组。
 
 分组可以用区间 [start, end] 表示，其中 start 和 end 分别表示该分组的起始和终止位置的下标。上例中的 "xxxx" 分组用区间表示为 [3,6] 。
 
@@ -2463,7 +2465,7 @@ var fib = function(n) {
 解释："a","b" 和 "c" 均不是符合要求的较大分组。
 ```
 
-[1.正则 + 位 + 栈（4解法，超100%）](https://leetcode-cn.com/problems/positions-of-large-groups/solution/zheng-ze-wei-zhan-3jie-fa-chao-100-by-ma-r0vy/)
+[1.正则 + 位 + 栈（4 解法，超 100%）](https://leetcode-cn.com/problems/positions-of-large-groups/solution/zheng-ze-wei-zhan-3jie-fa-chao-100-by-ma-r0vy/)
 
 ```js
 /**
@@ -2471,21 +2473,34 @@ var fib = function(n) {
  * @return {number[][]}
  */
 var largeGroupPositions = function(s) {
-    if(s.length<3){
-        return [];
+  if (s.length < 3) {
+    return [];
+  }
+  let result = [];
+  let start = 1;
+  for (let i = 0; i < s.length; i++) {
+    if (i == s.length - 1 || s[i + 1] != s[i]) {
+      if (start >= 3) {
+        result.push([i - start + 1, i]);
+      }
+      start = 1;
+    } else {
+      start++;
     }
-    let result = [];
-    let start = 1;
-    for(let i=0;i<s.length;i++){
-        if(i==s.length-1||s[i+1]!=s[i]){
-            if(start>=3){
-                result.push([i-start+1,i]);
-            }
-            start = 1;
-        }else{
-            start++;
-        }
+  }
+  return result;
+};
+
+var largeGroupPositions = function(s) {
+  var result = [],
+    start = 0,
+    i = 0;
+  while (++i <= s.length) {
+    if (s[start] != s[i]) {
+      i - start > 2 ? result.push([start, i-1]) : null;
+      start = i;
     }
-    return result;
+  }
+  return result;
 };
 ```

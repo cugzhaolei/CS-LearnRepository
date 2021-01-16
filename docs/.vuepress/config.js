@@ -34,10 +34,10 @@ module.exports = {
   },
   themeConfig: {
     nav: [ // 导航栏配置
-      {
-        text: '个人介绍',
-        link: '/profile/'
-      },
+      // {
+      //   text: '个人介绍',
+      //   link: '/profile/'
+      // },
       {
         text: '前端基础',
         link: '/frontend/'
@@ -53,6 +53,9 @@ module.exports = {
       {
         text: '诗和远方',
         link: '/others/'
+      },{
+        text: 'Github',
+        link: 'https://github.com/cugzhaolei/CS-LearnRepository'
       }
     ],
     // sidebar:{
