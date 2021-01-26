@@ -1,4 +1,5 @@
 ::: tip
+
 # 图
 
 ## 相关术语
@@ -6,6 +7,7 @@
 图是网络结构的抽象模型。图是一组由边连接的节点（或顶点）。学习图是重要的，因为任何二元关系都可以用图来表示。
 
 一个图G = (V, E)由以下元素组成。
+
 *  V：一组顶点
 *  E：一组边，连接V中的顶点
 
@@ -24,17 +26,19 @@
 * 图还可以是未加权的或是加权的
 
 ## 图的表示
+
 从数据结构的角度来说，我们有多种方式来表示图。在所有的表示法中，不存在绝对正确的方式。图的正确表示法取决于待解决的问题和图的类型。
 
-
 ### 邻接矩阵
+
 图最常见的实现是邻接矩阵。每个节点都和一个整数相关联，该整数将作为数组的索引。我们用一个二维数组来表示顶点之间的连接。如果索引为i的节点和索引为j的节点相邻，则array[i][j]=== 1，否则array[i][j] === 0，
 
-![](/images/data-graph-matrix.jpg)
+![graph-matrix](/images/data-graph-matrix.jpg)
 
 不是强连通的图（稀疏图）如果用邻接矩阵来表示，则矩阵中将会有很多0，这意味着我们浪费了计算机存储空间来表示根本不存在的边。
 
 ### 邻接表
+
 邻接表由图中每个顶点的相邻顶点列表所组成。存在好几种方式来表示这种数据结构。我们可以用列表（数组）、链表，甚至是散列表或是字典来表示相邻顶点列表。
 
 ![](/images/data-graph-table.jpg)
@@ -45,7 +49,7 @@
 
 在关联矩阵中，矩阵的行表示顶点，列表示边。如下图所示，我们使用二维数组来表示两者之间的连通性，如果顶点v是边e的入射点，则array[v][e] === 1；否则，array[v][e] === 0。
 
-![](/images/data-graph-relate.jpg)
+![data-graph-relate](/images/data-graph-relate.jpg)
 
 ## 创建Graph类
 
@@ -55,29 +59,35 @@ function graph(){
     var adjList = new Dictionary();
 }
 ```
+
 用一个数组来存储图中所有顶点的名字，以及一个字典来存储邻接表。字典将会使用顶点的名字作为键，邻接顶点列表作为值。 vertices数组和adjList字典两者都是我们Graph类的私有属性。
 
 实现两个方法：一个用来向图中添加一个新的顶点（因为图实例化后是空的），另外一个方法用来添加顶点之间的边。
+
 ### addVertex()
+
 ``` js
 this.addVertex = function(v){
     vertices.push(v);
     adjList.set(v,[]);
 }
 ```
+
 这个方法接受顶点v作为参数。我们将该顶点添加到顶点列表中，并且在邻接表中，设置顶点v作为键对应的字典值为一个空数组.
 
 ### addEdge()
+
 ``` js
 this.addEdge = function(v,w){
     adjList.get(v).push(w);  //{5}
     adjList.get(w).push(v);  //{6}
 }
 ```
+
 首先，通过将w加入到v的邻接表中，我们添加了一条自顶点v到顶点w的边。如果你想实现一个有向图，则行{5}就足够了。由于本章中大多数的例子都是基于无向图的，我们需要添加一条自w向v的边{6}。
 
-
 测试代码
+
 ``` js
 var graph = new Graph();
 var myVertices = ['A','B','C','D','E','F','G','H','I']; //{7}
@@ -95,9 +105,11 @@ graph.addEdge('B', 'E');
 graph.addEdge('B', 'F');
 graph.addEdge('E', 'I');
 ```
+
 创建了一个数组，包含所有我们想添加到图中的顶点（行{7}）。接下来，我们只要遍历vertices数组并将其中的值逐一添加到我们的图中（行{8}）。最后，我们添加想要的边（行{9}）。
 
 ### toString()
+
 ``` js
 this.toString = function(){
     var s = '';
@@ -126,12 +138,13 @@ this.toString = function(){
 广度优先搜索算法和深度优先搜索算法基本上是相同的，只有一点不同，那就是待访问顶点
 列表的数据结构。
 
-算 法|数据结构|描 述
----|:--:|:--:
-深度优先搜索 |栈 |通过将顶点存入栈中，顶点是沿着路径被探索的，存在新的相邻顶点就去访问
-广度优先搜索| 队列 |通过将顶点存入队列中，最先入队列的顶点先被探索
+算 法        | 数据结构 |                               描 述
+-----------|:-------:|:---------------------------------:
+深度优先搜索 |    栈    | 通过将顶点存入栈中，顶点是沿着路径被探索的，存在新的相邻顶点就去访问
+广度优先搜索 |   队列   |           通过将顶点存入队列中，最先入队列的顶点先被探索
 
 当要标注已经访问过的顶点时，我们用三种颜色来反映它们的状态。
+
 *  白色：表示该顶点还没有被访问。
 *  灰色：表示该顶点被访问过，但并未被探索过。
 *  黑色：表示该顶点被访问过且被完全探索过。
@@ -179,9 +192,11 @@ this.bfs = function(v,callback){
     }
 };
 ```
+
 广度优先搜索和深度优先搜索都需要标注被访问过的顶点。为此，我们将使用一个辅助数组color。由于当算法开始执行时，所有的顶点颜色都是白色（行{1}），所以我们可以创建一个辅助函数initializeColor，为这两个算法执行此初始化操作。
 
 广度优先搜索的实现：
+
 * 第一件事情是用initializeColor函数来将color数组初始化为white（行{2}）。我们还需要声明和创建一个Queue实例（行{3}），它将会存储待访问和待探索的顶点。
 * bfs方法接受一个顶点作为算法的起始点。起始顶点是必要的，我们将此顶点入队列
 * 如果队列非空（行{5}），我们将通过出队列（行{6}）操作从队列中移除一个顶点，并取得一个包含其所有邻点的邻接表（行{7}）。该顶点将被标注为grey（行{8}），表示我们发现了它（但还未完成对其的探索）
@@ -189,12 +204,14 @@ this.bfs = function(v,callback){
 * 当完成探索该顶点和其相邻顶点后，我们将该顶点标注为已探索过的（颜色设置为black——行{14}）。
 
 测试算法
+
 ``` js
 function printNode(value){  //{16}
     console.log("Visited vertex: "+value);  //{17}
 }
 graph.bfs(myVertices[0],printNode);   //{18}
 ```
+
 #### BFS寻找最短路径
 
 给定一个图G和源顶点v，找出对每个顶点u， u和v之间最短路径的距离（以边的数量计）
@@ -237,6 +254,7 @@ this.BFS = function(v){
     };
 };
 ```
+
 声明数组d（行{1}）来表示距离，以及pred数组来表示前溯点。下一步则是对图中的每一个顶点，用0来初始化数组d（行{4}），用null来初始化数组pred。
 
 当我们发现顶点u的邻点w时，则设置w的前溯点值为u（行{7}）。我们还通过给d[u]加1来设置v和w之间的距离（u是w的前溯点， d[u]的值已经有了）
@@ -244,6 +262,7 @@ this.BFS = function(v){
 方法最后返回了一个包含d和pred的对象（行{8}）
 
 再次执行BFS方法，并将其返回值存在一个变量中：
+
 ``` js
 var shortestPathA = graph.BFS(myVertices[0]);
 console.log(shortestPathA);
@@ -253,6 +272,7 @@ predecessors: [A: null, B: "A", C: "A", D: "A", E: "B", F: "B", G: "C", H: "D", 
 ```
 
 通过前溯点数组，我们可以用下面这段代码来构建从顶点A到其他顶点的路径：、
+
 ``` JS
 var fromVertex = myVertices[0]; //{9}
 for(var i=1;i<myVertices.length;i++){ //{10}
@@ -279,6 +299,7 @@ for(var i=1;i<myVertices.length;i++){ //{10}
 它是第一个被弹出的项 ——行{16}）。当栈是非空的，我们就从栈中移出一个项并将其拼接到字符串s的后面（行{18}）。最后（行{19}）在控制台上输出路径。
 
 执行该代码段，我们会得到如下输出：
+
 ``` shell
 A - B
 A - C
@@ -289,6 +310,7 @@ A - C - G
 A - D - H
 A - B - E - I
 ```
+
 这里，我们得到了从顶点A到图中其他顶点的最短路径（衡量标准是边的数量）。
 
 #### 最短路径算法
@@ -311,16 +333,16 @@ A - B - E - I
 
 * Floyd-Warshall算法解决了求所有顶点对间的最短路径这一问题。
 
-
 ### DFS
 
 深度优先搜索算法将会从第一个指定的顶点开始遍历图，沿着路径直到这条路径最后一个顶点被访问了，接着原路回退并探索下一条路径。换句话说，它是先深度后广度地访问顶点，如下图所示：
 
-![](/images/data-dfs.jpg)
+![dfs](/images/data-dfs.jpg)
 
 深度优先搜索算法不需要一个源顶点。在深度优先搜索算法中，若图中顶点v未访问，则访问该顶点v。
 
 要访问顶点v，照如下步骤做。
+
 * (1) 标注v为被发现的（灰色）。
 * (2) 对于v的所有未访问的邻点w，访问顶点w，标注v为已被探索的（黑色）。
 
@@ -347,12 +369,14 @@ var dfsVisit = function(u,color,callback){
     }
     color[u] = 'black';                   //{12}
 };
+
 ```
+
 首先，我们创建颜色数组（行{1}），并用值white为图中的每个顶点对其做初始化，广度优先搜索也这么做的。接着，对于图实例中每一个未被访问过的顶点（行{2}和{3}），我们调用私有的递归函数dfsVisit，传递的参数为顶点、颜色数组以及回调函数（行{4}）。
 
 当访问u顶点时，我们标注其为被发现的（grey——行{5}）。如果有callback函数的话（行{6}），则执行该函数输出已访问过的顶点。接下来一步是取得包含顶点u所有邻点的列表（行{7}）。对于顶点u的每一个未被访问过（颜色为white——行{10}和行{8}）的邻点w（行{9}），我们将调用dfsVisit函数，传递w和其他参数（行{11}——添加顶点w入栈，这样接下来就能访问它）。最后，在该顶点和邻点按深度访问之后，我们回退，意思是该顶点已被完全探索，并将其标注为black（行{12}）。
 
-![](/images/data-dfs-sequence.jpg)
+![dfs-sequence](/images/data-dfs-sequence.jpg)
 
 在我们示例所用的图中，行{4}只会被执行一次，因为所有其他的顶点都有路径到第一个调用dfsVisit函数的顶点（顶点A）。如果顶点B第一个调用函数，则行{4}将会为其他顶点再执行一次（比如顶点A）。
 
@@ -365,6 +389,7 @@ var dfsVisit = function(u,color,callback){
 *  顶点u的前溯点p[u]。
 
 改进后的算法：
+
 ``` js
 var time = 0; //{1}
 this.DFS = function(){
@@ -415,23 +440,25 @@ var DFSVisit = function(u,color,d,f,p){
 深度优先算法背后的思想是什么？边是从最近发现的顶点u处被向外探索的。只有连接到未发现的顶点的边被探索了。当u所有的边都被探索了，该算法回退到u被发现的地方去探索其他的边。这个过程持续到我们发现了所有从原始顶点能够触及的顶点。如果还留有任何其他未被发现的顶点，我们对新源顶点重复这个过程。重复该算法，直到图中所有的顶点都被探索了。
 
 对于改进过的深度优先搜索，有两点需要我们注意：
+
 *  时间（time）变量值的范围只可能在图顶点数量的一倍到两倍之间；
 *  对于所有的顶点u， d[u] < f[u]（意味着，发现时间的值比完成时间的值小，完成时间意思
 是所有顶点都已经被探索过了）。
 
 在这两个假设下，我们有如下的规则：
+
 ``` js
 1 ≤ d [u] < f [u] ≤ 2|V|
 ```
 如果对同一个图再跑一遍新的深度优先搜索方法，对图中每个顶点，我们会得到如下的发现/完成时间：
 
-![](/images/data-graph-improve-dfs.jpg)
+![improve-dfs](/images/data-graph-improve-dfs.jpg)
 
 #### 拓扑排序-DFS
 
 给定下图，假定每个顶点都是一个我们需要去执行的任务：
 
-![](/images/data-graph-dfs-dag.jpg)
+![dfs-dag](/images/data-graph-dfs-dag.jpg)
 
 ::: danger
 这是一个有向图，意味着任务的执行是有顺序的。例如，任务F不能在任务
@@ -440,7 +467,8 @@ A之前执行。注意这个图没有环，意味着这是一个无环图。所�
 :::
 
 ::: tip
-<b>拓扑排序</b>当我们需要编排一些任务或步骤的执行顺序时，这称为拓扑排序（topological sorting，英文亦写作topsort或是toposort）。
+
+**拓扑排序**当我们需要编排一些任务或步骤的执行顺序时，这称为拓扑排序（topological sorting，英文亦写作topsort或是toposort）。
 
 拓扑排序只能应用于DAG。那么，如何使用深度优先搜索来实现拓扑排序呢？让我们在本节开头的示意图上执行一下深度优先搜索。
 
@@ -461,16 +489,20 @@ var result = graph.DFS();
 
 这段代码将创建图，添加边，执行改进版本的深度优先搜索算法，并将结果保存到result变量。下图展示了深度优先搜索算法执行后，该图的发现和完成时间。
 
-![](/images/data-graph-dfs-eg1.jpg)
+![dfs-eg1](/images/data-graph-dfs-eg1.jpg)
 
 现在要做的仅仅是以倒序来排序完成时间数组，这便得出了该图的拓扑排序：
+
 ``` js
 B - A - D - C - F - E
 ```
+
 注意之前的拓扑排序结果仅是多种可能性之一。如果我们稍微修改一下算法，就会有不同的结果，比如下面这个结果也是众多其他可能性中的一个：
+
 ``` js
 A - B - C - D - F - E
 ```
+
 这也是一个可以接受的结果。
 
 ## 最短路径算法
@@ -482,11 +514,13 @@ A - B - C - D - F - E
 
 Dijkstra算法是一种计算从单个源到所有其他源的最短路径的贪心算法，这意味着我们可以用它来计算从图的一个顶点到其余各顶点的最短路径。
 看个来自wiki的动图
-![](/images/data-dijkstra-dynamic.webp)
 
-![](/images/data-grapg-dijkstra.jpg)
+![dijkstra](/images/data-dijkstra-dynamic.webp)
+
+![dijkstra](/images/data-grapg-dijkstra.jpg)
 
 我们来看看如何找到顶点A和其余顶点之间的最短路径。但首先，我们需要声明表示上图的邻接矩阵，如下所示：
+
 ``` js
 var graph = [[0, 2, 4, 0, 0, 0],
             [0, 0, 1, 4, 2, 0],
@@ -495,7 +529,9 @@ var graph = [[0, 2, 4, 0, 0, 0],
             [0, 0, 0, 3, 0, 2],
             [0, 0, 0, 0, 0, 0]];
 ```
+
 Dijkstar算法实现
+
 ``` js
 var INF = Number.MAX_SAFE_INTEGER;
 this.dijkstra = function(src){
@@ -518,7 +554,9 @@ this.dijkstra = function(src){
     return dist;   //{8}
 };
 ```
+
 下面是对算法过程的描述。
+
 *  行{1}：首先，把所有的距离（dist）初始化为无限大（JavaScript最大的数INF = Number.
 MAX_SAFE_INTEGER），将visited[]初始化为false。
 *  行{2}：然后，把源顶点到自己的距离设为0。
@@ -529,6 +567,7 @@ MAX_SAFE_INTEGER），将visited[]初始化为false。
 *  行{8}：处理完所有顶点后，返回从源顶点（src）到图中其他顶点最短路径的结果。
 
 要计算顶点间的minDistance，就要搜索dist数组中的最小值，返回它在数组中的索引：
+
 ``` js
 var minDistance = function(dist,visited){
     var min = INF,minIndex = -1;
@@ -541,6 +580,7 @@ var minDistance = function(dist,visited){
     return minIndex;
 };
 ```
+
 对本节开始的图执行以上算法，会得到如下输出：
 0 0
 1 2
@@ -553,6 +593,7 @@ var minDistance = function(dist,visited){
 
 Floyd-Warshall算法是一种计算图中所有最短路径的动态规划算法。通过该算法，我们可以找出从所有源到所有顶点的最短路径。
 算法实现如下：
+
 ``` js
 this.floydWarshall = function(){
     var dist =[],length = this.graph,i,j,k;
@@ -578,6 +619,7 @@ this.floydWarshall = function(){
 ```
 
 下面是对算法过程的描述。
+
 *  行{1}：首先，把dist数组初始化为每个顶点之间的权值，因为i到j可能的最短距离就
 是这些顶点间的权值。
 *  行{2}：通过k，得到i途径顶点0至k，到达j的最短路径。
@@ -595,17 +637,18 @@ INF INF INF INF INF 0
 
 ## 最小生成树
 
-<b>最小生成树（MST）</b>问题是网络设计中常见的问题。想象一下，你的公司有几间办公室，要
+**最小生成树（MST）**问题是网络设计中常见的问题。想象一下，你的公司有几间办公室，要
 以最低的成本实现办公室电话线路相互连通，以节省资金，最好的办法是什么？
 
 这也可以应用于岛桥问题。设想你要在n个岛屿之间建造桥梁，想用最低的成本实现所有岛屿相互连通。
 这两个问题都可以用MST算法来解决，其中的办公室或者岛屿可以表示为图中的一个顶点，边代表成本。这里我们有一个图的例子，其中较粗的边是一个MST的解决方案。
 
-![](/images/data-graph-mst.jpg)
+![graph-mst](/images/data-graph-mst.jpg)
 
 ### [Prim算法](https://juejin.im/post/5cbf1fb2e51d456e541b4cf8)
 
 Prim算法是一种求解加权无向连通图的MST问题的贪心算法。它能找出一个边的子集，使得其构成的树包含图中所有顶点，且边的权值之和最小。
+
 ``` js
 this.prim = function(){
     var parent = [],
@@ -634,7 +677,9 @@ this.prim = function(){
     return parent; //{9}
 };
 ```
+
 下面是对算法过程的描述。
+
 *  行{1}：首先，把所有顶点（key）初始化为无限大（JavaScript最大的数INF = Number.MAX_
 SAFE_INTEGER）， visited[]初始化为false。
 *  行{2}：其次，选择第一个key作为第一个顶点，同时，因为第一个顶点总是MST的根节
@@ -652,6 +697,7 @@ SAFE_INTEGER）， visited[]初始化为false。
 :::
 
 ::: tip
+
 ### [Kruskal算法](https://juejin.im/post/5a3719c26fb9a045211ecb34)
 
 和Prim算法类似， Kruskal算法也是一种求加权无向连通图的MST的贪心算法。
@@ -709,7 +755,9 @@ initializeCost(graph){
   return cost;
 }
 ```
+
 下面是对算法过程的描述。
+
 *  行{1}：首先，把邻接矩阵的值复制到cost数组，以方便修改且可以保留原始值行{7}。
 *  行{2}：当MST的边数小于顶点总数减1时。
 *  行{3}：找出权值最小的边。
@@ -717,7 +765,9 @@ initializeCost(graph){
 *  行{6}：如果u和v是不同的边，则将其加入MST。
 *  行{7}：从列表中移除这些边，以免重复计算。
 *  行{8}：返回MST。
+
 下面是find函数的定义。它能防止MST出现环路：
+
 ``` js
 var find = function(i,parent){
     while(parent[i]){
@@ -726,7 +776,9 @@ var find = function(i,parent){
     return i;
 };
 ```
+
 union函数定义：
+
 ``` js
 var union = function(i,j,parent){
     if(i!=j){
@@ -738,9 +790,9 @@ var union = function(i,j,parent){
 ```
 
 ## 小结
+
 用邻
 接表表示图的算法。你还学到了如何用广度优先搜索和深度优先搜索来遍历图。本章还包括了广度优先搜索和深度优先搜索的两个实际应用，它们分别是使用广度优先搜索来找到最短路径，以及使用深度优先搜索来做拓扑排序。
-
 
 计算最短路径的Dijkstra算法和Floyd-Warshall算法。
 计算图的最小生成树的Prim算法和Kruskal算法。

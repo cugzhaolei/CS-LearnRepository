@@ -253,6 +253,32 @@ class Solution {
 
 ## DFS
 
+### Java实现
+
+```js
+public Iterator DFSTraverse(Vertex v){
+    LinkedList traverseSeq = new LinkedListDLNode();// 遍历结果
+    resetVexStatus(); //重置顶点状态
+    DFSRecursion(v,traverseSeq); // 从v 点出发深度优先搜索
+    Iterator it = getVertext(); // 从图未曾访问的其他顶点重新搜索
+    for(it.first();!it.isDone();it.next()){
+        Vertex u = (Vertex)it.currentItem();
+        if(!u.isVisited())DFSRecursion(u,traverseSeq);
+    }
+    return traverseSeq.elements();
+}
+
+private void DFSRecursion(Vertex v,LinkedList list){
+    v.setToVisited(); // 设置顶点V已经访问过
+    list.insertLast(v); // 访问顶点v
+    Iterator it = adjVertexs(v); // 取得顶点v的所有邻接点
+    for(it.first();!it.isDone();it.next()){
+        Vertex u = (Vertex)it.currentItem();
+        if(!u.isVisited())DFSRecursion(u,list);
+    }
+}
+```
+
 深度优先搜索算法将会从第一个指定的顶点开始遍历图，沿着路径直到这条路径最后一个顶点被访问了，接着原路回退并探索下一条路径。换句话说，它是先深度后广度地访问顶点.
 
 ![DFS](/images/algorithm-LeetCode-search-dfs.jpg)
