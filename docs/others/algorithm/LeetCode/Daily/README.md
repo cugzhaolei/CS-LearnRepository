@@ -301,3 +301,596 @@ var addToArrayForm = function(A, K) {
 
 };
 ```
+
+
+
+### [1319. 连通网络的操作次数](https://leetcode-cn.com/problems/number-of-operations-to-make-network-connected/)
+
+**连通图**
+
+用以太网线缆将 n 台计算机连接成一个网络，计算机的编号从 0 到 n-1。线缆用 connections 表示，其中 connections[i] = [a, b] 连接了计算机 a 和 b。
+
+网络中的任何一台计算机都可以通过网络直接或者间接访问同一个网络中其他任意一台计算机。
+
+给你这个计算机网络的初始布线 connections，你可以拔开任意两台直连计算机之间的线缆，并用它连接一对未直连的计算机。请你计算并返回使所有计算机都连通所需的最少操作次数。如果不可能，则返回 -1 。 
+
+示例 1：
+
+
+
+输入：n = 4, connections = [[0,1],[0,2],[1,2]]
+输出：1
+解释：拔下计算机 1 和 2 之间的线缆，并将它插到计算机 1 和 3 上。
+示例 2：
+
+
+
+输入：n = 6, connections = [[0,1],[0,2],[0,3],[1,2],[1,3]]
+输出：2
+示例 3：
+
+输入：n = 6, connections = [[0,1],[0,2],[0,3],[1,2]]
+输出：-1
+解释：线缆数量不足。
+示例 4：
+
+输入：n = 5, connections = [[0,1],[0,2],[3,4],[2,3]]
+输出：0
+
+
+提示：
+
+- 1 <= n <= 10^5
+- 1 <= connections.length <= min(n*(n-1)/2, 10^5)
+- connections[i].length == 2
+- 0 <= connections[i][0], connections[i][1] < n
+- connections[i][0] != connections[i][1]
+- 没有重复的连接。
+- 两台计算机不会通过多条线缆连接。
+
+[官方题解](https://leetcode-cn.com/problems/number-of-operations-to-make-network-connected/solution/lian-tong-wang-luo-de-cao-zuo-ci-shu-by-leetcode-s/)
+
+```js
+var makeConnected = function(n, connections) {
+    if (connections.length < n - 1) {
+        return -1;
+    }
+
+    const edges = new Map();
+    for (const [x, y] of connections) {
+        edges.get(x) ? edges.get(x).push(y) : edges.set(x, [y]);
+        edges.get(y) ? edges.get(y).push(x) : edges.set(y, [x]);
+    }
+
+    const used = new Array(n).fill(0);
+
+    let ans = 0;
+    for (let i = 0; i < n; i++) {
+        if (!used[i]) {
+            dfs(i, used, edges);
+            ans++;
+        }
+    }
+    return ans - 1;
+};
+
+const dfs = (u, used, edges) => {
+    used[u] = 1;
+    if (edges.get(u)) {
+        for (const v of edges.get(u)) {
+            if (!used[v]) {
+                dfs(v, used, edges);
+            }
+        }
+    }
+}
+
+```
+
+### [674. 最长连续递增序列](https://leetcode-cn.com/problems/longest-continuous-increasing-subsequence/)
+
+**贪心:**
+
+给定一个未经排序的整数数组，找到最长且 连续递增的子序列，并返回该序列的长度。
+
+连续递增的子序列 可以由两个下标 l 和 r（l < r）确定，如果对于每个 l <= i < r，都有 nums[i] < nums[i + 1] ，那么子序列 [nums[l], nums[l + 1], ..., nums[r - 1], nums[r]] 就是连续递增子序列。
+
+ 
+示例 1：
+
+输入：nums = [1,3,5,4,7]
+输出：3
+解释：最长连续递增序列是 [1,3,5], 长度为3。
+尽管 [1,3,5,7] 也是升序的子序列, 但它不是连续的，因为 5 和 7 在原数组里被 4 隔开。 
+示例 2：
+
+输入：nums = [2,2,2,2,2]
+输出：1
+解释：最长连续递增序列是 [2], 长度为1。
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var findLengthOfLCIS = function(nums) {
+	let ans = 0;
+        const n = nums.length;
+        let start = 0;
+        for(let i=0;i<n;i++){
+            if(i>0&&nums[i]<=nums[i-1]){
+                start = i;
+            }
+            ans = Math.max(ans,i-start+1);
+        }
+    return ans;
+};
+```
+
+### [959. 由斜杠划分区域](https://leetcode-cn.com/problems/regions-cut-by-slashes/)
+
+**DFS** **BFS** **并查集**
+
+在由 1 x 1 方格组成的 N x N 网格 grid 中，每个 1 x 1 方块由 /、\ 或空格构成。这些字符会将方块划分为一些共边的区域。
+
+（请注意，反斜杠字符是转义的，因此 \ 用 "\\" 表示。）。
+
+```
+
+返回区域的数目。
+
+ 示例 1：
+
+输入：
+[
+  " /",
+  "/ "
+]
+输出：2
+解释：2x2 网格如下：
+
+示例 2：
+
+输入：
+[
+  " /",
+  "  "
+]
+输出：1
+解释：2x2 网格如下：
+
+示例 3：
+
+输入：
+[
+  "\\/",
+  "/\\"
+]
+输出：4
+解释：（回想一下，因为 \ 字符是转义的，所以 "\\/" 表示 \/，而 "/\\" 表示 /\。）
+2x2 网格如下：
+
+示例 4：
+
+输入：
+[
+  "/\\",
+  "\\/"
+]
+输出：5
+解释：（回想一下，因为 \ 字符是转义的，所以 "/\\" 表示 /\，而 "\\/" 表示 \/。）
+2x2 网格如下：
+
+示例 5：
+
+输入：
+[
+  "//",
+  "/ "
+]
+输出：3
+解释：2x2 网格如下：
+```
+
+提示：
+
+```
+1 <= grid.length == grid[0].length <= 30
+grid[i][j] 是 '/'、'\'、或 ' '。
+```
+
+
+**[解题思路](https://leetcode-cn.com/problems/regions-cut-by-slashes/solution/)**
+
+如何判断区域被分割开,可以使用DFS，BFS，并查集(没有具体联通信息）
+
+
+[1.官方题解](https://leetcode-cn.com/problems/regions-cut-by-slashes/solution/you-xie-gang-hua-fen-qu-yu-by-leetcode-67xb/)
+
+「斜杠」、「反斜杠」把单元格拆分成的 2 个三角形的形态，在做合并的时候需要分类讨论。根据「斜杠」、「反斜杠」分割的特点，我们把一个单元格分割成逻辑上的 4 个部分。如下图所示：
+
+![image.png](G:\PrivateFile\Study\Picture\LeetCode\959-graph-dfs-bfs-union-1.png)
+
+我们须要遍历一次输入的二维网格 grid，在 单元格内 和 单元格间 进行合并。
+
+**单元格内：**
+
+* 如果是空格：合并 0、1、2、3；
+* 如果是斜杠：合并 0、3，合并 1、2；
+* 如果是反斜杠：合并 0、1，合并 2、3。
+
+**单元格间：**
+
+把每一个单元格拆分成 4 个小三角形以后，相邻的单元格须要合并，无须分类讨论。我们选择在遍历 grid 的每一个单元格的时候，分别「向右、向下」尝试合并。
+
+![image.png](G:\PrivateFile\Study\Picture\LeetCode\959-graph-dfs-bfs-union.png)
+
+* 向右：合并 1 （当前单元格）和 3（当前单元格右边 1 列的单元格），上图中红色部分；
+* 向下：合并 2 （当前单元格）和 0（当前单元格下边 1 列的单元格），上图中蓝色部分。
+  事实上，大家选择在遍历 grid 的每一个单元格的时候，分别「向左、向上」、「向左、向下」、「向右、向上」、「向右、向下」中的任何一种都可以。
+
+2.大神题解
+
+```js
+var regionsBySlashes = function(grid) {
+    const n = grid.length;
+     // 二维网格转换为一维表格，index 表示将单元格拆分成 4 个小三角形以后，编号为 0 的小三角形的在并查集中的下标
+    const f = new Array(n*n*4).fill(0).map((item,index)=>{return index});
+
+    for(let i = 0;i<n;i++){
+        for(let j=0;j<n;j++){
+            const index = i*n+j;
+            if(i<n-1){
+                const bottom = index+n;
+                merge(f,index*4+2,bottom*4);
+            }
+            if(j<n-1){
+                const right = index+1;
+                merge(f,index*4+1,right*4+3);
+            }
+            // 单元格内合并
+            if(grid[i][j]==='/'){
+                // 合并 0、3，合并 1、2
+                merge(f,index*4,index*4+3);
+                merge(f,index*4+1,index*4+2);
+            }else if(grid[i][j]==='\\'){
+                // 合并 0、1，合并 2、3
+                merge(f,index*4,index*4+1);
+                merge(f,index*4+2,index*4+3);
+            }else{
+                merge(f,index*4,index*4+1);
+                merge(f,index*4+1,index*4+2);
+                merge(f,index*4+2,index*4+3);
+            }
+        }
+    }
+ let ret = 0;
+    f.forEach((element, index) => {
+        if (element === index) {
+            ret++;
+        }
+    })
+    return ret;
+};
+
+find = (f, x) => {
+    if (f[x] === x) {
+        return x;
+    }
+    return find(f, f[x]);
+}
+
+merge = (f, x, y) => {
+    const fx = find(f, x), fy = find(f, y);
+    f[fx] = fy;
+}
+
+```
+
+[1128. 等价多米诺骨牌对的数量](https://leetcode-cn.com/problems/number-of-equivalent-domino-pairs/)
+
+给你一个由一些多米诺骨牌组成的列表 dominoes。
+
+如果其中某一张多米诺骨牌可以通过旋转 0 度或 180 度得到另一张多米诺骨牌，我们就认为这两张牌是等价的。
+
+形式上，dominoes[i] = [a, b] 和 dominoes[j] = [c, d] 等价的前提是 a==c 且 b==d，或是 a==d 且 b==c。
+
+在 0 <= i < j < dominoes.length 的前提下，找出满足 dominoes[i] 和 dominoes[j] 等价的骨牌对 (i, j) 的数量。
+
+**示例：**
+
+**输入：dominoes = [[1,2],[2,1],[3,4],[5,6]]
+输出：1**
+
+****
+
+**提示：**
+
+****
+
+**1 <= dominoes.length <= 40000
+1 <= dominoes[i][j] <= 9**
+
+****
+
+**题解:**
+
+* 方法一：二元组表示 + 计数
+  思路及解法
+
+  作者：LeetCode-Solution
+  链接：https://leetcode-cn.com/problems/number-of-equivalent-domino-pairs/solution/deng-jie-duo-mi-nuo-gu-pai-dui-de-shu-li-yjlz/
+
+
+本题中我们需要统计所有等价的多米诺骨牌，其中多米诺骨牌使用二元对代表，「等价」的定义是，在允许翻转两个二元对的的情况下，使它们的元素一一对应相等。
+
+于是我们不妨直接让每一个二元对都变为指定的格式，即第一维必须不大于第二维。这样两个二元对「等价」当且仅当两个二元对完全相同。
+
+注意到二元对中的元素均不大于 99，因此我们可以将每一个二元对拼接成一个两位的正整数，即 (x, y) \to 10x + y(x,y)→10x+y。这样就无需使用哈希表统计元素数量，而直接使用长度为 100 的数组即可。
+
+
+```js
+var numEquivDominoPairs = function(dominoes) {
+    const num = new Array(100).fill(0);
+    let ret = 0;
+    for (const domino of dominoes) {
+        const val = domino[0] < domino[1] ? domino[0] * 10 + domino[1] : domino[1] * 10 + domino[0];
+        ret += num[val];
+        num[val]++;
+    }
+    return ret;
+};
+```
+
+**复杂度分析:**
+
+* 时间复杂度：O(n)O(n)，其中 nn 是多米诺骨牌的数量。我们至多只需要遍历一次该数组。
+* 空间复杂度：O(1)O(1)，我们只需要常数的空间存储若干变量。
+
+### [1579. 保证图可完全遍历](https://leetcode-cn.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/)
+
+**Hard** **并查集**
+
+Alice 和 Bob 共有一个无向图，其中包含 n 个节点和 3  种类型的边：
+
+* 类型 1：只能由 Alice 遍历。
+* 类型 2：只能由 Bob 遍历。
+* 类型 3：Alice 和 Bob 都可以遍历。
+  给你一个数组 edges ，其中 edges[i] = [typei, ui, vi] 表示节点 ui 和 vi 之间存在类型为 typei 的双向边。请你在保证图仍能够被 Alice和 Bob 完全遍历的前提下，找出可以删除的最大边数。如果从任何节点开始，Alice 和 Bob 都可以到达所有其他节点，则认为图是可以完全遍历的。
+
+返回可以删除的最大边数，如果 Alice 和 Bob 无法完全遍历图，则返回 -1 。
+
+ 
+> 示例 1：
+>
+> ![img](https://i.loli.net/2021/01/27/GyqA1pbF28Kf6Hv.png)
+>
+> 输入：n = 4, edges = [[3,1,2],[3,2,3],[1,1,3],[1,2,4],[1,1,2],[2,3,4]]
+> 输出：2
+> 解释：如果删除 [1,1,2] 和 [1,1,3] 这两条边，Alice 和 Bob 仍然可以完全遍历这个图。再删除任何其他的边都无法保证图可以完全遍历。所以可以删除的最大边数是 2 。
+> 示例 2：
+>
+> ![img](https://i.loli.net/2021/01/27/ufvGeYQl8o2MFbq.png)
+>
+>
+>
+> 输入：n = 4, edges = [[3,1,2],[3,2,3],[1,1,4],[2,1,4]]
+> 输出：0
+> 解释：注意，删除任何一条边都会使 Alice 和 Bob 无法完全遍历这个图。
+> 示例 3：
+>
+>
+>
+> ![eg3](https://i.loli.net/2021/01/27/iPfu3IpzlZy8V2q.png)
+>
+>
+>
+> 输入：n = 4, edges = [[3,2,3],[1,1,2],[2,3,4]]
+> 输出：-1
+> 解释：在当前图中，Alice 无法从其他节点到达节点 4 。类似地，Bob 也不能达到节点 1 。因此，图无法完全遍历。
+
+**提示：**
+
+* 1 <= n <= 10^5
+* 1 <= edges.length <= min(10^5, 3 * n * (n-1) / 2)
+* edges[i].length == 3
+* 1 <= edges[i][0] <= 3
+* 1 <= edges[i][1] < edges[i][2] <= n
+* 所有元组 (typei, ui, vi) 互不相同
+
+**解题思路：**
+
+#### [方法一：并查集](https://leetcode-cn.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/solution/bao-zheng-tu-ke-wan-quan-bian-li-by-leet-mtrw/)
+
+**思路与算法：**
+
+我们称类型 1, 2, 31,2,3 的边分别为「Alice 独占边」「Bob 独占边」以及「公共边」。
+
+首先我们需要思考什么样的图是可以被 Alice 和 Bob 完全遍历的。对于 Alice 而言，她可以经过的边是「Alice 独占边」以及「公共边」，由于她需要能够从任意节点到达任意节点，那么就说明：
+
+> 当图中仅有「Alice 独占边」以及「公共边」时，整个图是连通的，即整个图只包含一个连通分量。
+
+同理，对于 Bob 而言，当图中仅有「Bob 独占边」以及「公共边」时，整个图也要是连通的。
+
+由于题目描述中希望我们删除最多数目的边，这等价于保留最少数目的边。换句话说，我们可以从一个仅包含 nn 个节点（而没有边）的无向图开始，逐步添加边，使得满足上述的要求。
+
+那么我们应该按照什么策略来添加边呢？直觉告诉我们，「公共边」的重要性大于「Alice 独占边」以及「Bob 独占边」，因为「公共边」是 Alice 和 Bob 都可以使用的，而他们各自的独占边却不能给对方使用。「公共边」的重要性也是可以证明的：
+
+> 对于一条连接了两个不同的连通分量的「公共边」而言，如果我们不保留这条公共边，那么 Alice 和 Bob 就无法往返这两个连通分量，即他们分别需要使用各自的独占边。因此，Alice 需要一条连接这两个连通分量的独占边，Bob 同样也需要一条连接这两个连通分量的独占边，那么一共需要两条边，这就严格不优于直接使用一条连接这两个连通分量的「公共边」了。
+
+因此，我们可以遵从优先添加「公共边」的策略。具体地，我们遍历每一条「公共边」，对于其连接的的两个节点：
+
+* 如果这两个节点在同一个连通分量中，那么添加这条「公共边」是无意义的；
+
+* 如果这两个节点不在同一个连通分量中，我们就可以（并且一定）添加这条「公共边」，然后合并这两个节点所在的连通分量。
+
+这就提示了我们使用并查集来维护整个图的连通性，上述的策略只需要用到并查集的「查询」和「合并」这两个最基础的操作。
+
+在处理完了所有的「公共边」之后，我们需要处理他们各自的独占边，而方法也与添加「公共边」类似。我们将当前的并查集复制一份，一份交给 Alice，一份交给 Bob。随后 Alice 不断地向并查集中添加「Alice 独占边」，Bob 不断地向并查集中添加「Bob 独占边」。在处理完了所有的独占边之后，如果这两个并查集都只包含一个连通分量，那么就说明 Alice 和 Bob 都可以遍历整个无向图。
+
+**细节：**
+
+在使用并查集进行合并的过程中，我们每遇到一次失败的合并操作（即需要合并的两个点属于同一个连通分量），那么就说明当前这条边可以被删除，将答案增加 11。
+
+**代码：**
+
+链接：<https://leetcode-cn.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/solution/bao-zheng-tu-ke-wan-quan-bian-li-by-leet-mtrw/>
+
+```js
+// 并查集模板
+class UnionFind {
+    constructor (n) {
+        this.parent = new Array(n).fill(0).map((element, index) => index);
+        this.size = new Array(n).fill(1);
+        // 当前连通分量数目
+        this.setCount = n;
+    }
+
+    findset (x) {
+        if (this.parent[x] === x) {
+            return x;
+        }
+        this.parent[x] = this.findset(this.parent[x]);
+        return this.parent[x];
+    }
+
+    unite (a, b) {
+        let x = this.findset(a), y = this.findset(b);
+        if (x === y) {
+            return false;
+        }
+        if (this.size[x] < this.size[y]) {
+            [x, y] = [y, x];
+        }
+        this.parent[y] = x;
+        this.size[x] += this.size[y];
+        this.setCount -= 1;
+        return true;
+    }
+
+    connected (a, b) {
+        const x = this.findset(a), y = this.findset(b);
+        return x === y;
+    }
+}
+
+var maxNumEdgesToRemove = function(n, edges) {
+    const ufa = new UnionFind(n), ufb = new UnionFind(n);
+    let ans = 0;
+
+    // 节点编号改为从 0 开始
+    for (const edge of edges) {
+        edge[1] -= 1;
+        edge[2] -= 1;
+    }
+    // 公共边
+    for (const [t, u, v] of edges) {
+        if (t === 3) {
+            if (!ufa.unite(u, v)) {
+                ans += 1;
+            } else {
+                ufb.unite(u, v);
+            }
+        }
+    }
+    // 独占边
+    for (const [t, u, v] of edges) {
+        if (t === 1) {
+            // Alice 独占边
+            if (!ufa.unite(u, v)) {
+                ans += 1;
+            }
+        } else if (t === 2) {
+            // Bob 独占边
+            if (!ufb.unite(u, v)) {
+                ans += 1;
+            }
+        }
+    }
+    if (ufa.setCount !== 1 || ufb.setCount !== 1) {
+        return -1;
+    }
+    return ans;
+};
+
+```
+
+### [724. 寻找数组的中心索引](https://leetcode-cn.com/problems/find-pivot-index/)
+
+**简单：**
+
+给你一个整数数组 nums，请编写一个能够返回数组 “中心索引” 的方法。
+
+数组 中心索引 是数组的一个索引，其左侧所有元素相加的和等于右侧所有元素相加的和。
+
+如果数组不存在中心索引，返回 -1 。如果数组有多个中心索引，应该返回最靠近左边的那一个。
+
+注意：中心索引可能出现在数组的两端。
+
+> 示例 1：
+>
+> 输入：nums = [1, 7, 3, 6, 5, 6]
+> 输出：3
+> 解释：
+> 索引 3 (nums[3] = 6) 的左侧数之和 (1 + 7 + 3 = 11)，与右侧数之和 (5 + 6 = 11) 相等。
+> 同时, 3 也是第一个符合要求的中心索引。
+> 示例 2：
+>
+> 输入：nums = [1, 2, 3]
+> 输出：-1
+> 解释：
+> 数组中不存在满足此条件的中心索引。
+> 示例 3：
+>
+> 输入：nums = [2, 1, -1]
+> 输出：0
+> 解释：
+> 索引 0 左侧不存在元素，视作和为 0 ；右侧数之和为 1 + (-1) = 0 ，二者相等。
+> 示例 4：
+>
+> 输入：nums = [0, 0, 0, 0, 1]
+> 输出：4
+> 解释：
+> 索引 4 左侧数之和为 0 ；右侧不存在元素，视作和为 0 ，二者相等。
+>
+> **提示：**
+>
+> - `nums` 的长度范围为 `[0, 10000]`。
+> - 任何一个 `nums[i]` 将会是一个范围在 `[-1000, 1000]`的整数。
+
+解题思路
+
+[方法一：前缀和](https://leetcode-cn.com/problems/find-pivot-index/solution/xun-zhao-shu-zu-de-zhong-xin-suo-yin-by-gzjle/)
+思路
+
+$$
+记数组的全部元素之和为\textit{total}，当遍历到第 个元素时，设其左侧元素之和为 \textit{sum}，则其右侧元素之和为 \textit{total}-\textit{nums}_i-\textit{sum}。左右侧元素相等即为_\textit{sum}=\textit{total}-\textit{nums}_i-\textit{sum}，即 2\times\textit{sum}+\textit{nums}_i=\textit{total}.
+$$
+当中心索引左侧或右侧没有元素时，即为零个项相加，这在数学上称作「空和」（\text{empty sum}empty sum）。在程序设计中我们约定「空和是零」。
+
+代码
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var pivotIndex = function(nums) {
+    const total = nums.reduce((a,b)=>a+b,0);
+    let sum = 0;
+    for(let i=0;i<nums.length;i++){
+        // 如果左边=右边 并且 加上当前的数值 等于总和 则为中心索引 i
+        if(2*sum === total-nums[i]){
+            return i;
+        }
+        sum += nums[i];
+    }
+    // 未找到 返回-1
+    return -1;
+};
+```
+
+**复杂度分析:**
+
+- 时间复杂度：O(n)，其中 n 为数组的长度。
+- 空间复杂度：O(1)。
