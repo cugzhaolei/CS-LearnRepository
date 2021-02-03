@@ -2086,3 +2086,9 @@ var dfs = (isConnected, visited, provinces, i) => {
   }
 };
 ```
+
+## 并查集
+
+[算法学习笔记：并查集](https://zhuanlan.zhihu.com/p/93647900/)
+
+****

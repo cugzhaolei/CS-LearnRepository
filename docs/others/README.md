@@ -21,6 +21,8 @@
 
 ## [工业](./industrial/)
 
+## [DevOps](./devops/)
+
 ::: tip
 
 - Ethernet/IP

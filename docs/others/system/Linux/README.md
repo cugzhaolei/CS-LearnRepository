@@ -353,21 +353,39 @@ DevOps是一种重视“软件开发人员（Dev）”和“IT运维技术人员
 ## 参考链接
 
 [^1]: [关于CPU、指令集、架构、芯片的基本认识](https://www.cnblogs.com/xingguang1130/p/11646298.html)
+
 [^2]: [指令集之间的关系和发展](https://netsecurity.51cto.com/art/201905/596770.htm)
+
 [^3]: [关于CPU、指令集、架构、芯片的一些科普](https://zhuanlan.zhihu.com/p/19893066)
+
 [^4]: [线程、进程与协程](https://juejin.cn/post/6844903470063943693)
+
 [^5]: [出于什么样的原因，诞生了「协程」这一概念？](https://www.zhihu.com/question/50185085)
+
 [^7]: [微内核和宏内核](https://zhuanlan.zhihu.com/p/53612117)
+
 [^8]: [华为“鸿蒙”所涉及的微内核到底是什么？一文带你认识微内核](https://zhuanlan.zhihu.com/p/77495372)
+
 [^9]: [可移植操作系统接口 POSIX ](https://baike.baidu.com/item/%E5%8F%AF%E7%A7%BB%E6%A4%8D%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%8F%A3/12718298?fromtitle=POSIX&fromid=3792413&fr=aladdin)
+
 [^10]: [什么是微内核？](https://www.zhihu.com/question/339638625)
+
 [^11]: [Linux系统中，为什么需要区分内核空间与用户空间？](https://zhuanlan.zhihu.com/p/266950886)
+
 [^12]: [linux内存管理之用户空间与内核空间详解](https://zhuanlan.zhihu.com/p/151744011)
+
 [^13]: [段页式地址映射过程（直观）](https://blog.csdn.net/m0_37984066/article/details/109199862)
+
 [^14]: [Linux内核地址映射模型](https://blog.csdn.net/robert19840729/article/details/44135079)
+
 [^15]: [DevOps与CICD的区别 及 docker、k8s的CICD思路](https://www.jianshu.com/p/654505d42180)
+
 [^16]: [怎样去理解Linux用户态和内核态？](https://zhuanlan.zhihu.com/p/69554144)
-[^17]: ["怎样去理解Linux用户态和内核态？"](https://zhuanlan.zhihu.com/p/69554144)	
+
+[^17]: ["怎样去理解Linux用户态和内核态？"](https://zhuanlan.zhihu.com/p/69554144)
+
 [^18]: [存储管理之页式、段式、段页式存储 以及 优缺点](https://blog.csdn.net/smilesundream/article/details/70148878)
+
 [^19]: [[DevOps漫谈之一：DevOps、CI、CD都是什么鬼？](https://blog.jjonline.cn/linux/238.html)](https://blog.jjonline.cn/linux/238.html)
+
 [^20]: [分页分段以及段页式存储管理中逻辑地址到物理地址的转换过程解析](https://blog.csdn.net/weixin_42248302/article/details/80494962)

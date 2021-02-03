@@ -25,7 +25,12 @@ module.exports = {
     ['meta', {
       'http-quiv': 'expires',
       cotent: '0'
-    }]
+    }],
+    //增加manifest.json
+    ['link', {
+      rel: 'manifest',
+      href: '/manifest.json'
+    }],
   ],
   serviceWorker: true, // 是否开启 PWA
   base: '/CS-LearnRepository/', // 部署到github相关的配置
@@ -53,7 +58,7 @@ module.exports = {
       {
         text: '诗和远方',
         link: '/others/'
-      },{
+      }, {
         text: 'Github',
         link: 'https://github.com/cugzhaolei/CS-LearnRepository'
       }
