@@ -1529,3 +1529,7 @@ forEach: 0.254ms
 ```js
 array.forEach(function(currentValue,index,arr),thisValue)
 ```
+
+
+
+### encodeURI encodeURIComponent

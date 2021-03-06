@@ -148,3 +148,37 @@ const deepClone = (target,hash=new WeakMap())=>[
     return cloneTarget;
 ]
 ```
+
+## DMZ对象
+
+在使用call,apply,bind传入null，或者undefined的时候，会出现变量污染的情况：
+
+```js
+function foo(){
+	console.log(this.name);
+}
+var name = 'helloworld';
+
+foo.apply(null); // helloworld
+// 非严格模式下 foo中的this是全局对象，（严格模式下绑定到undefined），输出 helloworld
+// 但是全局变量 name被修改就出问题了
+
+function foo(){
+	cthis.name = ‘april’;
+}
+var name = 'helloworld';
+foo.apply(null); // april
+
+```
+
+这个时候DMZ（Demilitarized Zone 非军事区）对象就派上用场了
+
+```js
+function foo(){
+	cthis.name = ‘april’;
+}
+
+let dmz = Object.create(null);
+var name = 'helloworld';
+foo.apply(dmz); // helloworld
+```

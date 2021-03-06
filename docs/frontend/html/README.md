@@ -3,7 +3,9 @@
 # [HTML基础](https://juejin.im/post/5bee888fe51d4557fe34e356)
 
 ## html基础
+
 根据内容的结构化（内容语义化），选择合适的标签（代码语义化）便于开发者阅读和写出更优雅的代码的同时让浏览器的爬虫和机器很好地解析。在选择标签时请遵循以下原则：
+
 1. 尽可能少的使用无语义的标签div和span；
 2. 在语义不明显时，既可以使用div或者p时，尽量用p, 因为p在默认情况下有上下间距，对兼容特殊终端有利；
 3. 不要使用纯样式标签，如：b、font、u等，改用css设置。
@@ -13,6 +15,7 @@
 7. 每个input标签对应的说明文本都需要使用label标签，并且通过为input设置id属性，在lable标签中设置for=someld来让说明文本和相对应的input关联起来。
 
 ## META Viewport
+
 ``` html
 <!DOCTYPE html>  H5标准声明，使用 HTML5 doctype，不区分大小写
 <head lang=”en”> 标准的 lang 属性写法
@@ -48,12 +51,15 @@
 <meta http-equiv=”expires” content=”0″>
 
 ```
+
 ## 网页布局
 
 ### 三列布局，左右定宽 中间自适应
 
 #### float
-左右定宽，右边元素要在中间元素之前 
+
+左右定宽，右边元素要在中间元素之前
+
 ``` html
 <div>
     <div class="left"></div>
@@ -80,7 +86,8 @@
 }
 ```
 
-#### flex 
+#### flex
+
 父元素display：flex，左右定宽，中间flex：1自适应
 
 ``` html
@@ -107,6 +114,7 @@
 ```
 
 #### grid
+
 ``` html
 <div class="container">
     <div class="left"></div>
@@ -122,9 +130,22 @@
     grid-template-rows:30px;
     grid-template-columns:60px auto 60px;
 }
+
 .middle{
     margin-left:10px;
     margin-right:10px;
 }
 ```
+
 :::
+
+
+
+## HTML页面性能
+
+[First Paint探究](https://www.cnblogs.com/hongrunhui/p/8929001.html)
+
+> **FP发生在body中第一个script脚本之前的CSS解析和JS执行完成之后。换句话说就是第一脚本之前的`DOM`和`CSSOM`准备就绪之后，便会着手渲染第一脚本前的内容。**
+>
+> **如果第一脚本前的JS和CSS加载完了，`body`中的脚本还未下载完成，那么浏览器就会利用构建好的局部`CSSOM`和`DOM`提前渲染第一脚本前的内容（触发`FP`）；如果第一脚本前的JS和CSS都还没下载完成，`body`中的脚本就已经下载完了，那么浏览器就会在所有JS脚本都执行完之后才触发FP。**
+
