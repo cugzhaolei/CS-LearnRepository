@@ -13,5 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "vuepress": "^1.5.4"
+  },
+  "devDependencies": {
+    "@vuepress/plugin-pwa": "^1.8.2"
   }
 }
