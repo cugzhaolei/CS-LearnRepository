@@ -1,0 +1,22 @@
+{
+    "name": "赵三石",
+    "short_name": "赵三石",
+    "start_url": "index.html",
+    "display": "standalone",
+    "background_color": "#2196f3",
+    "description": "赵三石的个人主页",
+    "theme_color": "blue",
+    "icons": [
+        {
+            "src": "/images/photo.jpg",
+            "sizes": "144x144",
+            "type": "image/jpg"
+        }
+    ],
+    "related_applications": [
+        {
+            "platform": "play",
+            "url": "https://play.google.com/store/apps/details?id=cheeaun.hackerweb"
+        }
+    ]
+}
