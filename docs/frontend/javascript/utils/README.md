@@ -523,3 +523,221 @@ flattenDeep(arr1);
 Immutable Data 就是一旦创建，就不能再被更改的数据。对 Immutable 对象的任何修改或添加删除操作都会返回一个新的 Immutable 对象。Immutable 实现的原理是 Persistent Data Structure（持久化数据结构），也就是使用旧数据创建新数据时，要保证旧数据同时可用且不变。
 
 ## [结构共享](https://zhuanlan.zhihu.com/p/27133830?group_id=851585269567213568)
+
+
+
+## [20个你可能不知道的javascript奇巧淫技（内附参考链接）](https://mp.weixin.qq.com/s/qUJ2nB8NxX_gMHw_jMmJoA)
+
+### 1.一句代码实现多维数组扁平化
+
+```
+const arr = [1, 2, 3, [4, [5, 6, [7,8]]]];
+// 方式1：
+console.log(arr.flat(Infinity));
+// 方式2：
+console.log(arr.join().split(','));
+// 方式3：
+console.log(arr.toString().split(','));
+// 在查阅资料中，博主发现原来join()、toString()函数式可以跨越层级的，于是便有了方式2、 3
+```
+
+参考链接
+
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
+
+### 2.一句代码生成一个[1-100]的数组
+
+```
+// 方式1
+const arr1 = [...Array(100).keys()] 
+// 方式2
+const arr2 = Array.from(Array(100), (e, i) => i + 1)
+```
+
+参考链接
+
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/keys
+
+### 3.一句代码实现数组去重
+
+```
+const arr = [1, 2, 2, 3, 4, 5, 5, 3]
+//方式1：
+const newArr1 = [...new Set(arr)]
+//方式2
+const newArr2 = arr.reduce((prev,cur) => prev.includes(cur) ? prev : [...prev,cur],[]);
+```
+
+参考链接
+
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce
+
+### 4.一句代码求两个数组交集和差集
+
+```
+let a = new Set([1, 2, 3]);
+let b = new Set([4, 3, 2]);
+let intersect = new Set([...a].filter(x => b.has(x)));
+let difference = new Set([...a].filter(x => !b.has(x)));
+```
+
+参考链接
+
+https://es6.ruanyifeng.com/#docs/set-map
+
+### 5.一句代码获取数组最大值和最小值
+
+```
+let numbers = [1, 3, 5, 5, 6, -3, 10]
+let max = Math.max(...numbers)
+let min = Math.min(...numbers)
+```
+
+参考链接
+
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Math/max
+
+### 6.一句代码求字符串反转
+
+```
+let str = 'hello 秦爱德';
+console.log([...str].reverse().join(''))
+```
+
+### 7.一句代码统计字符串中相同字符出现的次数
+
+```
+let str = 'aaabbbccddeegggggggllllssgjwd';
+let strInfo = str.split('').reduce((p, c) => (p[c]++ || (p[c] = 1), p), {});
+console.log(strInfo)
+```
+
+### 8.短路条件语句 “&&”
+
+```
+if (istrue) {
+  callback()
+}
+// 以上代码等同于 istrue && callback()
+```
+
+### 9.用操作符 “||” 来设置默认值
+
+```
+let a = a || 'default value'
+```
+
+### 10.比“||”操作符更优的“??”
+
+```
+let a = a ?? 'default value'
+// 与逻辑或操作符（||）不同，逻辑或操作符会在左侧操作数为假值时返回右侧操作数。
+也就是说，如果使用 || 来为某些变量设置默认值，可能会遇到意料之外的行为。比如为假值（例如，'' 或 0）时。
+```
+
+参考链接
+
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/%E5%8F%AF%E9%80%89%E9%93%BE
+
+### 11.可选链操作符 “?.”
+
+```
+let a = {name:'秦爱德'}
+console.log(a.type?.job)
+// 可选链操作符( ?. )允许读取位于连接对象链深处的属性的值，而不必明确验证链中的每个引用是否有效。
+在引用为空(nullish ) (null 或者 undefined) 的情况下不会引起错误，该表达式短路返回值是 undefined。
+```
+
+参考链接
+
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator
+
+### 12.使用 Object.is()作比较
+
+```
+Object.is(0 , 0); // true
+```
+
+参考链接
+
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/is
+
+### 13.剩余参数
+
+```
+function sum(...args) {}
+// 剩余参数语法允许我们将一个不定数量的参数表示为一个数组。
+```
+
+参考链接
+
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Rest_parameters
+
+### 14.隐式转义（字符串转数字）
+
+```
+let a = '1';
+console.log(Number(a));
+console.log(+a);
+// 使用隐式转义可更简单快速
+```
+
+### 15.删除数组最后两个元素
+
+```
+let a = [1,2,4,5];
+a.length = a.length - 2;
+```
+
+### 16.数字金额千分位格式化
+
+```
+let a = 123456789;
+console.log(a.toLocaleString('en-US')) //123,456,789
+```
+
+参考链接
+
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString
+
+### 17.数字补0操作
+
+```
+const a1 = (num, len = 2) => (`0${num}`).slice(-len)
+const a2 = (num, len = 2) => (`${num}`).padStart( len, '0')
+a1(8)
+a2(78,5)
+```
+
+### 18.双位操作符
+
+```
+Math.floor(5.9) === 5  //true
+简写后
+~~5.9 === 5  //true
+// 可以使用双位操作符来替代 Math.floor( )。双否定位操作符的优势在于它执行相同的操作运行速度更快。
+```
+
+### 19.小数取整
+
+```
+let num = 123.456
+
+// 常用方法
+console.log(parseInt(num)); // 123
+// 按位或
+console.log(num | 0); // 123
+// “双按位非”操作符
+console.log(~~ num); // 123
+// 左移操作符
+console.log(num << 0); // 123
+// 按位异或
+console.log(num ^ 0); // 123
+```
+
+### 20.用字符串返回一个键盘图形 惊 😮！！！
+
+```
+console.log((_=>[..."`1234567890-=~~QWERTYUIOP[]\\~ASDFGHJKL;'~~ZXCVBNM,./~"].map(x=>(o+=`/${b='_'.repeat(w=x<y?2:' 667699'[x=["BS","TAB","CAPS","ENTER"][p++]||'SHIFT',p])}\\|`,m+=y+(x+'    ').slice(0,w)+y+y,n+=y+b+y+y,l+=' __'+b)[73]&&(k.push(l,m,n,o),l='',m=n=o=y),m=n=o=y='|',p=l=k=[])&&k.join`
+`)())
+```

@@ -21,16 +21,16 @@ box-sizing:border-box;
 
 * dom.style.width/height
   这种方式只能取到dom元素内联样式所设置的宽高，也就是说如果该节点的样式是在style标签中或外联的CSS文件中设置的话，通过这种方法是获取不到dom的宽高的。
-  
+
 * dom.currentStyle.width/height
   这种方式获取的是在页面渲染完成后的结果，就是说不管是哪种方式设置的样式，都能获取到。但这种方式只有IE浏览器支持。
-  
+
 * window.getComputedStyle(dom).width/height
   这种方式的原理和2是一样的，这个可以兼容更多的浏览器，通用性好一些。
-  
+
 * dom.getBoundingClientRect().width/height
   这种方式是根据元素在视窗中的绝对位置来获取宽高的。
-  
+
 * dom.offsetWidth/offsetHeight
   这个就没什么好说的了，最常用的，也是兼容最好的。
 
@@ -1484,6 +1484,35 @@ h2~h2{
     text-decoration:
 }
 ```
+
+##### [CSS优先级](https://zhuanlan.zhihu.com/p/130660496)
+
+1、!important，加在样式属性值后，权重值为 10000
+2、内联样式，如：style=””，权重值为1000
+3、ID选择器，如：#content，权重值为100
+4、类，伪类和属性选择器，如： content、:hover 权重值为10
+5、标签选择器和伪元素选择器，如：div、p、:before 权重值为1
+6、通用选择器（*）、子选择器（>）、相邻选择器（+）、同胞选择器（~）、权重值为0
+
+``` bash
+01. *{}                         ====》0
+02. li{}                        ====》1(一个元素)
+03. li:first-line{}             ====》2(一个元素，一个伪元素)
+04. ul li {}                    ====》2（两个元素）
+05. ul ol+li{}                  ====》3（三个元素）
+06. h1+ *[rel=up] {}            ====》11（一个属性选择器，一个元素）
+07. ul ol li.red{}              ====》13（一个类，三个元素）
+08. li.red.level{}              ====》21（两个类，一个元素）
+09. style=""                    ====》1000(一个行内样式)
+10. p {}                        ====》1（一个元素）
+11. div p {}                    ====》2（两个元素）
+12. .sith {}                    ====》10（一个类）
+13. div p.sith{}                ====》12（一个类，两个元素）
+14. #sith{}                     ====》100（一个ID选择器）
+15. body #darkside .sith p {}   ====》112(1+100+10+1,一个Id选择器，一个类，两个元素)
+```
+
+!important > 行内样式>ID选择器 > 类选择器 > 标签 > 通配符 > 继承 > 浏览器默认属性
 
 #### text属性
 
