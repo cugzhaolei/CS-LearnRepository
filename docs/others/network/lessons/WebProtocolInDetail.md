@@ -288,3 +288,41 @@ curl protocol.taohui.tech/app/letter.txt -H 'Range:bytes=6-10' -I 'If-Match:"5cc
 
 ![image-20210513230026962](https://i.loli.net/2021/05/13/PrSme7VLzR1UKDg.png)
 
+#### 28 条件请求的作用
+
+每个URI对应一个资源
+
+![image-20210515095744110](https://i.loli.net/2021/05/15/SOiP291yzBFpGQZ.png)
+
+![image-20210515095943261](https://i.loli.net/2021/05/15/QD91IUw7EspRSBZ.png)
+
+![image-20210515100046246](https://i.loli.net/2021/05/15/lJfh9Ea4tAYu8ex.png)
+
+![image-20210515100158829](https://i.loli.net/2021/05/15/gTSpAXdKR45msv1.png)
+
+![image-20210515100230344](https://i.loli.net/2021/05/15/PKkymVJ8QnhcwWl.png)
+
+![image-20210515100427286](https://i.loli.net/2021/05/15/X5yOIQLS4wV1CnE.png)
+
+![image-20210515100502782](https://i.loli.net/2021/05/15/tuRGrN2C9yIEajJ.png)
+
+![image-20210515100529613](https://i.loli.net/2021/05/15/kKdgDsIYhpr8MUm.png)
+
+![image-20210515101453018](https://i.loli.net/2021/05/15/1JAOFVrd3XNvyWe.png)
+
+![image-20210515101636930](https://i.loli.net/2021/05/15/o3JFfqIKsBHZELR.png)
+
+![image-20210515101656708](https://i.loli.net/2021/05/15/3cvxTHUND4Y87jF.png)
+
+![image-20210515101920780](https://i.loli.net/2021/05/15/FZpDWJq4c1KkCmz.png)
+
+![image-20210515102024822](https://i.loli.net/2021/05/15/PAtV4WbCvBFlwOz.png)
+
+乐观锁 ，条件更新 etag发生变化
+
+![image-20210515102322012](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210515102322012.png)
+
+![image-20210515102423709](https://i.loli.net/2021/05/15/8BVQjHz9MTfr2X6.png)
+
+![image-20210515102512227](https://i.loli.net/2021/05/15/G6dcsjgIBZpEixW.png)
+
