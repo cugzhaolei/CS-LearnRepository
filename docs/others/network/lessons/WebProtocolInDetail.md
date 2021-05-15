@@ -326,3 +326,43 @@ curl protocol.taohui.tech/app/letter.txt -H 'Range:bytes=6-10' -I 'If-Match:"5cc
 
 ![image-20210515102512227](https://i.loli.net/2021/05/15/G6dcsjgIBZpEixW.png)
 
+#### 29 缓存的工作原理
+
+解决http1.1性能问题的手段
+
+![image-20210515132308160](https://tva1.sinaimg.cn/large/008i3skNgy1gqj2xsbh4nj30jj0c1acf.jpg)
+
+![image-20210515141516920](https://tva1.sinaimg.cn/large/008i3skNgy1gqj34pvq40j30if0ccmyu.jpg)
+
+![image-20210515142344141](https://tva1.sinaimg.cn/large/008i3skNgy1gqj3dielvoj30j80chtbl.jpg)
+
+判断缓存来自何处
+
+共享的过期缓存-代理服务器
+
+![image-20210515142516070](https://tva1.sinaimg.cn/large/008i3skNgy1gqj3f3nvscj30hp0cbmz1.jpg)
+
+缓存实现示意图
+
+![image-20210515142619213](https://tva1.sinaimg.cn/large/008i3skNgy1gqj3h3n6cmj30mu0cn783.jpg)
+
+[LRU链表](https://blog.csdn.net/qq_25482087/article/details/116856374)
+
+
+
+#### 30 缓存新鲜度计算的四种方式
+
+![image-20210515182820289](https://tva1.sinaimg.cn/large/008i3skNgy1gqjag0iqdrj30ld0d1wjk.jpg)
+
+s-maxage用于共享缓存 优先级高于 expires
+
+
+
+![image-20210515183013103](https://tva1.sinaimg.cn/large/008i3skNgy1gqjahzzkb9j30h10bl77b.jpg)
+
+![image-20210515183127541](https://tva1.sinaimg.cn/large/008i3skNgy1gqjaj8dafcj30m10al0x5.jpg)
+
+![image-20210515183144876](https://tva1.sinaimg.cn/large/008i3skNgy1gqjajld07dj30j80c5wji.jpg)
+
+![image-20210515183443417](https://tva1.sinaimg.cn/large/008i3skNgy1gqjamniutvj30ll0d6gr0.jpg)
+
