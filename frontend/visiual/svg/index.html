@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>图形 | 菜鸟进阶</title>
+    <meta name="generator" content="VuePress 1.5.4">
+    <link rel="icon" href="/CS-LearnRepository/logo.png">
+    <link rel="manifest" href="/CS-LearnRepository/manifest.json">
+    <link rel="apple-touch-icon" href="/CS-LearnRepository/icons/apple-touch-icon-152x152.png">
+    <link rel="mask-icon" href="/CS-LearnRepository/icons/safari-pinned-tab.svg" color="#3eaf7c">
+    <meta name="description" content="Personal Website">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="msapplication-TileImage" content="/icons/msapplication-icon-144x144.png">
+    <meta name="msapplication-TileColor" content="#000000">
+    <link rel="preload" href="/CS-LearnRepository/assets/css/0.styles.1d31411f.css" as="style"><link rel="preload" href="/CS-LearnRepository/assets/js/app.ae6f3f76.js" as="script"><link rel="preload" href="/CS-LearnRepository/assets/js/2.1ba326f9.js" as="script"><link rel="preload" href="/CS-LearnRepository/assets/js/76.a2b74358.js" as="script"><link rel="prefetch" href="/CS-LearnRepository/assets/js/10.2e5ceadb.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/100.52ab5ed3.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/101.cc544cfc.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/102.38bb05fe.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/103.ad8dc25f.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/104.257fe328.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/105.1ca53594.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/106.112495f8.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/107.76552c87.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/108.3decb1c1.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/109.8195a469.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/11.4c3344a7.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/110.5446659d.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/111.483e4bba.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/112.2be2fc97.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/113.103f9302.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/114.b4853da1.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/115.b61b7ffa.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/116.0f3e8335.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/117.b43ce674.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/118.142a9ecb.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/119.c844961a.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/12.1e24409a.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/120.4950ab7b.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/121.29194c11.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/122.df8b0089.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/123.bc750af2.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/124.57b4fb51.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/125.162c7922.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/126.7c557d46.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/127.0fd666a8.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/128.0ce81f0d.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/129.b9b42849.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/13.a8788553.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/130.4b63bc72.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/131.8e5b33c0.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/132.351ac869.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/133.f721dd50.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/134.ef73c22f.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/135.0168fa9d.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/136.f7963c44.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/137.0826f57a.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/138.83cb8db6.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/14.2adc07f3.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/15.c1cf2f8f.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/16.824fd1cc.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/17.5cc9aa75.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/18.18f5e735.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/19.14efb2a6.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/20.8d8917ea.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/21.93499688.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/22.f9eef547.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/23.21f4ca65.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/24.06bcd4f7.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/25.cc75fd3f.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/26.fe55d81f.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/27.04cc9d8d.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/28.d5593707.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/29.6ae24eac.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/3.d0ce688b.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/30.6e4c58e4.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/31.71a57386.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/32.86cd035f.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/33.47f825cd.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/34.7ce7068d.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/35.f1b91d69.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/36.22ffc057.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/37.4c7063b8.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/38.a2d7d6d1.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/39.72e170d1.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/4.bcd513ff.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/40.c896b7e4.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/41.c67d6883.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/42.d3f25ca5.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/43.c9d8fd17.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/44.48b09b06.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/45.62d8c8c0.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/46.d4081d7b.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/47.05c08073.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/48.6f7f50ff.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/49.e804fa12.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/5.8f5a74a9.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/50.61abf6a0.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/51.bd07e3d1.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/52.e688c802.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/53.8fdea818.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/54.e80145dd.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/55.d1499bc5.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/56.d33b6ee0.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/57.5a2fb031.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/58.5d1523b3.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/59.962b4b72.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/6.744b5cc8.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/60.37f53572.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/61.e3ce296e.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/62.fbb24cf8.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/63.2fdd5d90.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/64.c6771c06.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/65.0c4efae1.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/66.c99594bc.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/67.b241276f.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/68.9818dca2.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/69.5ebf774f.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/7.d576193f.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/70.696953d4.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/71.537d925f.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/72.529f57ce.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/73.26895b96.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/74.95bfb80a.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/75.417b0741.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/77.c431a1e5.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/78.cc7ddc5c.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/79.18636072.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/8.64e9f0f8.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/80.59a45e97.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/81.ea4c19bf.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/82.a4e09105.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/83.c84a5cc0.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/84.c56acd4a.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/85.9c0e5bad.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/86.9221650d.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/87.3474573c.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/88.841bf75e.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/89.de45407b.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/9.53d7237c.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/90.37ebf94c.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/91.f70bb95f.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/92.be6f1894.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/93.263999b7.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/94.f913f980.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/95.6e6c8131.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/96.b258bbf5.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/97.f0dc77c2.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/98.d2aa840c.js"><link rel="prefetch" href="/CS-LearnRepository/assets/js/99.601caf05.js">
+    <link rel="stylesheet" href="/CS-LearnRepository/assets/css/0.styles.1d31411f.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/CS-LearnRepository/" class="home-link router-link-active"><!----> <span class="site-name">菜鸟进阶</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/CS-LearnRepository/frontend/" class="nav-link router-link-active">
+  前端基础
+</a></div><div class="nav-item"><a href="/CS-LearnRepository/backend/" class="nav-link">
+  后端基础
+</a></div><div class="nav-item"><a href="/CS-LearnRepository/app/" class="nav-link">
+  移动应用
+</a></div><div class="nav-item"><a href="/CS-LearnRepository/others/" class="nav-link">
+  诗和远方
+</a></div><div class="nav-item"><a href="https://github.com/cugzhaolei/CS-LearnRepository" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/CS-LearnRepository/frontend/" class="nav-link router-link-active">
+  前端基础
+</a></div><div class="nav-item"><a href="/CS-LearnRepository/backend/" class="nav-link">
+  后端基础
+</a></div><div class="nav-item"><a href="/CS-LearnRepository/app/" class="nav-link">
+  移动应用
+</a></div><div class="nav-item"><a href="/CS-LearnRepository/others/" class="nav-link">
+  诗和远方
+</a></div><div class="nav-item"><a href="https://github.com/cugzhaolei/CS-LearnRepository" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>图形</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/CS-LearnRepository/frontend/visiual/svg/#svg" class="sidebar-link">Svg</a><ul class="sidebar-sub-headers"></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="图形"><a href="#图形" class="header-anchor">#</a> 图形</h1> <p>在一个前端看来，画图有三种方法，Cavas，SVG 以及 CSS。至于三者优劣，将在此针对各种图形做逐一比较，有方，圆，椭圆，扇形，多边形，渐变，文本处理以及动画</p> <h1 id="svg基础"><a href="#svg基础" class="header-anchor">#</a> <a href="https://github.com/junruchen/junruchen.github.io/wiki/SVG%E5%9F%BA%E7%A1%80" target="_blank" rel="noopener noreferrer">SVG基础<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></h1> <h2 id="svg"><a href="#svg" class="header-anchor">#</a> Svg</h2> <p>一、svg是什么？
+SVG 意为可缩放矢量图形（Scalable Vector Graphics）。
+SVG 是使用 XML 来描述二维图形和绘图程序的语言。
+SVG 图像在放大或改变尺寸的情况下其图形质量不会有所损失。
+SVG 是万维网联盟的标准。
+二、svg的优势
+与其他图像格式相比（比如 JPEG 和 GIF），使用 SVG 的优势在于：
+•	SVG 图像可通过文本编辑器来创建和修改；
+•	SVG 图像可被搜索、索引、脚本化或压缩；
+•	SVG 是可伸缩的；
+•	SVG 图像可在任何的分辨率下被高质量地打印；
+•	SVG 可在图像质量不下降的情况下被放大；
+三、浏览器支持情况</p> <p>四、使用方式
+1、可在浏览器直接打开；
+2、在HTML中的使用；
+SVG 文件可通过以下标签嵌入 HTML 文档：&lt;embed&gt;、&lt;object&gt; 、 &lt;iframe&gt;和&lt;img&gt;。
+SVG的代码可以直接嵌入到HTML页面中，或直接链接到SVG文件。
+（1）使用 &lt;embed&gt; 标签
+•	优势：所有主要浏览器都支持，并允许使用脚本
+•	缺点：不推荐在HTML4和XHTML中使用（但在HTML5允许）
+示例：</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token operator">&lt;</span>embed width<span class="token operator">=</span><span class="token string">&quot;300px&quot;</span> height<span class="token operator">=</span><span class="token string">&quot;300px&quot;</span> src<span class="token operator">=</span><span class="token string">&quot;img/demo.svg&quot;</span> type<span class="token operator">=</span><span class="token string">&quot;image/svg+xml&quot;</span> <span class="token operator">/</span><span class="token operator">&gt;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>（2）使用 &lt;object&gt; 标签
+•	优势：所有主要浏览器都支持，并支持HTML4，XHTML和HTML5标准
+•	缺点：不允许使用脚本。
+示例：</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token operator">&lt;</span>object width<span class="token operator">=</span><span class="token string">&quot;300px&quot;</span> height<span class="token operator">=</span><span class="token string">&quot;300px&quot;</span> data<span class="token operator">=</span><span class="token string">&quot;img/demo.svg&quot;</span> type<span class="token operator">=</span><span class="token string">&quot;image/svg+xml&quot;</span><span class="token operator">&gt;</span><span class="token operator">&lt;</span><span class="token operator">/</span>object<span class="token operator">&gt;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>（3）使用 &lt;iframe&gt; 标签
+•	优势：所有主要浏览器都支持，并允许使用脚本
+•	缺点：不推荐在HTML4和XHTML中使用（但在HTML5允许）
+示例：</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token operator">&lt;</span>iframe width<span class="token operator">=</span><span class="token string">&quot;300px&quot;</span> height<span class="token operator">=</span><span class="token string">&quot;300px&quot;</span> src<span class="token operator">=</span><span class="token string">&quot;img/demo.svg&quot;</span><span class="token operator">&gt;</span><span class="token operator">&lt;</span><span class="token operator">/</span>iframe<span class="token operator">&gt;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>（4）直接在HTML嵌入SVG代码
+示例：</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token operator">&lt;</span>svg width<span class="token operator">=</span><span class="token string">&quot;500px&quot;</span> height<span class="token operator">=</span><span class="token string">&quot;500px&quot;</span> style<span class="token operator">=</span><span class="token string">&quot;margin:50px;&quot;</span> version<span class="token operator">=</span><span class="token string">&quot;1.1&quot;</span> xmlns<span class="token operator">=</span><span class="token string">&quot;http://www.w3.org/2000/svg&quot;</span><span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span>rect x<span class="token operator">=</span><span class="token string">&quot;20&quot;</span> y<span class="token operator">=</span><span class="token string">&quot;20&quot;</span> rx<span class="token operator">=</span><span class="token string">&quot;10&quot;</span> ry<span class="token operator">=</span><span class="token string">&quot;10&quot;</span> width<span class="token operator">=</span><span class="token string">&quot;300&quot;</span> height<span class="token operator">=</span><span class="token string">&quot;300&quot;</span> style<span class="token operator">=</span><span class="token string">&quot;fill:rgb(0,0,255);stroke-width:1;stroke:rgb(0,0,0);fill-opacity:0.1;stroke-opacity:0.9;opacity:0.9;&quot;</span><span class="token operator">/</span><span class="token operator">&gt;</span> 
+<span class="token operator">&lt;</span><span class="token operator">/</span>svg<span class="token operator">&gt;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p>（5）使用&lt;img&gt;标签
+示例：</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token operator">&lt;</span>img src<span class="token operator">=</span><span class="token string">&quot;img/demo.svg&quot;</span> width<span class="token operator">=</span><span class="token string">&quot;300px&quot;</span> height<span class="token operator">=</span><span class="token string">&quot;300px&quot;</span><span class="token operator">/</span><span class="token operator">&gt;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>（6）链接到svg文件
+示例：</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token operator">&lt;</span>a href<span class="token operator">=</span><span class="token string">&quot;img/demo.svg&quot;</span><span class="token operator">&gt;</span>查看svg<span class="token operator">&lt;</span><span class="token operator">/</span>a<span class="token operator">&gt;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>3、在css中使用
+示例：</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token punctuation">.</span>container<span class="token punctuation">{</span>
+  background<span class="token operator">:</span> white <span class="token function">url</span><span class="token punctuation">(</span>img<span class="token operator">/</span>demo<span class="token punctuation">.</span>svg<span class="token punctuation">)</span> repeat<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p>作者：ywyan
+链接：https://www.jianshu.com/p/0899c6b481cd
+来源：简书
+简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。</p> <p>一、SVG形状
+SVG有一些预定义的形状元素，可被开发者使用和操作：
+•	矩形 &lt;rect&gt;
+•	圆形 &lt;circle&gt;
+•	椭圆 &lt;ellipse&gt;
+•	线 &lt;line&gt;
+•	折线 &lt;polyline&gt;
+•	多边形 &lt;polygon&gt;
+•	路径 &lt;path&gt;
+二、基本形状
+要想插入一个形状，你可以在文档中创建一个元素。不同的元素对应着不同的形状，并且使用不同的属性来定义图形的大小和位置。</p> <p>示例代码：</p> <div class="language-css line-numbers-mode"><pre class="language-css"><code>&lt;svg width=<span class="token string">&quot;200&quot;</span> height=<span class="token string">&quot;250&quot;</span> version=<span class="token string">&quot;1.1&quot;</span> xmlns=<span class="token string">&quot;http://www.w3.org/2000/svg&quot;</span>&gt; 
+    &lt;rect x=<span class="token string">&quot;10&quot;</span> y=<span class="token string">&quot;10&quot;</span> width=<span class="token string">&quot;30&quot;</span> height=<span class="token string">&quot;30&quot;</span> stroke=<span class="token string">&quot;black&quot;</span> fill=<span class="token string">&quot;transparent&quot;</span> stroke-width=<span class="token string">&quot;5&quot;</span>/&gt;
+    &lt;rect x=<span class="token string">&quot;60&quot;</span> y=<span class="token string">&quot;10&quot;</span> rx=<span class="token string">&quot;10&quot;</span> ry=<span class="token string">&quot;10&quot;</span> width=<span class="token string">&quot;30&quot;</span> height=<span class="token string">&quot;30&quot;</span> stroke=<span class="token string">&quot;black&quot;</span> fill=<span class="token string">&quot;transparent&quot;</span> stroke-width=<span class="token string">&quot;5&quot;</span>/&gt;
+
+    &lt;circle cx=<span class="token string">&quot;25&quot;</span> cy=<span class="token string">&quot;75&quot;</span> r=<span class="token string">&quot;20&quot;</span> stroke=<span class="token string">&quot;red&quot;</span> fill=<span class="token string">&quot;transparent&quot;</span> stroke-width=<span class="token string">&quot;5&quot;</span>/&gt;
+    &lt;ellipse cx=<span class="token string">&quot;75&quot;</span> cy=<span class="token string">&quot;75&quot;</span> rx=<span class="token string">&quot;20&quot;</span> ry=<span class="token string">&quot;5&quot;</span> stroke=<span class="token string">&quot;red&quot;</span> fill=<span class="token string">&quot;transparent&quot;</span> stroke-width=<span class="token string">&quot;5&quot;</span>/&gt;
+
+    &lt;line x1=<span class="token string">&quot;10&quot;</span> x2=<span class="token string">&quot;50&quot;</span> y1=<span class="token string">&quot;110&quot;</span> y2=<span class="token string">&quot;150&quot;</span> stroke=<span class="token string">&quot;orange&quot;</span> fill=<span class="token string">&quot;transparent&quot;</span> stroke-width=<span class="token string">&quot;5&quot;</span>/&gt;
+    &lt;polyline points=<span class="token string">&quot;60 110 65 120 70 115 75 130 80 125 85 140 90 135 95 150 100 145&quot;</span>  stroke=<span class="token string">&quot;orange&quot;</span> fill=<span class="token string">&quot;transparent&quot;</span> stroke-width=<span class="token string">&quot;5&quot;</span>/&gt;
+
+    &lt;polygon points=<span class="token string">&quot;50 160 55 180 70 180 60 190 65 205 50 195 35 205 40 190 30 180 45 180&quot;</span>  stroke=<span class="token string">&quot;green&quot;</span> fill=<span class="token string">&quot;transparent&quot;</span> stroke-width=<span class="token string">&quot;5&quot;</span>/&gt;
+
+    &lt;path d=<span class="token string">&quot;M20,230 Q40,205 50,230 T90,230&quot;</span> fill=<span class="token string">&quot;none&quot;</span> stroke=<span class="token string">&quot;blue&quot;</span> stroke-width=<span class="token string">&quot;5&quot;</span>/&gt;
+&lt;/svg&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br></div></div><p>三、坐标系统
+SVG使用的坐标系统或者说网格系统是：以页面的左上角为(0,0)坐标点，坐标以像素为单位，x轴正方向是向右，y轴正方向是向下。注意，这和你小时候所教的绘图方式是相反的。但是在HTML文档中，元素都是用这种方式定位的。</p> <p>四、SVG实例
+（一）矩形 &lt;rect&gt;
+示例代码及效果：</p> <p>矩形.png</p> <div class="language-css line-numbers-mode"><pre class="language-css"><code>&lt;svg width=<span class="token string">&quot;500px&quot;</span> height=<span class="token string">&quot;500px&quot;</span> style=<span class="token string">&quot;margin:50px;&quot;</span> version=<span class="token string">&quot;1.1&quot;</span> xmlns=<span class="token string">&quot;http://www.w3.org/2000/svg&quot;</span>&gt;
+    &lt;rect x=<span class="token string">&quot;95&quot;</span> y=<span class="token string">&quot;95&quot;</span> rx=<span class="token string">&quot;20&quot;</span> ry=<span class="token string">&quot;20&quot;</span> width=<span class="token string">&quot;200&quot;</span> height=<span class="token string">&quot;200&quot;</span> style=<span class="token string">&quot;fill:rgb(99,99,99);stroke-width:2;stroke:rgb(33,33,33);fill-opacity:0.1;stroke-opacity:0.9;opacity:0.9;&quot;</span>&gt;&lt;/rect&gt;
+&lt;/svg&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p>解析：
+x
+矩形左上角的x位置
+y
+矩形左上角的y位置
+rx
+圆角的x方位的半径
+ry
+圆角的y方位的半径
+width
+矩形的宽度
+height
+矩形的高度
+fill
+设置对象内部的填充颜色
+fill-opacity
+控制填充色的不透明度（范围：0 - 1）
+stroke
+定义矩形边框的颜色
+stroke-opacity
+控制描边的不透明度（范围：0 - 1）
+stroke-width
+定义矩形边框的宽度
+（二）圆形 &lt;circle&gt;
+示例代码及效果：</p> <div class="language-css line-numbers-mode"><pre class="language-css"><code>&lt;!--圆形--&gt; 
+&lt;svg xmlns=<span class="token string">&quot;http://www.w3.org/2000/svg&quot;</span> version=<span class="token string">&quot;1.1&quot;</span>&gt;
+    &lt;circle cx=<span class="token string">&quot;100&quot;</span> cy=<span class="token string">&quot;50&quot;</span> r=<span class="token string">&quot;40&quot;</span> stroke=<span class="token string">&quot;black&quot;</span> stroke-width=<span class="token string">&quot;2&quot;</span> fill=<span class="token string">&quot;#FF8C00&quot;</span> /&gt;
+&lt;/svg&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p>解析：
+r
+圆的半径
+cx
+圆点的x坐标
+cy
+圆点的y坐标
+（三）椭圆 &lt;ellipse&gt;
+示例代码及效果：</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span>椭圆<span class="token operator">--</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span>svg width<span class="token operator">=</span><span class="token string">&quot;500px&quot;</span> height<span class="token operator">=</span><span class="token string">&quot;500px&quot;</span> style<span class="token operator">=</span><span class="token string">&quot;margin:50px;&quot;</span> version<span class="token operator">=</span><span class="token string">&quot;1.1&quot;</span> xmlns<span class="token operator">=</span><span class="token string">&quot;http://www.w3.org/2000/svg&quot;</span><span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span>ellipse cx<span class="token operator">=</span><span class="token string">&quot;275&quot;</span> cy<span class="token operator">=</span><span class="token string">&quot;125&quot;</span> rx<span class="token operator">=</span><span class="token string">&quot;100&quot;</span> ry<span class="token operator">=</span><span class="token string">&quot;50&quot;</span> style<span class="token operator">=</span><span class="token string">&quot;fill:#7D9EC0;stroke:#6B6B6B;stroke-width:2;&quot;</span><span class="token operator">&gt;</span><span class="token operator">&lt;</span><span class="token operator">/</span>ellipse<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>svg<span class="token operator">&gt;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p>解析：
+cx
+椭圆中心的x坐标
+cy
+椭圆中心的y坐标
+rx
+定义的水平半径
+ry
+定义的垂直半径
+（四）线条 &lt;line&gt;
+&lt;line&gt;绘制直线。它取两个点的位置作为属性，指定这条线的起点和终点位置。利用两点确定一条直线的原理。
+示例代码及效果：</p> <div class="language-css line-numbers-mode"><pre class="language-css"><code>&lt;!--直线--&gt;
+&lt;svg width=<span class="token string">&quot;600px&quot;</span> height=<span class="token string">&quot;600px&quot;</span>  version=<span class="token string">&quot;1.1&quot;</span>  xmlns=<span class="token string">&quot;http://www.w3.org/2000/svg&quot;</span>&gt;
+    &lt;line x1=<span class="token string">&quot;0&quot;</span> y1=<span class="token string">&quot;0&quot;</span> x2=<span class="token string">&quot;100&quot;</span> y2=<span class="token string">&quot;100&quot;</span> style=<span class="token string">&quot;stroke:rgb(99,99,99);stroke-width:2;&quot;</span>&gt;&lt;/line&gt;
+    &lt;line x1=<span class="token string">&quot;100&quot;</span> y1=<span class="token string">&quot;100&quot;</span> x2=<span class="token string">&quot;0&quot;</span> y2=<span class="token string">&quot;200&quot;</span> style=<span class="token string">&quot;stroke:rgb(99,99,99);stroke-width:2;&quot;</span>&gt;&lt;/line&gt;
+&lt;/svg&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><p>解析：
+x1
+起点的x位置
+y1
+起点的y位置
+x2
+终点的x位置
+y2
+终点的y位置
+（五）折线 &lt;polyline&gt;
+&lt;polyline&gt;是一组连接在一起的直线。因为它可以有很多的点，折线的的所有点位置都放在一个points属性中。
+示例代码及效果：</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span>五星  未填充颜色<span class="token operator">--</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span>svg style<span class="token operator">=</span><span class="token string">&quot;height:300px;width:300px;&quot;</span> xmlns<span class="token operator">=</span><span class="token string">&quot;http://www.w3.org/2000/svg&quot;</span> version<span class="token operator">=</span><span class="token string">&quot;1.1&quot;</span><span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span>polygon points<span class="token operator">=</span><span class="token string">&quot;100 10,40 180,190 60,10 60,160 180&quot;</span> style<span class="token operator">=</span><span class="token string">&quot;fill:none;stroke:black;stroke-width:3&quot;</span><span class="token operator">/</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>svg<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span>五星  填充颜色<span class="token operator">--</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span>svg style<span class="token operator">=</span><span class="token string">&quot;height:300px;width:300px;&quot;</span> xmlns<span class="token operator">=</span><span class="token string">&quot;http://www.w3.org/2000/svg&quot;</span> version<span class="token operator">=</span><span class="token string">&quot;1.1&quot;</span><span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span>polyline points<span class="token operator">=</span><span class="token string">&quot;100 10,40 180,190 60,10 60,160 180&quot;</span> style<span class="token operator">=</span><span class="token string">&quot;fill:#EE2C2C;stroke:#EE2C2C;stroke-width:3&quot;</span> <span class="token operator">/</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>svg<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>svg<span class="token operator">&gt;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br></div></div><p>解析：
+points
+每个点必须包含2个数字，一个是x坐标，一个是y坐标。所以点列表 (0,0), (1,1) 和(2,2)可以写成这样：“0 0, 1 1, 2 2”。
+（六）多边形 &lt;polygon&gt;
+&lt;polygon&gt;和折线很像，它们都是由连接一组点集的直线构成。不同的是，&lt;polygon&gt; 的路径在最后一个点处自动回到第一个点。
+&lt;polygon&gt; 标签用来创建含有不少于三个边的图形。 多边形是由直线组成，其形状是&quot;封闭&quot;的（所有的线条 连接起来）。
+示例代码及效果：</p> <div class="language-css line-numbers-mode"><pre class="language-css"><code>&lt;svg width=<span class="token string">&quot;300px&quot;</span> height=<span class="token string">&quot;300px&quot;</span> version=<span class="token string">&quot;1.1&quot;</span>  xmlns=<span class="token string">&quot;http://www.w3.org/2000/svg&quot;</span>&gt;
+    &lt;polygon points=<span class="token string">&quot;220,100 300,210 170,250 123,234&quot;</span> style=<span class="token string">&quot;fill:#cccccc;stroke:#000000;stroke-width:1&quot;</span>/&gt;
+&lt;/svg&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p>解析：
+points
+每个点必须包含2个数字，一个是x坐标，一个是y坐标。所以点列表 (0,0), (1,1) 和(2,2)可以写成这样：“0 0, 1 1, 2 2”。路径绘制完后闭合图形，所以最终的直线将从位置(2,2)连接到位置(0,0)。
+（七）路径 &lt;path&gt;
+path元素是SVG基本形状中最强大的一个，它不仅能创建其他基本形状，还能创建更多其他形状。你可以用path元素绘制矩形（直角矩形或者圆角矩形）、圆形、椭圆、折线形、多边形，以及一些其他的形状，例如贝塞尔曲线、2次曲线等曲线。
+path元素的形状是通过属性d来定义的，属性d的值是一个“命令+参数”的序列。
+每一个命令都用一个关键字母来表示，比如，字母“M”表示的是“Move to”命令，当解析器读到这个命令时，它就知道你是打算移动到某个点。跟在命令字母后面的，是你需要移动到的那个点的x和y轴坐标。比如移动到(10,10)这个点的命令，应该写成“M 10 10”。这一段字符结束后，解析器就会去读下一段命令。每一个命令都有两种表示方式，一种是用大写字母，表示采用绝对定位。另一种是用小写字母，表示采用相对定位
+因为属性d采用的是用户坐标系统，所以不需标明单位</p> <p>作者：ywyan
+链接：https://www.jianshu.com/p/8ddb4ba85594
+来源：简书
+简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。</p></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">9/10/2019, 10:27:36 PM</span></div></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/CS-LearnRepository/assets/js/app.ae6f3f76.js" defer></script><script src="/CS-LearnRepository/assets/js/2.1ba326f9.js" defer></script><script src="/CS-LearnRepository/assets/js/76.a2b74358.js" defer></script>
+  </body>
+</html>
