@@ -366,3 +366,72 @@ s-maxage用于共享缓存 优先级高于 expires
 
 ![image-20210515183443417](https://tva1.sinaimg.cn/large/008i3skNgy1gqjamniutvj30ll0d6gr0.jpg)
 
+
+
+#### 31复杂的cache-control取值范围
+
+![image-20210516203812856](https://tva1.sinaimg.cn/large/008i3skNgy1gqkjtk9lyzj30jb0auae8.jpg)
+
+
+
+![image-20210516212200899](https://tva1.sinaimg.cn/large/008i3skNgy1gqkl31bwyoj30jf0cfq7a.jpg)
+
+![image-20210516212505667](https://tva1.sinaimg.cn/large/008i3skNgy1gqkl7cseh8j30jo0cxdj9.jpg)
+
+![image-20210516212615021](https://tva1.sinaimg.cn/large/008i3skNgy1gqkl7fz52qj30jy0c3wig.jpg)
+
+#### 32 什么相应会被缓存
+
+![image-20210516223702257](https://tva1.sinaimg.cn/large/008i3skNgy1gqkn94yathj30j40cjn0b.jpg)
+
+![image-20210516224055257](https://tva1.sinaimg.cn/large/008i3skNgy1gqknd5cl7jj30jm0ad418.jpg)
+
+![image-20210516224133466](https://tva1.sinaimg.cn/large/008i3skNgy1gqkndskkvmj30iz0bbdj0.jpg)
+
+![image-20210516224253517](https://tva1.sinaimg.cn/large/008i3skNgy1gqknf6bs2rj30hv0ckabw.jpg)
+
+![image-20210516224408991](https://tva1.sinaimg.cn/large/008i3skNgy1gqknghdat3j30je0bvdjd.jpg)
+
+![image-20210516224640262](https://tva1.sinaimg.cn/large/008i3skNgy1gqknj4skt9j30f60ckjv2.jpg)
+
+Etag if-match
+
+![image-20210516224711829](https://tva1.sinaimg.cn/large/008i3skNgy1gqknjnmkw1j30g90b9dhi.jpg)
+
+#### 33多种重定向跳转方式的差异
+
+302 -》 传递 location
+
+307-》location
+
+
+
+![image-20210517203219965](https://tva1.sinaimg.cn/large/008i3skNgy1gqlp9nq7fej30j30ac0v6.jpg)
+
+![image-20210517203952393](https://tva1.sinaimg.cn/large/008i3skNgy1gqlphi1k89j30j00bcdi5.jpg)
+
+![image-20210517204115478](https://tva1.sinaimg.cn/large/008i3skNgy1gqlpiwq543j30jm07ptag.jpg)
+
+重定向响应码
+
+永久重定向
+
+* 301 http 1.0 重定向请求通常使用get方法
+* 308 http 1.1 重定向请求必须使用原请求的方法和body请求
+
+![image-20210517204149710](https://tva1.sinaimg.cn/large/008i3skNgy1gqlpji93qhj30ki09wq6f.jpg)
+
+**临时重定向，表示资源只是暂时的变更URI**
+
+* 302 http 1.0 :重定向请求通常使用GET方法，而不管原请求究竟采用什么方法
+
+* 303 http 1.1:不表示资源变迁，而是用新的URI的响应表述而为原请求服务，重定向请求使用GET方法
+
+* 307 http1.1: 重定向请求必须使用原请求的方法和body发起访问
+
+  **特殊重定向**
+
+  * 300:响应式内容协商中，告知客户端有多种资源表述，要求客户端选择一种自认为合理的表述s
+  * 304:服务器验证过期缓存有效后，要求客户端使用该缓存。
+
+![image-20210517204323788](https://tva1.sinaimg.cn/large/008i3skNgy1gqlpl4trhwj30ll0acn1j.jpg)
